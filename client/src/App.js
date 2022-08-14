@@ -1,15 +1,28 @@
-import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import Layout from './layouts/Layout';
+
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+};
 
 const App = () => {
-	return (
-		<>
-			<Routes>
-				<Route path="/" element={<h1>Home</h1>} />
-				<Route path="parties" element={<h1>Parties</h1>}></Route>
-				<Route path="parties/:partyId" element={<h1>Party</h1>} />
-			</Routes>
-		</>
-	);
+    return (
+        <>
+            <ScrollToTop />
+            <Routes>
+                <Route path="/signup" element={<h1>Sign Up</h1>} />
+                <Route path="/login" element={<h1>Login</h1>} />
+                <Route path="*" element={<Layout />} />
+            </Routes>
+        </>
+    );
 };
 
 export default App;
