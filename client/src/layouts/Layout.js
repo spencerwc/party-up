@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { createStyles, Header } from '@mantine/core';
+import NavbarMinimal from '../components/NavbarMinimal';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -27,7 +28,7 @@ const Layout = () => {
             <Header height={60} />
 
             <div className={classes.container}>
-                {/* TODO: Add Navbar */}
+                <NavbarMinimal />
 
                 <main className={classes.content}>
                     <Routes>
