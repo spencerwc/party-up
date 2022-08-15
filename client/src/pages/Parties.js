@@ -1,9 +1,12 @@
+import { Title } from '@mantine/core';
 import PartiesList from '../components/PartiesList';
 
 const Parties = () => {
     return (
         <>
-            <h1>Parties</h1>
+            <Title order={1} m="md">
+                Parties
+            </Title>
             <PartiesList parties={[]} />
         </>
     );
