@@ -22,6 +22,12 @@ const useStyles = createStyles((theme) => ({
                     : theme.colors.gray[0],
         },
 
+        '&:last-of-type': {
+            borderBottom: `1px solid ${
+                theme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2]
+            }`,
+        },
+
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             padding: 0,
             border: `1px solid ${

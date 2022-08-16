@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { createStyles, Header } from '@mantine/core';
 import NavbarMinimal from '../components/NavbarMinimal';
 import Parties from '../pages/Parties';
+import Party from '../pages/Party';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -35,10 +36,7 @@ const Layout = () => {
                     <Routes>
                         <Route path="/" element={<h1>Home</h1>} />
                         <Route path="parties" element={<Parties />} />
-                        <Route
-                            path="parties/:partyId"
-                            element={<h1>Party</h1>}
-                        />
+                        <Route path="parties/:id" element={<Party />} />
                     </Routes>
                 </main>
 

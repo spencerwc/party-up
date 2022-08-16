@@ -7,10 +7,10 @@ const useStyles = createStyles((theme) => ({
         flexDirection: 'column',
         listStyle: 'none',
         padding: 0,
-        margin: 0,
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             gap: theme.spacing.sm,
+            margin: theme.spacing.md,
         },
     },
 }));
