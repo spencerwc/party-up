@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './layouts/Layout';
+import Signup from './pages/Signup';
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -17,7 +18,7 @@ const App = () => {
         <>
             <ScrollToTop />
             <Routes>
-                <Route path="/signup" element={<h1>Sign Up</h1>} />
+                <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<h1>Login</h1>} />
                 <Route path="*" element={<Layout />} />
             </Routes>

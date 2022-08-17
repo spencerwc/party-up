@@ -30,7 +30,7 @@ const userSchema = new Schema({
     },
 });
 
-userSchema.statics.signup = async function (email, password) {
+userSchema.statics.signup = async function (email, username, password) {
     if (!email || !password) {
         throw new Error('All fields must be filled in.');
     }
@@ -56,6 +56,7 @@ userSchema.statics.signup = async function (email, password) {
 
     const user = await this.create({
         email,
+        username,
         password: hash,
     });
 
