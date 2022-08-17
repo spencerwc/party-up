@@ -3,6 +3,7 @@ import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
 import Layout from './layouts/Layout';
 import Signup from './pages/Signup';
+import Login from './pages/Login';
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -27,7 +28,7 @@ const App = () => {
                 />
                 <Route
                     path="/login"
-                    element={!user ? <h1>Login</h1> : <Navigate to="/" />}
+                    element={!user ? <Login /> : <Navigate to="/" />}
                 />
                 <Route path="*" element={<Layout />} />
             </Routes>
