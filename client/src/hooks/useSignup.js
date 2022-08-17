@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 export const useSignup = () => {
     const [isLoading, setIsLoading] = useState(null);
     const [error, setError] = useState(null);
+    const { dispatch } = useAuthContext();
 
     const signUp = async (email, username, password) => {
         setIsLoading(true);
@@ -25,7 +27,8 @@ export const useSignup = () => {
         }
 
         if (response.ok) {
-            console.log(json);
+            localStorage.setItem('pu_user', JSON.stringify(json));
+            dispatch({ type: 'LOGIN', payload: json });
             setIsLoading(false);
         }
     };
