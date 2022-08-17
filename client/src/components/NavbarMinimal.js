@@ -1,6 +1,13 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Navbar, Tooltip, createStyles } from '@mantine/core';
-import { IconHome2, IconDeviceGamepad2, IconLogout } from '@tabler/icons';
+import {
+    IconHome2,
+    IconDeviceGamepad2,
+    IconLogout,
+    IconLogin,
+} from '@tabler/icons';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useLogout } from '../hooks/useLogout';
 
 const useStyles = createStyles((theme) => ({
     nav: {
@@ -54,6 +61,7 @@ const useStyles = createStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        cursor: 'pointer',
         color:
             theme.colorScheme === 'dark'
                 ? theme.colors.dark[0]
@@ -65,7 +73,8 @@ const useStyles = createStyles((theme) => ({
                     ? theme.colors.dark[5]
                     : theme.colors.gray[0],
         },
-        '&:last-of-type': {
+
+        '&:last-child': {
             marginTop: 'auto',
         },
     },
@@ -82,14 +91,11 @@ const useStyles = createStyles((theme) => ({
             }).color,
         },
     },
-
-    logout: {
-        backgroundColor: 'red',
-    },
 }));
 
 function NavbarLink({ icon: Icon, label, destination }) {
     const { classes, cx } = useStyles();
+
     return (
         <Tooltip label={label} position="right" transitionDuration={0}>
             <NavLink
@@ -111,6 +117,15 @@ const links = [
 
 const NavbarMinimal = () => {
     const { classes } = useStyles();
+    const { user } = useAuthContext();
+    const { logout } = useLogout();
+    const navigate = useNavigate();
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        logout();
+        navigate('/login');
+    };
 
     return (
         <Navbar className={classes.nav} width={{ base: 80 }} p="md">
@@ -118,11 +133,24 @@ const NavbarMinimal = () => {
                 {links.map((link) => (
                     <NavbarLink {...link} key={link.label} />
                 ))}
-                <NavbarLink
-                    icon={IconLogout}
-                    label="Logout"
-                    destination="/logout"
-                />
+
+                {user ? (
+                    <Tooltip
+                        label="Logout"
+                        position="right"
+                        transitionDuration={0}
+                    >
+                        <div className={classes.link} onClick={handleLogout}>
+                            <IconLogout stroke={1.5} />
+                        </div>
+                    </Tooltip>
+                ) : (
+                    <NavbarLink
+                        icon={IconLogin}
+                        label="Login"
+                        destination="/login"
+                    />
+                )}
             </Navbar.Section>
         </Navbar>
     );
