@@ -101,7 +101,7 @@ const deleteParty = async (req, res) => {
     res.status(200).json(party);
 };
 
-const addPartyMember = async (req, res) => {
+const joinParty = async (req, res) => {
     const { id } = req.params;
     const userId = req.user._id;
 
@@ -142,7 +142,7 @@ const addPartyMember = async (req, res) => {
     res.status(200).json(party);
 };
 
-const removePartyMember = async (req, res) => {
+const leaveParty = async (req, res) => {
     const { id } = req.params;
     const userId = req.user._id;
 
@@ -189,6 +189,6 @@ module.exports = {
     createParty,
     updateParty,
     deleteParty,
-    addPartyMember,
-    removePartyMember,
+    joinParty,
+    leaveParty,
 };

@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 import {
     createStyles,
     Image,
@@ -63,6 +65,88 @@ const useStyles = createStyles((theme) => ({
 
 const PartyDetails = ({ party }) => {
     const { classes } = useStyles();
+    const { user } = useAuthContext();
+    const [isMember, setIsMember] = useState(false);
+    const [isPending, setIsPending] = useState(false);
+    const [openings, setOpenings] = useState(
+        party.lookingFor - party.members.length
+    );
+
+    useEffect(() => {
+        if (user) {
+            const index = party.members.findIndex(
+                (member) => member.email === user.email
+            );
+
+            if (index !== -1) {
+                setIsMember(true);
+            }
+        }
+    }, [party, user]);
+
+    const handleJoin = async () => {
+        setIsPending(true);
+
+        const res = await fetch(`/api/parties/${party._id}/members/join`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        });
+
+        if (res.ok) {
+            setIsMember(true);
+            setOpenings(openings - 1);
+        }
+
+        setIsPending(false);
+    };
+
+    const handleLeave = async () => {
+        setIsPending(true);
+
+        const res = await fetch(`/api/parties/${party._id}/members/leave`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        });
+
+        if (res.ok) {
+            setIsMember(false);
+            setOpenings(openings + 1);
+        }
+
+        setIsPending(false);
+    };
+
+    let membershipAction = (
+        <Button
+            size="md"
+            className={classes.control}
+            disabled={!user || isPending}
+            onClick={handleJoin}
+        >
+            Join Party
+        </Button>
+    );
+
+    if (isMember) {
+        membershipAction = (
+            <Button
+                size="md"
+                className={classes.control}
+                onClick={handleLeave}
+                disabled={isPending}
+            >
+                Leave Party
+            </Button>
+        );
+    }
+
+    if (party.lookingFor - party.members.length === 0 && !isMember) {
+        membershipAction = <Text color="dimmed">The party has filled.</Text>;
+    }
 
     return (
         <>
@@ -77,9 +161,9 @@ const PartyDetails = ({ party }) => {
                                 {party.date.toLocaleString()}
                             </Text>
 
-                            {party.lookingFor > 0 && (
+                            {openings > 0 && (
                                 <Text color="dimmed" mt="md" size="lg">
-                                    Looking for {party.lookingFor} more
+                                    Looking for {openings} more
                                 </Text>
                             )}
 
@@ -92,20 +176,7 @@ const PartyDetails = ({ party }) => {
                                     radius="xl"
                                 />
                             </Group>
-                            <Group mt={30}>
-                                {party.lookingFor > 0 ? (
-                                    <Button
-                                        size="md"
-                                        className={classes.control}
-                                    >
-                                        Join Party
-                                    </Button>
-                                ) : (
-                                    <Text color="dimmed">
-                                        The party has filled.
-                                    </Text>
-                                )}
-                            </Group>
+                            <Group mt={30}>{membershipAction}</Group>
                         </div>
                         <Image src="" className={classes.image} mr="xl" />
                     </div>

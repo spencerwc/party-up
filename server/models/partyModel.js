@@ -27,6 +27,7 @@ const partySchema = new Schema({
     },
     members: {
         type: [Schema.Types.ObjectId],
+        ref: 'User',
         required: true,
     },
     messages: {

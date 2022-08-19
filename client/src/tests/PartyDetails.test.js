@@ -3,9 +3,14 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import PartyDetails from '../components/PartyDetails';
+import { AuthProvider } from '../context/AuthContext';
 
 const Wrapper = ({ children }) => {
-    return <MemoryRouter>{children}</MemoryRouter>;
+    return (
+        <AuthProvider>
+            <MemoryRouter>{children}</MemoryRouter>
+        </AuthProvider>
+    );
 };
 
 const seedParties = [
@@ -20,7 +25,7 @@ const seedParties = [
             platform: '',
         },
         lookingFor: '3',
-        memberCount: '1',
+        members: [],
         name: "Mario's Party Weekend",
     },
     {
@@ -32,8 +37,8 @@ const seedParties = [
             websites: ['#'],
             platform: '',
         },
-        lookingFor: '0',
-        memberCount: '2',
+        lookingFor: '1',
+        members: [''],
         name: 'Friday Fright Night',
     },
 ];
@@ -76,7 +81,7 @@ describe('Party details', () => {
             expect(screen.getByText('Join Party')).toBeInTheDocument();
         });
 
-        it('Displayes party filled notice when lookingFor is 0', () => {
+        it('Displayes party filled notice when no more available spots', () => {
             render(<PartyDetails party={seedParties[1]} />, {
                 wrapper: Wrapper,
             });
