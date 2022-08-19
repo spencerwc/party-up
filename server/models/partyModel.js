@@ -31,7 +31,6 @@ const partySchema = new Schema({
     },
     messages: {
         type: [Schema.Types.ObjectId],
-        required: true,
     },
     name: {
         type: String,

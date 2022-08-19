@@ -33,15 +33,17 @@ const getParty = async (req, res) => {
 
 const createParty = async (req, res) => {
     const { date, details, lookingFor, memberCount, members, name } = req.body;
+    const userId = req.user._id;
+
     // TODO: Add validation checks
 
-    // TODO: Add leader using user ID
     try {
         // Add messages as empty array
         const messages = [];
         const party = await Party.create({
             date,
             details,
+            leader: userId,
             lookingFor,
             memberCount,
             members,
@@ -82,19 +84,25 @@ const updateParty = async (req, res) => {
 
 const deleteParty = async (req, res) => {
     const { id } = req.params;
+    const userId = req.user._id;
 
     // Check if ID is valid before query
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ error: 'Party not found' });
     }
 
-    const party = await Party.findByIdAndDelete({ _id: id });
+    const party = await Party.findOne({ _id: id });
 
     if (!party) {
         return res.status(404).json({ error: 'Party not found' });
     }
 
-    res.status(200).json(party);
+    if (party && party.leader === userId) {
+        const deleted = await Party.deleteOne({ _id: id });
+        res.status(200).json(party);
+    } else {
+        res.status(400).json({ error: 'Unauthorized request' });
+    }
 };
 
 module.exports = {

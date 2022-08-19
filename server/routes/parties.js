@@ -6,13 +6,14 @@ const {
     updateParty,
     deleteParty,
 } = require('../controllers/partyController');
+const { requireAuth } = require('../middleware/requireAuth');
 
 const router = express.Router();
 
 router.get('/', getParties);
 router.get('/:id', getParty);
-router.post('/', createParty);
-router.patch('/:id', updateParty);
-router.delete('/:id', deleteParty);
+router.post('/', requireAuth, createParty);
+router.patch('/:id', requireAuth, updateParty);
+router.delete('/:id', requireAuth, deleteParty);
 
 module.exports = router;
