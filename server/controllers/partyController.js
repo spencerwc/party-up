@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Party = require('../models/partyModel');
+const User = require('../models/userModel');
 
 const getParties = async (req, res) => {
     try {
@@ -91,18 +92,95 @@ const deleteParty = async (req, res) => {
         return res.status(404).json({ error: 'Party not found' });
     }
 
-    const party = await Party.findOne({ _id: id });
+    const party = await Party.findOneAndDelete({ _id: id });
 
     if (!party) {
         return res.status(404).json({ error: 'Party not found' });
     }
 
-    if (party && party.leader === userId) {
-        const deleted = await Party.deleteOne({ _id: id });
-        res.status(200).json(party);
-    } else {
-        res.status(400).json({ error: 'Unauthorized request' });
+    res.status(200).json(party);
+};
+
+const addPartyMember = async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    // Check if ID is valid before query
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Party not found' });
     }
+
+    // Add user to party members
+    const party = await Party.findByIdAndUpdate(
+        { _id: id },
+        {
+            $addToSet: {
+                members: userId,
+            },
+        },
+        {
+            new: true,
+        }
+    );
+
+    if (!party) {
+        return res.status(404).json({ error: 'Party not found' });
+    }
+
+    // Add party to user party list
+    await User.findByIdAndUpdate(
+        {
+            _id: userId,
+        },
+        {
+            $addToSet: {
+                parties: id,
+            },
+        }
+    );
+
+    res.status(200).json(party);
+};
+
+const removePartyMember = async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    // Check if ID is valid before query
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Party not found' });
+    }
+
+    // Remove user from party members
+    const party = await Party.findByIdAndUpdate(
+        { _id: id },
+        {
+            $pull: {
+                members: userId,
+            },
+        },
+        {
+            new: true,
+        }
+    );
+
+    if (!party) {
+        return res.status(404).json({ error: 'Party not found' });
+    }
+
+    // Remove party from user list
+    await User.findByIdAndUpdate(
+        {
+            _id: userId,
+        },
+        {
+            $pull: {
+                parties: id,
+            },
+        }
+    );
+
+    res.status(200).json(party);
 };
 
 module.exports = {
@@ -111,4 +189,6 @@ module.exports = {
     createParty,
     updateParty,
     deleteParty,
+    addPartyMember,
+    removePartyMember,
 };
