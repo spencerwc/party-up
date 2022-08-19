@@ -20,11 +20,6 @@ const partySchema = new Schema({
         requireD: true,
         min: 1,
     },
-    memberCount: {
-        type: Number,
-        required: true,
-        min: 1,
-    },
     members: {
         type: [Schema.Types.ObjectId],
         ref: 'User',

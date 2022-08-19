@@ -110,8 +110,19 @@ const joinParty = async (req, res) => {
         return res.status(404).json({ error: 'Party not found' });
     }
 
+    const party = await Party.findById({ _id: id });
+
+    if (!party) {
+        return res.status(404).json({ error: 'Party not found' });
+    }
+
+    // Check if party is full
+    if (party.lookingFor - party.members.length <= 0) {
+        return res.status(500).json({ error: 'Could not not join party' });
+    }
+
     // Add user to party members
-    const party = await Party.findByIdAndUpdate(
+    const updated = await Party.findByIdAndUpdate(
         { _id: id },
         {
             $addToSet: {
@@ -122,10 +133,6 @@ const joinParty = async (req, res) => {
             new: true,
         }
     );
-
-    if (!party) {
-        return res.status(404).json({ error: 'Party not found' });
-    }
 
     // Add party to user party list
     await User.findByIdAndUpdate(
@@ -139,7 +146,7 @@ const joinParty = async (req, res) => {
         }
     );
 
-    res.status(200).json(party);
+    res.status(200).json(updated);
 };
 
 const leaveParty = async (req, res) => {

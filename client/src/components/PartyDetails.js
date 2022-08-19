@@ -68,6 +68,7 @@ const PartyDetails = ({ party }) => {
     const { user } = useAuthContext();
     const [isMember, setIsMember] = useState(false);
     const [isPending, setIsPending] = useState(false);
+    const [error, setError] = useState(null);
     const [openings, setOpenings] = useState(
         party.lookingFor - party.members.length
     );
@@ -93,6 +94,10 @@ const PartyDetails = ({ party }) => {
                 Authorization: `Bearer ${user.token}`,
             },
         });
+
+        if (!res.ok) {
+            setError('Could not join party');
+        }
 
         if (res.ok) {
             setIsMember(true);
@@ -124,7 +129,7 @@ const PartyDetails = ({ party }) => {
         <Button
             size="md"
             className={classes.control}
-            disabled={!user || isPending}
+            disabled={!user || isPending || error}
             onClick={handleJoin}
         >
             Join Party
@@ -176,7 +181,10 @@ const PartyDetails = ({ party }) => {
                                     radius="xl"
                                 />
                             </Group>
-                            <Group mt={30}>{membershipAction}</Group>
+                            <Group mt={30}>
+                                {membershipAction}
+                                {error && <Text>{error}</Text>}
+                            </Group>
                         </div>
                         <Image src="" className={classes.image} mr="xl" />
                     </div>
