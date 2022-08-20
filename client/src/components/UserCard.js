@@ -1,9 +1,25 @@
-import { Avatar, Text, Paper, Anchor } from '@mantine/core';
+import { createStyles, Avatar, Text, Paper, Anchor } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
+const useStyles = createStyles((theme) => ({
+    userCard: {
+        width: '100%',
+
+        [theme.fn.largerThan('xs')]: {
+            width: 'auto',
+        },
+    },
+}));
+
 const UserCard = ({ user }) => {
+    const { classes } = useStyles();
+
     return (
-        <Anchor component={Link} to={`/users/${user.username}`}>
+        <Anchor
+            className={classes.userCard}
+            component={Link}
+            to={`/users/${user.username}`}
+        >
             <Paper
                 radius="md"
                 withBorder

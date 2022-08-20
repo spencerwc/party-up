@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import PartyDetails from '../components/PartyDetails';
+import UserCardList from '../components/UserCardList';
 
 const Party = () => {
     const { id } = useParams();
@@ -10,6 +11,11 @@ const Party = () => {
         return (
             <>
                 <PartyDetails party={party} />
+                <UserCardList
+                    title="Members"
+                    seeAllLink={`members`}
+                    users={party.members}
+                />
             </>
         );
     }
