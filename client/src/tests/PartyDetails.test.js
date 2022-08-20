@@ -38,7 +38,7 @@ const seedParties = [
             platform: '',
         },
         lookingFor: '1',
-        members: [''],
+        members: ['', ''],
         name: 'Friday Fright Night',
     },
 ];

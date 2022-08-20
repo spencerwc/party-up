@@ -54,6 +54,7 @@ const useStyles = createStyles((theme) => ({
 
 const PartyCard = ({ party }) => {
     const { classes } = useStyles();
+    const openings = party.lookingFor - (party.members.length - 1); // Subtract one for the slot filled by leader
 
     return (
         <li>
@@ -79,15 +80,15 @@ const PartyCard = ({ party }) => {
                                     <Text size="xs">{leader.name}</Text>
                                 </Group> */}
                                 <Text size="xs" color="dimmed">
-                                    {party.memberCount} member
-                                    {party.memberCount > 1 && 's'}
+                                    {party.members.length} member
+                                    {party.members.length > 1 && 's'}
                                 </Text>
                                 <Text size="xs" color="dimmed">
                                     •
                                 </Text>
                                 <Text size="xs" color="dimmed">
-                                    {party.lookingFor > 0
-                                        ? `Looking for ${party.lookingFor} more`
+                                    {openings > 0
+                                        ? `Looking for ${openings} more`
                                         : 'Filled'}
                                 </Text>
                             </Group>

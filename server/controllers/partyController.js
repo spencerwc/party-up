@@ -116,8 +116,8 @@ const joinParty = async (req, res) => {
         return res.status(404).json({ error: 'Party not found' });
     }
 
-    // Check if party is full
-    if (party.lookingFor - party.members.length <= 0) {
+    // Check if party is full by checking member length vs lookingFor amount - Subtract one for leader
+    if (party.lookingFor - (party.members.length - 1) <= 0) {
         return res.status(500).json({ error: 'Could not not join party' });
     }
 

@@ -1,11 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { AuthProvider } from '../context/AuthContext';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import PartyCard from '../components/PartyCard';
 
 const Wrapper = ({ children }) => {
-    return <MemoryRouter>{children}</MemoryRouter>;
+    return (
+        <AuthProvider>
+            <MemoryRouter>{children}</MemoryRouter>
+        </AuthProvider>
+    );
 };
 
 const seedParties = [
@@ -18,8 +23,8 @@ const seedParties = [
             websites: ['#'],
             platform: '',
         },
+        members: [''],
         lookingFor: '3',
-        memberCount: '1',
         name: "Mario's Party Weekend",
     },
     {
@@ -31,8 +36,8 @@ const seedParties = [
             websites: ['#'],
             platform: '',
         },
-        lookingFor: '0',
-        memberCount: '2',
+        lookingFor: '3',
+        members: ['', '', '', ''],
         name: 'Friday Fright Night',
     },
 ];
@@ -73,22 +78,25 @@ describe('Party card', () => {
         it('details the party member count', () => {
             render(<PartyCard party={seedParties[1]} />, { wrapper: Wrapper });
             expect(
-                screen.getByText(`${seedParties[1].memberCount} members`)
+                screen.getByText(`${seedParties[1].members.length} members`)
             ).toBeInTheDocument();
         });
 
         it('adjusts member count for single party member', () => {
             render(<PartyCard party={seedParties[0]} />, { wrapper: Wrapper });
             expect(
-                screen.getByText(`${seedParties[0].memberCount} member`)
+                screen.getByText(`${seedParties[0].members.length} member`)
             ).toBeInTheDocument();
         });
 
-        it('details the looking for count', () => {
+        it('details the looking for amount', () => {
             render(<PartyCard party={seedParties[0]} />, { wrapper: Wrapper });
             expect(
                 screen.getByText(
-                    `Looking for ${seedParties[0].lookingFor} more`
+                    `Looking for ${
+                        seedParties[0].lookingFor -
+                        (seedParties[0].members.length - 1)
+                    } more`
                 )
             ).toBeInTheDocument();
         });

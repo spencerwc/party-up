@@ -70,7 +70,7 @@ const PartyDetails = ({ party }) => {
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState(null);
     const [openings, setOpenings] = useState(
-        party.lookingFor - party.members.length
+        party.lookingFor - (party.members.length - 1)
     );
 
     useEffect(() => {
@@ -149,7 +149,7 @@ const PartyDetails = ({ party }) => {
         );
     }
 
-    if (party.lookingFor - party.members.length === 0 && !isMember) {
+    if (openings === 0 && !isMember) {
         membershipAction = <Text color="dimmed">The party has filled.</Text>;
     }
 
