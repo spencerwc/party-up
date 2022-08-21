@@ -79,7 +79,7 @@ const PartyDetails = ({ party }) => {
     useEffect(() => {
         if (user) {
             const index = party.members.findIndex(
-                (member) => member.email === user.email
+                (member) => member.username === user.username
             );
 
             if (index !== -1) {
