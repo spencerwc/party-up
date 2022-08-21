@@ -7,9 +7,12 @@ import {
     Title,
     Button,
     Group,
+    Stack,
     Text,
     Avatar,
+    Anchor,
 } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
     inner: {
@@ -172,15 +175,33 @@ const PartyDetails = ({ party }) => {
                                 </Text>
                             )}
 
-                            <Group mt={30}>
-                                <Text>Led by</Text>
-                                <Avatar
-                                    src={null}
-                                    alt="avatar"
-                                    size="lg"
-                                    radius="xl"
-                                />
-                            </Group>
+                            <Anchor
+                                component={Link}
+                                to={`/users/${[party.leader.username]}`}
+                                underline={false}
+                                sx={(theme) => ({
+                                    color:
+                                        theme.colorScheme === 'dark'
+                                            ? theme.white
+                                            : theme.black,
+                                })}
+                            >
+                                <Group mt={30}>
+                                    <Avatar
+                                        src={party.leader.avatar}
+                                        alt="avatar"
+                                        size="lg"
+                                        radius="xl"
+                                    />
+                                    <Stack spacing={0}>
+                                        <Text>Led by</Text>
+                                        <Text weight="bold">
+                                            {party.leader.username}
+                                        </Text>
+                                    </Stack>
+                                </Group>
+                            </Anchor>
+
                             <Group mt={30}>
                                 {membershipAction}
                                 {error && <Text>{error}</Text>}

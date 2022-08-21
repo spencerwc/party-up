@@ -19,6 +19,7 @@ const UserCard = ({ user }) => {
             className={classes.userCard}
             component={Link}
             to={`/users/${user.username}`}
+            underline={false}
         >
             <Paper
                 radius="md"
@@ -29,6 +30,12 @@ const UserCard = ({ user }) => {
                         theme.colorScheme === 'dark'
                             ? theme.colors.dark[8]
                             : theme.white,
+                    '&:hover': {
+                        backgroundColor:
+                            theme.colorScheme === 'dark'
+                                ? theme.colors.dark[0]
+                                : theme.colors.gray[0],
+                    },
                 })}
             >
                 <Avatar src={user.avatar} size={100} radius={120} mx="auto" />

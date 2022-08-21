@@ -25,7 +25,7 @@ const UserCardList = ({ title, seeAllLink, users }) => {
             </Group>
             <Group className={classes.cardList}>
                 {users.map((user) => (
-                    <UserCard key={user._id} user={user} />
+                    <UserCard key={user.username} user={user} />
                 ))}
             </Group>
         </Stack>
