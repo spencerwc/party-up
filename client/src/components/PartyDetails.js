@@ -128,6 +128,7 @@ const PartyDetails = ({ party }) => {
         setIsPending(false);
     };
 
+    // Default action to join the party
     let membershipAction = (
         <Button
             size="md"
@@ -139,7 +140,15 @@ const PartyDetails = ({ party }) => {
         </Button>
     );
 
-    if (isMember) {
+    // If user is leader, notify them
+    if (user.username === party.leader.username) {
+        membershipAction = (
+            <Text color="dimmed">You are the leader of this party.</Text>
+        );
+    }
+
+    // Otherwise - if user is a member, allow them to leave
+    if (isMember && user.username !== party.leader.username) {
         membershipAction = (
             <Button
                 size="md"
@@ -152,6 +161,7 @@ const PartyDetails = ({ party }) => {
         );
     }
 
+    // If user is not a member and no openings are available, membership is not allowed
     if (openings === 0 && !isMember) {
         membershipAction = <Text color="dimmed">The party has filled.</Text>;
     }
