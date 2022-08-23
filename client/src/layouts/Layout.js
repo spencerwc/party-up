@@ -3,6 +3,7 @@ import { createStyles, Header } from '@mantine/core';
 import NavbarMinimal from '../components/NavbarMinimal';
 import Parties from '../pages/Parties';
 import Party from '../pages/Party';
+import CreateParty from '../pages/CreateParty';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -36,6 +37,7 @@ const Layout = () => {
                     <Routes>
                         <Route path="/" element={<h1>Home</h1>} />
                         <Route path="parties" element={<Parties />} />
+                        <Route path="parties/new" element={<CreateParty />} />
                         <Route path="parties/:id" element={<Party />} />
                     </Routes>
                 </main>
