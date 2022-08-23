@@ -19,7 +19,7 @@ const seedParties = [
             platform: '',
         },
         lookingFor: '3',
-        memberCount: '1',
+        members: [''],
         name: "Mario's Party Weekend",
     },
     {
@@ -32,7 +32,7 @@ const seedParties = [
             platform: '',
         },
         lookingFor: '6',
-        memberCount: '2',
+        members: ['', ''],
         name: 'Friday Fright Night',
     },
     {
@@ -45,7 +45,7 @@ const seedParties = [
             platform: '',
         },
         lookingFor: '1',
-        memberCount: '4',
+        members: [''],
         name: 'Beat Saber Contest',
     },
 ];

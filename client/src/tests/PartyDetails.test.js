@@ -3,13 +3,13 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import PartyDetails from '../components/PartyDetails';
-import { AuthProvider } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 
 const Wrapper = ({ children }) => {
     return (
-        <AuthProvider>
+        <AuthContext.Provider value={{ user: { username: 'test' } }}>
             <MemoryRouter>{children}</MemoryRouter>
-        </AuthProvider>
+        </AuthContext.Provider>
     );
 };
 
@@ -18,6 +18,9 @@ const seedParties = [
         _id: '0',
         date: new Date(),
         details: 'This will be fun!',
+        leader: {
+            username: 'test1',
+        },
         game: {
             cover: '',
             name: 'Mario Party 3',
@@ -31,6 +34,9 @@ const seedParties = [
     {
         _id: '1',
         date: new Date(),
+        leader: {
+            username: 'test2',
+        },
         game: {
             cover: '',
             name: 'Dead By Daylight',
