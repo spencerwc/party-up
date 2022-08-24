@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
-import GameSelect from './GameSelect';
+import GameSelect from '../pages/GameSelect';
 
 const CreatePartyForm = () => {
     const { user } = useAuthContext();
@@ -90,7 +90,7 @@ const CreatePartyForm = () => {
         return (
             <GameSelect
                 name={gameForm.values.gameName}
-                game={game}
+                setGame={setGame}
                 setSelectingGame={setSelectingGame}
             />
         );
@@ -116,6 +116,7 @@ const CreatePartyForm = () => {
                                 size={32}
                                 color={theme.primaryColor}
                                 variant="filled"
+                                onClick={handleGameSearch}
                             >
                                 {theme.dir === 'ltr' ? (
                                     <IconArrowRight size={18} stroke={1.5} />
