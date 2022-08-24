@@ -53,7 +53,7 @@ const GameSelect = ({ name, setGame, setSelectingGame }) => {
                 >
                     Back
                 </Button>
-                <GameTable games={games} />
+                <GameTable games={games} handleSelect={handleSelect} />
             </>
         );
     }

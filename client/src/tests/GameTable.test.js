@@ -17,6 +17,9 @@ const seedGames = [
     {
         id: 0,
         name: 'Stardew Valley',
+        cover: {
+            url: '',
+        },
     },
     {
         id: 1,

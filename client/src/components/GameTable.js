@@ -5,7 +5,6 @@ import {
     Group,
     Text,
     ActionIcon,
-    Stack,
     useMantineTheme,
     createStyles,
 } from '@mantine/core';
@@ -30,8 +29,9 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const GameTable = ({ games }) => {
+const GameTable = ({ games, handleSelect }) => {
     const { classes } = useStyles();
+    const theme = useMantineTheme();
 
     return (
         <Table mt="sm" verticalSpacing="sm">
@@ -44,7 +44,50 @@ const GameTable = ({ games }) => {
             </thead>
             <tbody>
                 {games.map((game) => (
-                    <tr key={game.id}></tr>
+                    <tr key={game.id}>
+                        <td>
+                            <Group
+                                spacing="sm"
+                                style={{
+                                    flexWrap: 'nowrap',
+                                }}
+                            >
+                                <Avatar
+                                    className={classes.avatar}
+                                    src={game.cover ? game.cover.url : null}
+                                    radius="md"
+                                >
+                                    <IconQuestionMark size={30} />
+                                </Avatar>
+                                <Text weight={500}>
+                                    {game.name.length > 45
+                                        ? `${game.name.slice(0, 45).trim()}...`
+                                        : game.name}
+                                </Text>
+                            </Group>
+                        </td>
+                        <td className={classes.genre}>
+                            {game.genres ? (
+                                <Badge
+                                    variant={
+                                        theme.colorScheme === 'dark'
+                                            ? 'light'
+                                            : 'outline'
+                                    }
+                                >
+                                    {game.genres[0].name}
+                                </Badge>
+                            ) : (
+                                ''
+                            )}
+                        </td>
+
+                        <td>
+                            <ActionIcon onClick={() => handleSelect(game)}>
+                                <IconChevronRight stroke={1.5} />
+                            </ActionIcon>
+                        </td>
+                    </tr>
                 ))}
             </tbody>
         </Table>
