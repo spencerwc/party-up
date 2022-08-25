@@ -11,6 +11,11 @@ const partySchema = new Schema({
         type: String,
         required: true,
     },
+    game: {
+        type: Map,
+        of: String,
+        required: true,
+    },
     leader: {
         type: Schema.Types.ObjectId,
         ref: 'User',

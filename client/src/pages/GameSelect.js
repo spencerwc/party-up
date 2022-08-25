@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 import { Button } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons';
 import GameTable from '../components/GameTable';
 
 const GameSelect = ({ name, setGame, setSelectingGame }) => {
+    const { user } = useAuthContext();
     const [games, setGames] = useState(null);
     const [error, setError] = useState(null);
 
@@ -21,6 +23,7 @@ const GameSelect = ({ name, setGame, setSelectingGame }) => {
             const response = await fetch(`/api/games`, {
                 method: 'POST',
                 headers: {
+                    Authorization: `Bearer ${user.token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ name }),
@@ -29,7 +32,6 @@ const GameSelect = ({ name, setGame, setSelectingGame }) => {
             const json = await response.json();
 
             if (!response.ok) {
-                console.error(response.statusText);
                 setError(json.error);
             }
 
@@ -39,8 +41,10 @@ const GameSelect = ({ name, setGame, setSelectingGame }) => {
             }
         };
 
-        fetchGames();
-    }, [name]);
+        if (user) {
+            fetchGames();
+        }
+    }, [user, name]);
 
     if (games) {
         return (
