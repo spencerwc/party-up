@@ -27,10 +27,11 @@ const useStyles = createStyles((theme) => ({
             'rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px',
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
-            position: 'static',
+            position: 'sticky',
+            top: 0,
             flexDirection: 'column',
             gap: `${theme.spacing.sm}px`,
-            height: 'calc(100vh - var(--mantine-header-height, 0px) - var(--mantine-footer-height, 0px))',
+            height: '100vh',
             width: 'auto',
             border: 'none',
             borderRight: `1px solid ${
@@ -55,8 +56,8 @@ const useStyles = createStyles((theme) => ({
     },
 
     link: {
-        width: 50,
-        height: 50,
+        width: 35,
+        height: 35,
         borderRadius: theme.radius.md,
         display: 'flex',
         alignItems: 'center',
@@ -76,6 +77,11 @@ const useStyles = createStyles((theme) => ({
 
         '&:last-child': {
             marginTop: 'auto',
+        },
+
+        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            height: 50,
+            width: 50,
         },
     },
 
