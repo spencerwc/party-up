@@ -14,6 +14,7 @@ import {
 import { DatePicker } from '@mantine/dates';
 import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
 import GameSelect from '../pages/GameSelect';
+import GameCard from './GameCard';
 
 const CreatePartyForm = () => {
     const { user } = useAuthContext();
@@ -131,7 +132,7 @@ const CreatePartyForm = () => {
                     />
                 </form>
             ) : (
-                <div>Game Info Here</div>
+                <GameCard game={game} setGame={setGame} />
             )}
 
             {/* This form collects the party details and handles submission */}

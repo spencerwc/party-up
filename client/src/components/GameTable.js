@@ -68,15 +68,7 @@ const GameTable = ({ games, handleSelect }) => {
                         </td>
                         <td className={classes.genre}>
                             {game.genres ? (
-                                <Badge
-                                    variant={
-                                        theme.colorScheme === 'dark'
-                                            ? 'light'
-                                            : 'outline'
-                                    }
-                                >
-                                    {game.genres[0].name}
-                                </Badge>
+                                <Badge>{game.genres[0].name}</Badge>
                             ) : (
                                 ''
                             )}
