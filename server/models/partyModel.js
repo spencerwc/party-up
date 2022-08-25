@@ -13,7 +13,6 @@ const partySchema = new Schema({
     },
     game: {
         type: Map,
-        of: String,
         required: true,
     },
     leader: {

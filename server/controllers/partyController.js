@@ -36,7 +36,7 @@ const getParty = async (req, res) => {
 };
 
 const createParty = async (req, res) => {
-    const { date, details, lookingFor, name } = req.body;
+    const { date, details, lookingFor, name, game } = req.body;
     const userId = req.user._id;
 
     if (!date || !details || !lookingFor || !name) {
@@ -57,6 +57,10 @@ const createParty = async (req, res) => {
             .json({ error: 'Members must be between 1 and 100' });
     }
 
+    if (!game) {
+        return res.stats(400).json({ error: 'A game must be provided' });
+    }
+
     try {
         const party = await Party.create({
             date,
@@ -65,6 +69,7 @@ const createParty = async (req, res) => {
             lookingFor,
             members: [userId],
             name,
+            game,
         });
 
         res.status(200).json(party);

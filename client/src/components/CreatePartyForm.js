@@ -66,13 +66,19 @@ const CreatePartyForm = () => {
             return;
         }
 
+        if (!game) {
+            setError('You must select a game');
+        }
+
+        const party = { ...values, game: { ...game } };
+
         const response = await fetch('/api/parties', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${user.token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(values),
+            body: JSON.stringify(party),
         });
 
         const json = await response.json();
