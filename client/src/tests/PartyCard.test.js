@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { AuthProvider } from '../context/AuthContext';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
+import dayjs from 'dayjs';
 import PartyCard from '../components/PartyCard';
 
 const Wrapper = ({ children }) => {
@@ -16,7 +17,7 @@ const Wrapper = ({ children }) => {
 const seedParties = [
     {
         _id: '0',
-        date: new Date(),
+        date: new Date(Date.now()),
         game: {
             cover: '',
             name: 'Mario Party 3',
@@ -29,7 +30,7 @@ const seedParties = [
     },
     {
         _id: '1',
-        date: new Date(),
+        date: new Date(Date.now()),
         game: {
             cover: '',
             name: 'Dead By Daylight',
@@ -61,15 +62,19 @@ describe('Party card', () => {
             expect(screen.getByText(seedParties[1].name)).toBeInTheDocument();
         });
 
-        it('renders the party image', () => {
-            render(<PartyCard party={seedParties[0]} />, { wrapper: Wrapper });
-            expect(screen.getByRole('img')).toBeInTheDocument();
-        });
-
         it('displays the party date', () => {
             render(<PartyCard party={seedParties[0]} />, { wrapper: Wrapper });
             expect(
-                screen.getByText(seedParties[0].date.toLocaleString())
+                screen.getByText(
+                    dayjs(seedParties[0].date).format('dddd, MMMM D')
+                )
+            ).toBeInTheDocument();
+        });
+
+        it('displays the game details', () => {
+            render(<PartyCard party={seedParties[0]} />, { wrapper: Wrapper });
+            expect(
+                screen.getByText(seedParties[0].game.name)
             ).toBeInTheDocument();
         });
     });
