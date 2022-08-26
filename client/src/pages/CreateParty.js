@@ -4,7 +4,9 @@ import CreatePartyForm from '../components/CreatePartyForm';
 const CreateParty = () => {
     return (
         <Container m="md" p={0}>
-            <Title>Start a Party</Title>
+            <Title order={1} size={24}>
+                Start a Party
+            </Title>
             <CreatePartyForm />
         </Container>
     );

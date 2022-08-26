@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
+import dayjs from 'dayjs';
 import GameSelect from '../pages/GameSelect';
 import GameCard from './GameCard';
 
@@ -68,6 +69,7 @@ const CreatePartyForm = () => {
 
         if (!game) {
             setError('You must select a game');
+            return;
         }
 
         const party = { ...values, game: { ...game } };
@@ -158,6 +160,8 @@ const CreatePartyForm = () => {
                     mt="sm"
                     placeholder="Date of the event"
                     label="When to Meet"
+                    minDate={new Date(Date.now())}
+                    maxDate={dayjs(new Date()).endOf('year').toDate()}
                     {...partyForm.getInputProps('date')}
                     withAsterisk
                 />

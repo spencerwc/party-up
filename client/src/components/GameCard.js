@@ -17,7 +17,7 @@ const GameCard = ({ game, setGame }) => {
                 <Text size="lg" weight={500}>
                     {game.name}
                 </Text>
-                <Badge>{game.genres && game.genres[0].name}</Badge>
+                {game.genres && <Badge>{game.genres[0].name}</Badge>}
             </div>
             <Tooltip label="Clear Game">
                 <ActionIcon ml="xl" onClick={handleClear}>
