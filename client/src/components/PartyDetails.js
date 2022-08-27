@@ -11,29 +11,13 @@ import {
     Text,
     Avatar,
     Anchor,
+    MediaQuery,
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
-    inner: {
-        display: 'flex',
-        justifyContent: 'center',
-        paddingTop: theme.spacing.xl,
-        paddingBottom: theme.spacing.xl,
-
-        [theme.fn.largerThan('xs')]: {
-            justifyContent: 'space-between',
-        },
-    },
-
     content: {
-        maxWidth: 480,
-        marginRight: theme.spacing.xl * 3,
-
-        [theme.fn.smallerThan('md')]: {
-            maxWidth: '100%',
-            marginRight: 0,
-        },
+        [theme.fn.smallerThan('md')]: {},
     },
 
     title: {
@@ -51,17 +35,6 @@ const useStyles = createStyles((theme) => ({
     control: {
         [theme.fn.smallerThan('xs')]: {
             flex: 1,
-        },
-    },
-
-    image: {
-        objectFit: 'cover',
-        backgroundColor: theme.colors.gray[2],
-        maxWidth: '250px',
-        borderRadius: theme.radius.md,
-
-        [theme.fn.smallerThan('xs')]: {
-            display: 'none',
         },
     },
 }));
@@ -167,62 +140,69 @@ const PartyDetails = ({ party }) => {
     }
 
     return (
-        <>
-            <div className={classes.banner}>
-                <Container m="md" p={0}>
-                    <div className={classes.inner}>
-                        <div className={classes.content}>
-                            <Title className={classes.title}>
-                                {party.name}
-                            </Title>
-                            <Text color="dimmed" mt="md" size="xl">
-                                {party.date.toLocaleString()}
-                            </Text>
-
-                            {openings > 0 && (
-                                <Text color="dimmed" mt="md" size="lg">
-                                    Looking for {openings} more
+        <Container m="md" p={0}>
+            <Group noWrap sx={{ justifyContent: 'space-between' }}>
+                <Stack className={classes.content} spacing={0}>
+                    <Title className={classes.title}>{party.name}</Title>
+                    <Text color="dimmed" mt="md" size="xl">
+                        {party.date.toLocaleString()}
+                    </Text>
+                    <Anchor
+                        component={Link}
+                        to={`/users/${[party.leader.username]}`}
+                        underline={false}
+                        sx={(theme) => ({
+                            color:
+                                theme.colorScheme === 'dark'
+                                    ? theme.white
+                                    : theme.black,
+                        })}
+                    >
+                        <Group mt="lg">
+                            <Avatar
+                                src={party.leader.avatar}
+                                alt="avatar"
+                                size="lg"
+                                radius="xl"
+                            />
+                            <Stack spacing={0}>
+                                <Text>Led by</Text>
+                                <Text weight="bold">
+                                    {party.leader.username}
                                 </Text>
-                            )}
+                            </Stack>
+                        </Group>
+                    </Anchor>
 
-                            <Anchor
-                                component={Link}
-                                to={`/users/${[party.leader.username]}`}
-                                underline={false}
-                                sx={(theme) => ({
-                                    color:
-                                        theme.colorScheme === 'dark'
-                                            ? theme.white
-                                            : theme.black,
-                                })}
-                            >
-                                <Group mt={30}>
-                                    <Avatar
-                                        src={party.leader.avatar}
-                                        alt="avatar"
-                                        size="lg"
-                                        radius="xl"
-                                    />
-                                    <Stack spacing={0}>
-                                        <Text>Led by</Text>
-                                        <Text weight="bold">
-                                            {party.leader.username}
-                                        </Text>
-                                    </Stack>
-                                </Group>
-                            </Anchor>
+                    {openings > 0 && (
+                        <Text color="dimmed" mt="xl" size="lg">
+                            Looking for {openings} more
+                        </Text>
+                    )}
 
-                            <Group mt={30}>
-                                {membershipAction}
-                                {error && <Text>{error}</Text>}
-                            </Group>
-                        </div>
-                        <Image src="" className={classes.image} mr="xl" />
-                    </div>
-                </Container>
-            </div>
-            <Text m="md">{party.details}</Text>
-        </>
+                    <Group mt={30}>
+                        {membershipAction}
+                        {error && <Text>{error}</Text>}
+                    </Group>
+                </Stack>
+                <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
+                    <Image
+                        src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${party.game.cover.image_id}.jpg`}
+                        width={200}
+                        mr="xl"
+                        withPlaceholder
+                    />
+                </MediaQuery>
+                <MediaQuery largerThan="xs" styles={{ display: 'none' }}>
+                    <Image
+                        src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${party.game.cover.image_id}.jpg`}
+                        width={120}
+                        withPlaceholder
+                        mb="auto"
+                    />
+                </MediaQuery>
+            </Group>
+        </Container>
     );
 };
 

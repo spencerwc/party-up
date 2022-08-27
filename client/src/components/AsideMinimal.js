@@ -5,7 +5,7 @@ const AsideMinimal = () => {
     const navigate = useNavigate();
 
     return (
-        <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+        <MediaQuery smallerThan="md" styles={{ display: 'none' }}>
             <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
                 <Button onClick={() => navigate('/parties/new')}>
                     Start a Party
