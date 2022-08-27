@@ -8,7 +8,7 @@ const getGames = async (req, res) => {
                 'Client-ID': TWITCH_CLIENT_ID,
                 Authorization: `Bearer ${req.accessToken['access_token']}`,
             },
-            body: `fields id, cover.url, genres.name, name, websites.url; where name~"${req.body.name}"*; limit 100;`,
+            body: `fields id, cover.image_id, cover.url, genres.name, name, websites.url; where name~"${req.body.name}"*; limit 100;`,
         });
         const games = await response.json();
         res.status(200).json(games);
