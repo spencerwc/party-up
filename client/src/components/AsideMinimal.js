@@ -1,10 +1,15 @@
-import { MediaQuery, Aside, Text } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { MediaQuery, Aside, Button } from '@mantine/core';
 
 const AsideMinimal = () => {
+    const navigate = useNavigate();
+
     return (
         <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
             <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-                <Text>Sidebar</Text>
+                <Button onClick={() => navigate('/parties/new')}>
+                    Start a Party
+                </Button>
             </Aside>
         </MediaQuery>
     );
