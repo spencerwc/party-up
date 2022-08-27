@@ -4,6 +4,7 @@ import NavbarMinimal from '../components/NavbarMinimal';
 import Parties from '../pages/Parties';
 import Party from '../pages/Party';
 import CreateParty from '../pages/CreateParty';
+import AsideMinimal from '../components/AsideMinimal';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -52,7 +53,7 @@ const Layout = () => {
                     </Routes>
                 </main>
 
-                {/* TODO: Add Aside */}
+                <AsideMinimal />
             </div>
         </>
     );
