@@ -16,7 +16,7 @@ const UserCardList = ({ title, seeAllLink, users }) => {
     const { classes } = useStyles();
 
     return (
-        <Stack m="md">
+        <Stack mt="lg">
             <Group position="apart">
                 <Title order={2}>{title}</Title>
                 <Anchor component={Link} to={seeAllLink}>
