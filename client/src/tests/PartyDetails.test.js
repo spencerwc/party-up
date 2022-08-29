@@ -1,9 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import '@testing-library/jest-dom';
-import PartyDetails from '../components/PartyDetails';
 import { AuthContext } from '../context/AuthContext';
+import '@testing-library/jest-dom';
+import dayjs from 'dayjs';
+import PartyDetails from '../components/PartyDetails';
 
 const Wrapper = ({ children }) => {
     return (
@@ -38,7 +39,7 @@ const seedParties = [
             username: 'test2',
         },
         game: {
-            cover: '',
+            cover: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co4m8x.png',
             name: 'Dead By Daylight',
             websites: ['#'],
             platform: '',
@@ -64,46 +65,18 @@ describe('Party details', () => {
                 wrapper: Wrapper,
             });
             expect(
-                screen.getByText(seedParties[1].date.toLocaleString())
+                screen.getByText(
+                    dayjs(seedParties[1].date).format('dddd, MMMM D YYYY')
+                )
             ).toBeInTheDocument();
         });
-    });
 
-    describe('Party game details', () => {
-        it('renders the cover image', () => {
-            render(<PartyDetails party={seedParties[0]} />, {
-                wrapper: Wrapper,
-            });
-            expect(screen.getByRole('img')).toBeInTheDocument();
-        });
-    });
-
-    describe('Party join button', () => {
-        it('renders a button', () => {
-            render(<PartyDetails party={seedParties[0]} />, {
-                wrapper: Wrapper,
-            });
-            expect(screen.getByRole('button')).toBeInTheDocument();
-            expect(screen.getByText('Join Party')).toBeInTheDocument();
-        });
-
-        it('Displayes party filled notice when no more available spots', () => {
-            render(<PartyDetails party={seedParties[1]} />, {
-                wrapper: Wrapper,
-            });
-            expect(
-                screen.getByText('The party has filled.')
-            ).toBeInTheDocument();
-        });
-    });
-
-    describe('Party description', () => {
-        it('renders the party details', () => {
+        it('displays the leader username', () => {
             render(<PartyDetails party={seedParties[0]} />, {
                 wrapper: Wrapper,
             });
             expect(
-                screen.getByText(seedParties[0].details)
+                screen.getByText(seedParties[0].leader.username)
             ).toBeInTheDocument();
         });
     });
