@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { Container } from '@mantine/core';
+import { Container, Group, Text } from '@mantine/core';
 import PartyDetails from '../components/PartyDetails';
 import PartyMembershipActions from '../components/PartyMembershipActions';
 import UserCardList from '../components/UserCardList';
@@ -15,7 +15,7 @@ const Party = () => {
     const [isMember, setIsMember] = useState(false);
     const [isLeader, setIsLeader] = useState(false);
     const [isPending, setIsPending] = useState(false);
-    const [memberRrror, setMemberError] = useState(null);
+    const [memberError, setMemberError] = useState(null);
 
     const handleJoin = async () => {
         setIsPending(true);
@@ -83,6 +83,7 @@ const Party = () => {
         }
     }, [party, user]);
 
+    // Check if the user is the leader
     useEffect(() => {
         const checkIfLeader = () => {
             if (user && user.username === party.leader.username) {
@@ -99,15 +100,18 @@ const Party = () => {
         return (
             <Container p="md">
                 <PartyDetails party={party} openings={openings} />
-                <PartyMembershipActions
-                    openings={openings}
-                    isMember={isMember}
-                    isLeader={isLeader}
-                    isPending={isPending}
-                    handleJoin={handleJoin}
-                    handleLeave={handleLeave}
-                    memberError={memberRrror}
-                />
+                <Group>
+                    <PartyMembershipActions
+                        openings={openings}
+                        isMember={isMember}
+                        isLeader={isLeader}
+                        isPending={isPending}
+                        handleJoin={handleJoin}
+                        handleLeave={handleLeave}
+                        memberError={memberError}
+                    />
+                    {memberError && <Text color="red">{memberError}</Text>}
+                </Group>
                 <UserCardList
                     title="Members"
                     seeAllLink={`members`}

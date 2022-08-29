@@ -20,7 +20,12 @@ const PartyMembershipActions = ({
     // Otherwise - if user is a member, allow them to leave
     if (isMember) {
         return (
-            <Button size="md" onClick={handleLeave} disabled={isPending}>
+            <Button
+                size="md"
+                my="md"
+                onClick={handleLeave}
+                disabled={isPending}
+            >
                 Leave Party
             </Button>
         );
@@ -35,6 +40,7 @@ const PartyMembershipActions = ({
     return (
         <Button
             size="md"
+            my="md"
             disabled={!user || isPending || memberError}
             onClick={handleJoin}
         >

@@ -9,6 +9,7 @@ import {
     Avatar,
     Anchor,
     MediaQuery,
+    Badge,
 } from '@mantine/core';
 import dayjs from 'dayjs';
 
@@ -31,15 +32,20 @@ const PartyDetails = ({ party, openings }) => {
 
     return (
         <Group noWrap sx={{ justifyContent: 'space-between' }}>
-            <Stack spacing="xs" mb="auto" pb="md">
+            <Stack spacing={0} mb="auto" pb="md">
                 <Title className={classes.title}>{party.name}</Title>
                 <Text color="dimmed" size="xl">
                     {dayjs(party.date).format('dddd, MMMM D YYYY')}
                 </Text>
                 {openings > 0 && (
-                    <Text color="dimmed" size="lg">
+                    <Badge
+                        sx={{ width: 'fit-content' }}
+                        size="lg"
+                        mt="sm"
+                        radius="md"
+                    >
                         Looking for {openings} more
-                    </Text>
+                    </Badge>
                 )}
                 <Anchor
                     component={Link}
@@ -52,7 +58,7 @@ const PartyDetails = ({ party, openings }) => {
                                 : theme.black,
                     })}
                 >
-                    <Group mt="sm">
+                    <Group mt="xl">
                         <Avatar
                             src={party.leader.avatar}
                             alt="avatar"
@@ -71,6 +77,7 @@ const PartyDetails = ({ party, openings }) => {
                     src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${party.game.cover.image_id}.jpg`}
                     width={180}
                     mr="xl"
+                    ml="sm"
                     withPlaceholder
                 />
             </MediaQuery>
