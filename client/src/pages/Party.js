@@ -7,6 +7,7 @@ import PartyDetails from '../components/PartyDetails';
 import PartyMembershipActions from '../components/PartyMembershipActions';
 import UserCardList from '../components/UserCardList';
 import TextBlock from '../components/TextBlock';
+import PartyLeaderActions from '../components/PartyLeaderActions';
 
 const Party = () => {
     const { user } = useAuthContext();
@@ -113,7 +114,11 @@ const Party = () => {
                     />
                     {memberError && <Text color="red">{memberError}</Text>}
                 </Group>
+
+                {isLeader && <PartyLeaderActions />}
+
                 <TextBlock title="About the Party" body={party.details} />
+
                 <UserCardList
                     title="Members"
                     seeAllLink={`members`}
