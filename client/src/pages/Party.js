@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Container, Group, Text } from '@mantine/core';
@@ -13,6 +13,7 @@ import PartyLeaderActions from '../components/PartyLeaderActions';
 const Party = () => {
     const { user } = useAuthContext();
     const { id } = useParams();
+    const navigate = useNavigate();
     const { data: party, error } = useFetch(`/api/parties/${id}`);
     const [openings, setOpenings] = useState(0);
     const [isMember, setIsMember] = useState(false);
@@ -20,6 +21,7 @@ const Party = () => {
     const [isPending, setIsPending] = useState(false);
     const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
     const [memberError, setMemberError] = useState(null);
+    const [partyError, setPartyError] = useState(null);
 
     const handleJoin = async () => {
         setIsPending(true);
@@ -62,8 +64,24 @@ const Party = () => {
     };
 
     const handleDelete = async () => {
-        console.log('Deleted');
         setIsConfirmingDelete(false);
+
+        const response = await fetch(`/api/parties/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        });
+
+        const json = response.json();
+
+        if (response.ok) {
+            navigate('/parties');
+        }
+
+        if (!response.ok) {
+            setPartyError(json.error);
+        }
     };
 
     // Set available party openings
@@ -108,7 +126,16 @@ const Party = () => {
     if (party) {
         return (
             <Container p="md">
+                {/* General party details */}
                 <PartyDetails party={party} openings={openings} />
+
+                {partyError && (
+                    <Text color="red" mt="lg">
+                        {partyError}
+                    </Text>
+                )}
+
+                {/* Actions for joining / leaving the party */}
                 <Group>
                     <PartyMembershipActions
                         openings={openings}
@@ -122,12 +149,14 @@ const Party = () => {
                     {memberError && <Text color="red">{memberError}</Text>}
                 </Group>
 
+                {/* These management actions are only displayed to the leader */}
                 {isLeader && (
                     <PartyLeaderActions
                         setIsConfirmingDelete={setIsConfirmingDelete}
                     />
                 )}
 
+                {/* Party deletion confirmation */}
                 <ConfirmationModal
                     isConfirming={isConfirmingDelete}
                     setIsConfirming={setIsConfirmingDelete}
@@ -136,8 +165,10 @@ const Party = () => {
                     action={handleDelete}
                 />
 
+                {/* Party Description */}
                 <TextBlock title="About the Party" body={party.details} />
 
+                {/* Party members list */}
                 <UserCardList
                     title="Members"
                     seeAllLink={`members`}
