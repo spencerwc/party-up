@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { Container, Group, Text } from '@mantine/core';
+import { Container, Group, Text, Stack } from '@mantine/core';
 import PartyDetails from '../components/PartyDetails';
 import PartyMembershipActions from '../components/PartyMembershipActions';
 import UserCardList from '../components/UserCardList';
+import TextBlock from '../components/TextBlock';
 
 const Party = () => {
     const { user } = useAuthContext();
@@ -112,6 +113,7 @@ const Party = () => {
                     />
                     {memberError && <Text color="red">{memberError}</Text>}
                 </Group>
+                <TextBlock title="About the Party" body={party.details} />
                 <UserCardList
                     title="Members"
                     seeAllLink={`members`}
