@@ -112,13 +112,20 @@ const deleteParty = async (req, res) => {
         return res.status(404).json({ error: 'Party not found' });
     }
 
-    const party = await Party.findOneAndDelete({ _id: id });
+    const party = await Party.findById(id);
 
     if (!party) {
         return res.status(404).json({ error: 'Party not found' });
     }
 
-    res.status(200).json(party);
+    // Check if user has permissions to delete
+    if (!userId.equals(party.leader)) {
+        return res.status(400).json({ error: 'Insufficient permissions' });
+    }
+
+    const deleted = await Party.findOneAndDelete({ _id: id });
+
+    res.status(200).json(deleted);
 };
 
 const joinParty = async (req, res) => {

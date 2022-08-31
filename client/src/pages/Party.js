@@ -73,7 +73,7 @@ const Party = () => {
             },
         });
 
-        const json = response.json();
+        const json = await response.json();
 
         if (response.ok) {
             navigate('/parties');
@@ -129,12 +129,6 @@ const Party = () => {
                 {/* General party details */}
                 <PartyDetails party={party} openings={openings} />
 
-                {partyError && (
-                    <Text color="red" mt="lg">
-                        {partyError}
-                    </Text>
-                )}
-
                 {/* Actions for joining / leaving the party */}
                 <Group>
                     <PartyMembershipActions
@@ -150,10 +144,19 @@ const Party = () => {
                 </Group>
 
                 {/* These management actions are only displayed to the leader */}
+
                 {isLeader && (
-                    <PartyLeaderActions
-                        setIsConfirmingDelete={setIsConfirmingDelete}
-                    />
+                    <Group>
+                        <PartyLeaderActions
+                            setIsConfirmingDelete={setIsConfirmingDelete}
+                        />
+                        {/* Display any errors from leader actions */}
+                        {partyError && (
+                            <Text color="red" mt="lg">
+                                {partyError}
+                            </Text>
+                        )}
+                    </Group>
                 )}
 
                 {/* Party deletion confirmation */}
