@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../hooks/useAuthContext';
 import { useForm } from '@mantine/form';
 import {
     useMantineTheme,
@@ -16,6 +18,8 @@ import GameSelect from '../pages/GameSelect';
 import GameCard from './GameCard';
 
 const EditPartyForm = ({ party }) => {
+    const { user } = useAuthContext();
+    const navigate = useNavigate();
     const theme = useMantineTheme();
     const [error, setError] = useState(null);
     const [game, setGame] = useState(party.game);
@@ -58,7 +62,37 @@ const EditPartyForm = ({ party }) => {
     };
 
     const handleSubmit = async (values) => {
-        console.log('Edited party');
+        if (!user) {
+            setError('You must be logged in');
+            return;
+        }
+
+        if (!game) {
+            setError('You must select a game');
+            return;
+        }
+
+        const updatedParty = { ...party, ...values, game: { ...game } };
+
+        const response = await fetch(`/api/parties/${party._id}`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedParty),
+        });
+
+        const json = await response.json();
+
+        if (!response.ok) {
+            setError(json.error);
+        }
+
+        if (response.ok) {
+            setError(null);
+            navigate(`/parties/${party._id}`);
+        }
     };
 
     if (selectingGame) {
@@ -112,7 +146,7 @@ const EditPartyForm = ({ party }) => {
             {/* This form collects the party details and handles submission */}
 
             <form
-                aria-label="Start a Party"
+                aria-label="Edit Party"
                 onSubmit={partyForm.onSubmit((values) => handleSubmit(values))}
             >
                 <TextInput

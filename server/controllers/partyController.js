@@ -80,8 +80,31 @@ const createParty = async (req, res) => {
 
 const updateParty = async (req, res) => {
     const { id } = req.params;
+    const { date, details, lookingFor, name, game } = req.body;
+    const userId = req.user._id;
 
     // TODO: Add validation checks
+    if (!date || !details || !lookingFor || !name) {
+        return res.status(400).json({ error: 'All fields must be filled' });
+    }
+
+    if (name.length === 0) {
+        return res.status(400).json({ error: 'Name must be provided' });
+    }
+
+    if (details.length === 0) {
+        return res.status(400).json({ error: 'Details must be provided' });
+    }
+
+    if (lookingFor <= 0 || lookingFor > 100) {
+        return res
+            .status(400)
+            .json({ error: 'Members must be between 1 and 100' });
+    }
+
+    if (!game) {
+        return res.stats(400).json({ error: 'A game must be provided' });
+    }
 
     // Check if ID is valid before query
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -91,7 +114,11 @@ const updateParty = async (req, res) => {
     const party = await Party.findOneAndUpdate(
         { _id: id },
         {
-            ...req.body,
+            date,
+            details,
+            lookingFor,
+            name,
+            game,
         },
         { new: true }
     );
