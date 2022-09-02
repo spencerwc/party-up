@@ -1,5 +1,7 @@
-import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Container, Title } from '@mantine/core';
+import EditPartyForm from '../components/EditPartyForm';
 
 const EditParty = () => {
     const { id } = useParams();
@@ -24,7 +26,14 @@ const EditParty = () => {
     }, [id]);
 
     if (party) {
-        return <div>{party.name}</div>;
+        return (
+            <Container m="md" p={0}>
+                <Title order={1} size={24}>
+                    Edit Party
+                </Title>
+                <EditPartyForm party={party} />
+            </Container>
+        );
     }
 
     if (error) {
