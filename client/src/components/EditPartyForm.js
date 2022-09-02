@@ -72,7 +72,7 @@ const EditPartyForm = ({ party }) => {
             return;
         }
 
-        const updatedParty = { ...party, ...values, game: { ...game } };
+        const updatedParty = { ...values, game: { ...game } };
 
         const response = await fetch(`/api/parties/${party._id}`, {
             method: 'PATCH',

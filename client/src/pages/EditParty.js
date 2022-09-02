@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../hooks/useAuthContext';
 import { Container, Title } from '@mantine/core';
 import EditPartyForm from '../components/EditPartyForm';
 
 const EditParty = () => {
     const { id } = useParams();
+    const { user } = useAuthContext();
+    const navigate = useNavigate();
     const [party, setParty] = useState(null);
     const [error, setError] = useState(null);
 
@@ -21,19 +24,23 @@ const EditParty = () => {
                 setParty(json);
             }
         };
-
         getParty();
     }, [id]);
 
     if (party) {
-        return (
-            <Container m="md" p={0}>
-                <Title order={1} size={24}>
-                    Edit Party
-                </Title>
-                <EditPartyForm party={party} />
-            </Container>
-        );
+        // If user is not the leader, navigate them back
+        if (user.username !== party.leader.username) {
+            navigate(-1);
+        } else {
+            return (
+                <Container m="md" p={0}>
+                    <Title order={1} size={24}>
+                        Edit Party
+                    </Title>
+                    <EditPartyForm party={party} />
+                </Container>
+            );
+        }
     }
 
     if (error) {
