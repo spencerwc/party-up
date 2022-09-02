@@ -1,10 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
 import { createStyles, Header } from '@mantine/core';
 import NavbarMinimal from '../components/NavbarMinimal';
+import AsideMinimal from '../components/AsideMinimal';
 import Parties from '../pages/Parties';
 import Party from '../pages/Party';
 import CreateParty from '../pages/CreateParty';
-import AsideMinimal from '../components/AsideMinimal';
+import EditParty from '../pages/EditParty';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -50,6 +51,10 @@ const Layout = () => {
                         <Route path="parties" element={<Parties />} />
                         <Route path="parties/new" element={<CreateParty />} />
                         <Route path="parties/:id" element={<Party />} />
+                        <Route
+                            path="parties/:id/edit"
+                            element={<EditParty />}
+                        />
                     </Routes>
                 </main>
 
