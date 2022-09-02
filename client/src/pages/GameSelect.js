@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Button } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons';
+import MinimalLoader from '../components/MinimalLoader';
 import GameTable from '../components/GameTable';
 
 const GameSelect = ({ name, setGame, setSelectingGame }) => {
@@ -66,7 +67,7 @@ const GameSelect = ({ name, setGame, setSelectingGame }) => {
         return <div>{error}</div>;
     }
 
-    return <div>Loading</div>;
+    return <MinimalLoader />;
 };
 
 export default GameSelect;

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Container, Group, Text } from '@mantine/core';
+import MinimalLoader from '../components/MinimalLoader';
 import PartyDetails from '../components/PartyDetails';
 import PartyMembershipActions from '../components/PartyMembershipActions';
 import UserCardList from '../components/UserCardList';
@@ -185,7 +186,7 @@ const Party = () => {
         return <div>{error}</div>;
     }
 
-    return <div>Loading</div>;
+    return <MinimalLoader />;
 };
 
 export default Party;

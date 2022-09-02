@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLogin } from '../hooks/useLogin';
+import { Link } from 'react-router-dom';
 import {
     Paper,
     createStyles,
@@ -10,7 +11,7 @@ import {
     Text,
     Anchor,
 } from '@mantine/core';
-import { Link } from 'react-router-dom';
+import MinimalLoader from '../components/MinimalLoader';
 
 const useStyles = createStyles((theme) => ({
     wrapper: {
@@ -62,7 +63,7 @@ const Login = () => {
     };
 
     if (isLoading) {
-        return <p>Loading</p>;
+        return <MinimalLoader />;
     }
 
     return (

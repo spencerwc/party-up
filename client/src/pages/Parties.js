@@ -1,5 +1,6 @@
 import { Title } from '@mantine/core';
 import { useFetch } from '../hooks/useFetch';
+import MinimalLoader from '../components/MinimalLoader';
 import PartiesList from '../components/PartiesList';
 
 const Parties = () => {
@@ -20,7 +21,7 @@ const Parties = () => {
         return <div>{error}</div>;
     }
 
-    return <div>Loading</div>;
+    return <MinimalLoader />;
 };
 
 export default Parties;

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Container, Title } from '@mantine/core';
+import MinimalLoader from '../components/MinimalLoader';
 import EditPartyForm from '../components/EditPartyForm';
 
 const EditParty = () => {
@@ -47,7 +48,7 @@ const EditParty = () => {
         return <div>{error}</div>;
     }
 
-    return <div>Loading</div>;
+    return <MinimalLoader />;
 };
 
 export default EditParty;
