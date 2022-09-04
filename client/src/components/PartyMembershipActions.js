@@ -7,7 +7,7 @@ const PartyMembershipActions = ({
     isLeader,
     isPending,
     handleJoin,
-    handleLeave,
+    setIsConfirmingLeave,
     memberError,
 }) => {
     const { user } = useAuthContext();
@@ -23,7 +23,7 @@ const PartyMembershipActions = ({
             <Button
                 size="md"
                 my="md"
-                onClick={handleLeave}
+                onClick={() => setIsConfirmingLeave(true)}
                 disabled={isPending}
             >
                 Leave Party

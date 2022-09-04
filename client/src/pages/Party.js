@@ -16,10 +16,10 @@ const Party = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { data: party, error } = useFetch(`/api/parties/${id}`);
-    const [openings, setOpenings] = useState(0);
     const [isMember, setIsMember] = useState(false);
     const [isLeader, setIsLeader] = useState(false);
     const [isPending, setIsPending] = useState(false);
+    const [isConfirmingLeave, setIsConfirmingLeave] = useState(false);
     const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
     const [memberError, setMemberError] = useState(null);
     const [partyError, setPartyError] = useState(null);
@@ -39,8 +39,8 @@ const Party = () => {
         }
 
         if (res.ok) {
-            setIsMember(true);
-            setOpenings(openings - 1);
+            // Refresh party page
+            navigate(0);
         }
 
         setIsPending(false);
@@ -57,8 +57,7 @@ const Party = () => {
         });
 
         if (res.ok) {
-            setIsMember(false);
-            setOpenings(openings + 1);
+            navigate(0);
         }
 
         setIsPending(false);
@@ -84,13 +83,6 @@ const Party = () => {
             setPartyError(json.error);
         }
     };
-
-    // Set available party openings
-    useEffect(() => {
-        if (party) {
-            setOpenings(party.lookingFor - (party.members.length - 1));
-        }
-    }, [party]);
 
     // Check if the user is currently a member
     useEffect(() => {
@@ -125,6 +117,8 @@ const Party = () => {
     }, [party, user]);
 
     if (party) {
+        const openings = party.lookingFor - (party.members.length - 1);
+
         return (
             <Container p="md">
                 {/* General party details */}
@@ -138,11 +132,20 @@ const Party = () => {
                         isLeader={isLeader}
                         isPending={isPending}
                         handleJoin={handleJoin}
-                        handleLeave={handleLeave}
+                        setIsConfirmingLeave={setIsConfirmingLeave}
                         memberError={memberError}
                     />
                     {memberError && <Text color="red">{memberError}</Text>}
                 </Group>
+
+                {/* Confirm leaving the party */}
+                <ConfirmationModal
+                    isConfirming={isConfirmingLeave}
+                    setIsConfirming={setIsConfirmingLeave}
+                    title="Are you sure you want to leave?"
+                    body="You will be removed from the party."
+                    action={handleLeave}
+                />
 
                 {/* These management actions are only displayed to the leader */}
 
