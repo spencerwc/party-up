@@ -10,6 +10,7 @@ import {
     Button,
     Text,
     ActionIcon,
+    Group,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
@@ -93,6 +94,10 @@ const EditPartyForm = ({ party }) => {
             setError(null);
             navigate(`/parties/${party._id}`);
         }
+    };
+
+    const handleCancel = () => {
+        navigate(-1);
     };
 
     if (selectingGame) {
@@ -187,9 +192,12 @@ const EditPartyForm = ({ party }) => {
                         {error}
                     </Text>
                 )}
-                <Button type="submit" mt="sm">
-                    Submit
-                </Button>
+                <Group mt="sm" spacing="xs">
+                    <Button type="submit">Submit</Button>
+                    <Button variant="outline" onClick={handleCancel}>
+                        Cancel
+                    </Button>
+                </Group>
             </form>
         </>
     );

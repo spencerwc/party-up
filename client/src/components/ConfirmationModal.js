@@ -17,8 +17,14 @@ const ConfirmationModal = ({
             >
                 <Stack>
                     {body}
-                    <Group>
+                    <Group spacing="xs">
                         <Button onClick={action}>Confirm</Button>
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsConfirming(false)}
+                        >
+                            Cancel
+                        </Button>
                     </Group>
                 </Stack>
             </Modal>
