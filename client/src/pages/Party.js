@@ -3,13 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Container, Group, Text } from '@mantine/core';
-import MinimalLoader from '../components/MinimalLoader';
-import PartyDetails from '../components/PartyDetails';
-import PartyMembershipActions from '../components/PartyMembershipActions';
-import UserCardList from '../components/UserCardList';
-import TextBlock from '../components/TextBlock';
-import ConfirmationModal from '../components/ConfirmationModal';
-import PartyLeaderActions from '../components/PartyLeaderActions';
+import MinimalLoader from '../components/general/MinimalLoader';
+import PartyDetails from '../components/party/PartyDetails';
+import PartyMembershipActions from '../components/party/PartyMembershipActions';
+import UserCardList from '../components/users/UserCardList';
+import TextBlock from '../components/general/TextBlock';
+import ConfirmationModal from '../components/general/ConfirmationModal';
+import PartyLeaderActions from '../components/party/PartyLeaderActions';
 
 const Party = () => {
     const { user } = useAuthContext();

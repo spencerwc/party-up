@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
-import MinimalLoader from '../components/MinimalLoader';
+import MinimalLoader from '../components/general/MinimalLoader';
 
 const PartyMembers = () => {
     const { id } = useParams();

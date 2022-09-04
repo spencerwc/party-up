@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Button } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons';
-import MinimalLoader from '../components/MinimalLoader';
-import GameTable from '../components/GameTable';
+import MinimalLoader from '../components/general/MinimalLoader';
+import GameTable from '../components/party/GameTable';
 
 const GameSelect = ({ name, setGame, setSelectingGame }) => {
     const { user } = useAuthContext();

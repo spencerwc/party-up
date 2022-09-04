@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Container, Title } from '@mantine/core';
-import MinimalLoader from '../components/MinimalLoader';
-import EditPartyForm from '../components/EditPartyForm';
+import MinimalLoader from '../components/general/MinimalLoader';
+import EditPartyForm from '../components/party/EditPartyForm';
 
 const EditParty = () => {
     const { id } = useParams();

@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { createStyles, Header } from '@mantine/core';
-import NavbarMinimal from '../components/NavbarMinimal';
-import AsideMinimal from '../components/AsideMinimal';
+import NavbarMinimal from '../components/general/NavbarMinimal';
+import AsideMinimal from '../components/general/AsideMinimal';
 import Parties from '../pages/Parties';
 import Party from '../pages/Party';
 import CreateParty from '../pages/CreateParty';

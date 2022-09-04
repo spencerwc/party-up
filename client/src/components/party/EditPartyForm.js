@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useAuthContext } from '../../hooks/useAuthContext';
 import { useForm } from '@mantine/form';
 import {
     useMantineTheme,
@@ -10,24 +10,25 @@ import {
     Button,
     Text,
     ActionIcon,
+    Group,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
 import dayjs from 'dayjs';
-import GameSelect from '../pages/GameSelect';
+import GameSelect from '../../pages/GameSelect';
 import GameCard from './GameCard';
 
-const CreatePartyForm = () => {
+const EditPartyForm = ({ party }) => {
     const { user } = useAuthContext();
     const navigate = useNavigate();
     const theme = useMantineTheme();
     const [error, setError] = useState(null);
-    const [game, setGame] = useState(null);
+    const [game, setGame] = useState(party.game);
     const [selectingGame, setSelectingGame] = useState(null);
 
     const gameForm = useForm({
         initialValues: {
-            gameName: '',
+            gameName: party.game.name,
         },
         validate: {
             gameName: (value) =>
@@ -37,10 +38,10 @@ const CreatePartyForm = () => {
 
     const partyForm = useForm({
         initialValues: {
-            name: '',
-            date: new Date(Date.now()),
-            lookingFor: 1,
-            details: '',
+            name: party.name,
+            date: new Date(party.date),
+            lookingFor: party.lookingFor,
+            details: party.details,
         },
 
         validate: {
@@ -72,15 +73,15 @@ const CreatePartyForm = () => {
             return;
         }
 
-        const party = { ...values, game: { ...game } };
+        const updatedParty = { ...values, game: { ...game } };
 
-        const response = await fetch('/api/parties', {
-            method: 'POST',
+        const response = await fetch(`/api/parties/${party._id}`, {
+            method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${user.token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(party),
+            body: JSON.stringify(updatedParty),
         });
 
         const json = await response.json();
@@ -91,8 +92,12 @@ const CreatePartyForm = () => {
 
         if (response.ok) {
             setError(null);
-            navigate(`/parties/${json._id}`);
+            navigate(`/parties/${party._id}`);
         }
+    };
+
+    const handleCancel = () => {
+        navigate(-1);
     };
 
     if (selectingGame) {
@@ -146,7 +151,7 @@ const CreatePartyForm = () => {
             {/* This form collects the party details and handles submission */}
 
             <form
-                aria-label="Start a Party"
+                aria-label="Edit Party"
                 onSubmit={partyForm.onSubmit((values) => handleSubmit(values))}
             >
                 <TextInput
@@ -187,12 +192,15 @@ const CreatePartyForm = () => {
                         {error}
                     </Text>
                 )}
-                <Button type="submit" mt="sm">
-                    Submit
-                </Button>
+                <Group mt="sm" spacing="xs">
+                    <Button type="submit">Submit</Button>
+                    <Button variant="outline" onClick={handleCancel}>
+                        Cancel
+                    </Button>
+                </Group>
             </form>
         </>
     );
 };
 
-export default CreatePartyForm;
+export default EditPartyForm;

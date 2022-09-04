@@ -1,5 +1,5 @@
 import { Container, Title } from '@mantine/core';
-import CreatePartyForm from '../components/CreatePartyForm';
+import CreatePartyForm from '../components/party/CreatePartyForm';
 
 const CreateParty = () => {
     return (

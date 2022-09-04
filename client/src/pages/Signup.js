@@ -11,7 +11,7 @@ import {
     Text,
     Anchor,
 } from '@mantine/core';
-import MinimalLoader from '../components/MinimalLoader';
+import MinimalLoader from '../components/general/MinimalLoader';
 
 const useStyles = createStyles((theme) => ({
     wrapper: {

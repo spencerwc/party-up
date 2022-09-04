@@ -1,4 +1,4 @@
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useAuthContext } from '../../hooks/useAuthContext';
 import { Button, Text } from '@mantine/core';
 
 const PartyMembershipActions = ({

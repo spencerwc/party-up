@@ -6,8 +6,8 @@ import {
     IconLogout,
     IconLogin,
 } from '@tabler/icons';
-import { useAuthContext } from '../hooks/useAuthContext';
-import { useLogout } from '../hooks/useLogout';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useLogout } from '../../hooks/useLogout';
 
 const useStyles = createStyles((theme) => ({
     nav: {
