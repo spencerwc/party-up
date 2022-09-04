@@ -36,14 +36,12 @@ const Party = () => {
 
         if (!res.ok) {
             setMemberError('Could not join party');
+            setIsPending(false);
         }
 
         if (res.ok) {
-            // Refresh party page
             navigate(0);
         }
-
-        setIsPending(false);
     };
 
     const handleLeave = async () => {
@@ -56,11 +54,14 @@ const Party = () => {
             },
         });
 
+        if (!res.ok) {
+            setMemberError('Could not leave party');
+            setIsPending(false);
+        }
+
         if (res.ok) {
             navigate(0);
         }
-
-        setIsPending(false);
     };
 
     const handleDelete = async () => {
