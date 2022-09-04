@@ -179,7 +179,7 @@ const Party = () => {
                 <UserCardList
                     title="Members"
                     seeAllLink={`members`}
-                    users={party.members}
+                    users={party.members.slice(0, 5)}
                 />
             </Container>
         );

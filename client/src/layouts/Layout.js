@@ -6,6 +6,7 @@ import Parties from '../pages/Parties';
 import Party from '../pages/Party';
 import CreateParty from '../pages/CreateParty';
 import EditParty from '../pages/EditParty';
+import PartyMembers from '../pages/PartyMembers';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -54,6 +55,10 @@ const Layout = () => {
                         <Route
                             path="parties/:id/edit"
                             element={<EditParty />}
+                        />
+                        <Route
+                            path="parties/:id/members"
+                            element={<PartyMembers />}
                         />
                     </Routes>
                 </main>
