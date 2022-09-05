@@ -8,7 +8,7 @@ const PartyMembers = () => {
     const { data: party, error } = useFetch(`/api/parties/${id}`);
 
     if (party) {
-        return <UserList users={party.members} />;
+        return <UserList leader={party.leader} users={party.members} />;
     }
 
     if (error) {
