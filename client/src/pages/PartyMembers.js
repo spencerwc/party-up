@@ -24,7 +24,7 @@ const PartyMembers = () => {
                         <IconChevronLeft />
                     </ActionIcon>
                     <Stack spacing={0}>
-                        <Title order={1} size={20}>
+                        <Title order={1} size={21}>
                             Members
                         </Title>
                         <Anchor component={Link} to={`/parties/${party._id}`}>

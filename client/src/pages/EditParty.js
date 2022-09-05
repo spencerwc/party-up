@@ -35,7 +35,7 @@ const EditParty = () => {
         } else {
             return (
                 <Container m="md" p={0}>
-                    <Title order={1} size={24}>
+                    <Title order={1} size={21}>
                         Edit Party
                     </Title>
                     <EditPartyForm party={party} />

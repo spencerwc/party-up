@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import {
-    createStyles,
     Image,
     Title,
     Group,
@@ -13,37 +12,16 @@ import {
 } from '@mantine/core';
 import dayjs from 'dayjs';
 
-const useStyles = createStyles((theme) => ({
-    title: {
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-        fontSize: 44,
-        lineHeight: 1.2,
-        fontWeight: 700,
-
-        [theme.fn.smallerThan('xs')]: {
-            fontSize: 28,
-        },
-    },
-}));
-
 const PartyDetails = ({ party, openings }) => {
-    const { classes } = useStyles();
-
     return (
         <Group noWrap sx={{ justifyContent: 'space-between' }}>
             <Stack spacing={0} mb="auto" pb="md">
-                <Title className={classes.title}>{party.name}</Title>
+                <Title size={32}>{party.name}</Title>
                 <Text color="dimmed" size="xl">
                     {dayjs(party.date).format('dddd, MMMM D YYYY')}
                 </Text>
                 {openings > 0 && (
-                    <Badge
-                        sx={{ width: 'fit-content' }}
-                        size="lg"
-                        mt="sm"
-                        radius="md"
-                    >
+                    <Badge size="lg" mt="sm" radius="md">
                         Looking for {openings} more
                     </Badge>
                 )}
@@ -75,8 +53,7 @@ const PartyDetails = ({ party, openings }) => {
             <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
                 <Image
                     src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${party.game.cover.image_id}.jpg`}
-                    width={180}
-                    mr="xl"
+                    width={160}
                     ml="sm"
                     withPlaceholder
                 />
