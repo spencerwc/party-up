@@ -1,13 +1,14 @@
 import { useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import MinimalLoader from '../components/general/MinimalLoader';
+import UserList from '../components/users/UserList';
 
 const PartyMembers = () => {
     const { id } = useParams();
     const { data: party, error } = useFetch(`/api/parties/${id}`);
 
     if (party) {
-        return <div>Members</div>;
+        return <UserList users={party.members} />;
     }
 
     if (error) {
