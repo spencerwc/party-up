@@ -1,5 +1,14 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
+import {
+    Container,
+    Title,
+    Anchor,
+    Group,
+    Stack,
+    ActionIcon,
+} from '@mantine/core';
+import { IconChevronLeft } from '@tabler/icons';
 import MinimalLoader from '../components/general/MinimalLoader';
 import UserList from '../components/users/UserList';
 
@@ -8,7 +17,24 @@ const PartyMembers = () => {
     const { data: party, error } = useFetch(`/api/parties/${id}`);
 
     if (party) {
-        return <UserList leader={party.leader} users={party.members} />;
+        return (
+            <Container m="md" p={0}>
+                <Group>
+                    <ActionIcon component={Link} to={`/parties/${party._id}`}>
+                        <IconChevronLeft />
+                    </ActionIcon>
+                    <Stack spacing={0}>
+                        <Title order={1} size={20}>
+                            Members
+                        </Title>
+                        <Anchor component={Link} to={`/parties/${party._id}`}>
+                            {party.name}
+                        </Anchor>
+                    </Stack>
+                </Group>
+                <UserList leader={party.leader} users={party.members} />
+            </Container>
+        );
     }
 
     if (error) {
