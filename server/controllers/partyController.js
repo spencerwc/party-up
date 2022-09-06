@@ -27,7 +27,10 @@ const getParty = async (req, res) => {
             select: 'username avatar -_id',
         })
         .populate({ path: 'members', select: 'username avatar -_id' })
-        .populate('messages');
+        .populate({
+            path: 'comments',
+            populate: { path: 'user', select: 'username avatar -_id' },
+        });
 
     if (!party) {
         return res.status(404).json({ error: 'Party not found' });
