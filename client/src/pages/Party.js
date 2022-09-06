@@ -10,6 +10,7 @@ import UserCardList from '../components/users/UserCardList';
 import TextBlock from '../components/general/TextBlock';
 import ConfirmationModal from '../components/general/ConfirmationModal';
 import PartyLeaderActions from '../components/party/PartyLeaderActions';
+import CommentsList from '../components/general/CommentsList';
 
 const Party = () => {
     const { user } = useAuthContext();
@@ -182,6 +183,9 @@ const Party = () => {
                     seeAllLink={`members`}
                     users={party.members.slice(0, 5)}
                 />
+
+                {/* Party Comments */}
+                <CommentsList title="Comments" comments={party.comments} />
             </Container>
         );
     }
