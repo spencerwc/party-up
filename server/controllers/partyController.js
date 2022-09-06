@@ -183,32 +183,33 @@ const joinParty = async (req, res) => {
         return res.status(500).json({ error: 'Could not not join party' });
     }
 
-    // Add user to party members
-    const updated = await Party.findByIdAndUpdate(
-        { _id: id },
-        {
-            $addToSet: {
-                members: userId,
+    try {
+        // Add party to user party list
+        const user = await User.findByIdAndUpdate(
+            {
+                _id: userId,
             },
-        },
-        {
-            new: true,
-        }
-    );
+            {
+                $addToSet: {
+                    parties: id,
+                },
+            }
+        );
 
-    // Add party to user party list
-    await User.findByIdAndUpdate(
-        {
-            _id: userId,
-        },
-        {
-            $addToSet: {
-                parties: id,
-            },
-        }
-    );
+        // Add user to party members
+        await Party.findByIdAndUpdate(
+            { _id: id },
+            {
+                $addToSet: {
+                    members: userId,
+                },
+            }
+        );
 
-    res.status(200).json(updated);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 };
 
 const leaveParty = async (req, res) => {
@@ -220,36 +221,35 @@ const leaveParty = async (req, res) => {
         return res.status(404).json({ error: 'Party not found' });
     }
 
-    // Remove user from party members
-    const party = await Party.findByIdAndUpdate(
-        { _id: id },
-        {
-            $pull: {
-                members: userId,
+    try {
+        // Remove party from user list
+        const user = await User.findByIdAndUpdate(
+            {
+                _id: userId,
             },
-        },
-        {
-            new: true,
-        }
-    );
+            {
+                $pull: {
+                    parties: id,
+                },
+            }
+        );
 
-    if (!party) {
-        return res.status(404).json({ error: 'Party not found' });
+        // Remove user from party members
+        await Party.findByIdAndUpdate(
+            { _id: id },
+            {
+                $pull: {
+                    members: userId,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
-
-    // Remove party from user list
-    await User.findByIdAndUpdate(
-        {
-            _id: userId,
-        },
-        {
-            $pull: {
-                parties: id,
-            },
-        }
-    );
-
-    res.status(200).json(party);
 };
 
 const addComment = async (req, res) => {
@@ -267,7 +267,7 @@ const addComment = async (req, res) => {
             comment: req.body.comment,
         });
 
-        const party = await Party.findByIdAndUpdate(
+        await Party.findByIdAndUpdate(
             {
                 _id: id,
             },
@@ -275,13 +275,8 @@ const addComment = async (req, res) => {
                 $addToSet: {
                     comments: comment,
                 },
-            },
-            {
-                new: true,
             }
         );
-
-        console.log(party);
 
         res.status(200).json(comment);
     } catch (error) {
