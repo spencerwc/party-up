@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Party = require('../models/partyModel');
 const User = require('../models/userModel');
+const Comment = require('../models/commentModel');
 
 const getParties = async (req, res) => {
     try {
@@ -251,6 +252,43 @@ const leaveParty = async (req, res) => {
     res.status(200).json(party);
 };
 
+const addComment = async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Party not found' });
+    }
+
+    try {
+        // Create the comment and add to the party
+        const comment = await Comment.create({
+            user: userId,
+            comment: req.body.comment,
+        });
+
+        const party = await Party.findByIdAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $addToSet: {
+                    comments: comment,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+
+        console.log(party);
+
+        res.status(200).json(comment);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 module.exports = {
     getParties,
     getParty,
@@ -259,4 +297,5 @@ module.exports = {
     deleteParty,
     joinParty,
     leaveParty,
+    addComment,
 };

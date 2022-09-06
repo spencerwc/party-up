@@ -31,8 +31,9 @@ const partySchema = new Schema({
         ref: 'User',
         required: true,
     },
-    messages: {
+    comments: {
         type: [Schema.Types.ObjectId],
+        ref: 'Comment',
     },
     name: {
         type: String,
