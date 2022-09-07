@@ -1,4 +1,5 @@
 import { Stack, Title } from '@mantine/core';
+import Comment from './Comment';
 
 const CommentsList = ({ title, comments }) => {
     return (
@@ -6,7 +7,14 @@ const CommentsList = ({ title, comments }) => {
             <Title order={2} size={21}>
                 {title}
             </Title>
-            Comments Here
+            {comments.map((comment) => (
+                <Comment
+                    key={comment._id}
+                    user={comment.user}
+                    comment={comment.comment}
+                    createdAt={comment.createdAt}
+                />
+            ))}
         </Stack>
     );
 };
