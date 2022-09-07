@@ -10,9 +10,10 @@ const CommentsList = ({ title, comments }) => {
             {comments.map((comment) => (
                 <Comment
                     key={comment._id}
-                    user={comment.user}
+                    author={comment.user}
                     comment={comment.comment}
                     createdAt={comment.createdAt}
+                    likes={comment.likes ? comment.likes : 0}
                 />
             ))}
         </Stack>
