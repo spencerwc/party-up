@@ -27,21 +27,59 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const Comment = ({ author, comment, createdAt, likes }) => {
+const Comment = ({ id, author, comment, createdAt, likes }) => {
     const { classes } = useStyles();
     const { user } = useAuthContext();
-    const [liked, setLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(likes);
 
+    // TODO: Check user liked comments for initial state
     useEffect(() => {
-        const checkLikedStatus = async () => {
-            //    Check if user has liked the comment
-            setLiked(true);
-        };
+        const checkLikedStatus = async () => {};
 
         if (user) {
             checkLikedStatus();
         }
     }, [user]);
+
+    const likeComment = () => {
+        setIsLiked(true);
+        setLikeCount(likes + 1);
+
+        fetch(`/api/comments/${id}/like`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        });
+    };
+
+    const unlikeComment = async () => {
+        setIsLiked(false);
+
+        if (likes - 1 < 0) {
+            setLikeCount(0);
+        } else {
+            setLikeCount(likes - 1);
+        }
+
+        fetch(`/api/comments/${id}/unlike`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        });
+    };
+
+    const handleClick = async () => {
+        if (!user) {
+            alert('Please log in');
+        } else if (!isLiked) {
+            likeComment();
+        } else {
+            unlikeComment();
+        }
+    };
 
     return (
         <Paper withBorder radius="md" className={classes.comment}>
@@ -61,14 +99,14 @@ const Comment = ({ author, comment, createdAt, likes }) => {
                     <Text>{comment}</Text>
                     <Group>
                         <Group spacing={2} sx={{ marginLeft: 'auto' }}>
-                            <ActionIcon size="sm">
-                                {liked ? (
+                            <ActionIcon size="sm" onClick={handleClick}>
+                                {isLiked ? (
                                     <IconHeart color="red" fill="red" />
                                 ) : (
                                     <IconHeart />
                                 )}
                             </ActionIcon>
-                            <Text color="dimmed">{likes}</Text>
+                            <Text color="dimmed">{likeCount}</Text>
                         </Group>
                     </Group>
                 </Stack>

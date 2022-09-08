@@ -10,6 +10,7 @@ const CommentsList = ({ title, comments }) => {
             {comments.map((comment) => (
                 <Comment
                     key={comment._id}
+                    id={comment._id}
                     author={comment.user}
                     comment={comment.comment}
                     createdAt={comment.createdAt}
