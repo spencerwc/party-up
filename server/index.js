@@ -8,6 +8,7 @@ const userRoutes = require('./routes/users');
 const partyRoutes = require('./routes/parties');
 const groupRoutes = require('./routes/groups');
 const gameRoutes = require('./routes/games');
+const commentRoutes = require('./routes/comments');
 
 const PORT = process.env.PORT || 8888;
 
@@ -22,6 +23,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/parties', partyRoutes);
 app.use('/api/groups', groupRoutes);
 app.use('/api/games', gameRoutes);
+app.use('/api/comments', commentRoutes);
 
 // Connect to MongoDB
 mongoose

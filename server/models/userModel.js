@@ -16,8 +16,13 @@ const userSchema = new Schema({
     groups: {
         type: [Schema.Types.ObjectId],
     },
+    likedComments: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Comment',
+    },
     parties: {
         type: [Schema.Types.ObjectId],
+        ref: 'Party',
     },
     password: {
         type: String,
