@@ -4,11 +4,12 @@ import { useAuthContext } from '../hooks/useAuthContext';
 export const CommentContext = createContext();
 
 export const CommentProvider = ({ children }) => {
-    const { user } = useAuthContext();
     const [likedComments, setLikedComments] = useState(null);
 
     // Check localstorage to see if user is stored
     useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('pu_user'));
+
         const getLikedComments = async () => {
             const response = await fetch(`/api/comments/likes`, {
                 headers: {
@@ -27,11 +28,10 @@ export const CommentProvider = ({ children }) => {
             }
         };
 
-        // If user is already stored, update auth state to logged in
         if (user) {
             getLikedComments();
         }
-    }, [user]);
+    }, []);
 
     return (
         <CommentContext.Provider value={likedComments}>

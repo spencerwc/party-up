@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useCommentContext } from '../../hooks/useCommentContext';
 import { Stack, Title } from '@mantine/core';
@@ -6,8 +6,8 @@ import Comment from './Comment';
 
 const CommentsList = ({ title, commentData }) => {
     const { user } = useAuthContext();
-    const likedComments = useCommentContext();
     const [comments, setComments] = useState(commentData);
+    const likedComments = useCommentContext();
 
     const getLikedState = (id) => {
         return likedComments.includes(id);
@@ -26,7 +26,11 @@ const CommentsList = ({ title, commentData }) => {
                         author={comment.user}
                         comment={comment.comment}
                         createdAt={comment.createdAt}
-                        isLikedState={user ? getLikedState(comment._id) : false}
+                        isLikedState={
+                            user && likedComments
+                                ? getLikedState(comment._id)
+                                : false
+                        }
                         likes={comment.likes ? comment.likes : 0}
                     />
                 );
