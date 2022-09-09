@@ -185,7 +185,7 @@ const Party = () => {
                 />
 
                 {/* Party Comments */}
-                <CommentsList title="Comments" comments={party.comments} />
+                <CommentsList title="Comments" commentData={party.comments} />
             </Container>
         );
     }

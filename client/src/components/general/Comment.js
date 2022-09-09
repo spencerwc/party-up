@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -27,20 +27,11 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const Comment = ({ id, author, comment, createdAt, likes }) => {
+const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
     const { classes } = useStyles();
     const { user } = useAuthContext();
-    const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(likes);
-
-    // TODO: Check user liked comments for initial state
-    useEffect(() => {
-        const checkLikedStatus = async () => {};
-
-        if (user) {
-            checkLikedStatus();
-        }
-    }, [user]);
+    const [isLiked, setIsLiked] = useState(isLikedState);
 
     const likeComment = () => {
         setIsLiked(true);
@@ -57,10 +48,10 @@ const Comment = ({ id, author, comment, createdAt, likes }) => {
     const unlikeComment = async () => {
         setIsLiked(false);
 
-        if (likes - 1 < 0) {
+        if (likeCount - 1 < 0) {
             setLikeCount(0);
         } else {
-            setLikeCount(likes - 1);
+            setLikeCount(likeCount - 1);
         }
 
         fetch(`/api/comments/${id}/unlike`, {
