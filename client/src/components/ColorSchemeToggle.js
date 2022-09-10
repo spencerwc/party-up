@@ -17,9 +17,15 @@ const ColorSchemeToggle = () => {
                     theme.colorScheme === 'dark'
                         ? theme.colors.yellow[4]
                         : theme.colors.blue[6],
-                height: 50,
-                width: 50,
-                borderRadius: theme.radius.lg,
+                borderRadius: theme.radius.md,
+                height: 35,
+                width: 35,
+
+                [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+                    borderRadius: theme.radius.lg,
+                    height: 50,
+                    width: 50,
+                },
             })}
         >
             {colorScheme === 'dark' ? (

@@ -19,10 +19,14 @@ const useStyles = createStyles((theme) => ({
         borderTop: `1px solid ${
             theme.colorScheme === 'dark'
                 ? theme.colors.dark[5]
-                : theme.colors.gray[2]
+                : theme.colors.gray[3]
         }`,
         height: 'fit-content',
         width: '100%',
+        backgroundColor:
+            theme.colorScheme === 'dark'
+                ? theme.colors.dark[8]
+                : theme.colors.gray[1],
         boxShadow:
             'rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px',
 
@@ -37,7 +41,7 @@ const useStyles = createStyles((theme) => ({
             borderRight: `1px solid ${
                 theme.colorScheme === 'dark'
                     ? theme.colors.dark[5]
-                    : theme.colors.gray[2]
+                    : theme.colors.gray[3]
             }`,
             boxShadow: 'none',
         },
@@ -71,8 +75,8 @@ const useStyles = createStyles((theme) => ({
         '&:hover': {
             backgroundColor:
                 theme.colorScheme === 'dark'
-                    ? theme.colors.dark[5]
-                    : theme.colors.gray[0],
+                    ? theme.colors.dark[7]
+                    : theme.colors.gray[2],
         },
 
         '&:last-child': {
@@ -82,17 +86,18 @@ const useStyles = createStyles((theme) => ({
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             height: 50,
             width: 50,
+            borderRadius: theme.radius.lg,
         },
     },
 
     active: {
         '&, &:hover': {
             backgroundColor: theme.fn.variant({
-                variant: 'light',
+                variant: 'filled',
                 color: theme.primaryColor,
             }).background,
             color: theme.fn.variant({
-                variant: 'light',
+                variant: 'filled',
                 color: theme.primaryColor,
             }).color,
         },
