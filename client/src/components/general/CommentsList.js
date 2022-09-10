@@ -1,18 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { useCommentContext } from '../../hooks/useCommentContext';
-import { Stack, Title } from '@mantine/core';
+import { Stack, Title, Loader, Center } from '@mantine/core';
 import Comment from './Comment';
 
 const CommentsList = ({ title, commentData }) => {
     const { user } = useAuthContext();
     const [comments, setComments] = useState(commentData);
-    const likedComments = useCommentContext();
+    const [likedComments, setLikedComments] = useState(null);
 
     const getLikedState = (id) => {
         return likedComments.includes(id);
     };
 
+    useEffect(() => {
+        const getLikedComments = async () => {
+            const response = await fetch(`/api/comments/likes`, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            });
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                console.error(json.error);
+            }
+
+            if (response.ok) {
+                setLikedComments(json.likedComments);
+            }
+        };
+
+        if (user) {
+            getLikedComments();
+        }
+    }, [user]);
+
+    if (user && !likedComments) {
+        return (
+            <Center>
+                <Loader />
+            </Center>
+        );
+    }
     return (
         <Stack mt="lg">
             <Title order={2} size={21}>
@@ -26,11 +56,7 @@ const CommentsList = ({ title, commentData }) => {
                         author={comment.user}
                         comment={comment.comment}
                         createdAt={comment.createdAt}
-                        isLikedState={
-                            user && likedComments
-                                ? getLikedState(comment._id)
-                                : false
-                        }
+                        isLikedState={user ? getLikedState(comment._id) : false}
                         likes={comment.likes ? comment.likes : 0}
                     />
                 );
