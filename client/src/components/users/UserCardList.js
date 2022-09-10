@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Group, Stack, Title, Anchor } from '@mantine/core';
+import { Group, Stack, Title, Anchor, ScrollArea } from '@mantine/core';
 import UserCard from './UserCard';
 
 const UserCardList = ({ title, seeAllLink, users }) => {
@@ -13,11 +13,13 @@ const UserCardList = ({ title, seeAllLink, users }) => {
                     See All
                 </Anchor>
             </Group>
-            <Group>
-                {users.map((user) => (
-                    <UserCard key={user.username} user={user} />
-                ))}
-            </Group>
+            <ScrollArea>
+                <Group noWrap pb="md">
+                    {users.map((user) => (
+                        <UserCard key={user.username} user={user} />
+                    ))}
+                </Group>
+            </ScrollArea>
         </Stack>
     );
 };
