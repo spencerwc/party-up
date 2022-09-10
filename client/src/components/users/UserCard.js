@@ -9,7 +9,7 @@ const UserCard = ({ user }) => {
             underline={false}
         >
             <Paper
-                radius="md"
+                radius="lg"
                 p="lg"
                 sx={(theme) => ({
                     backgroundColor:

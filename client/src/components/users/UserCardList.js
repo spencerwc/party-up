@@ -4,9 +4,9 @@ import UserCard from './UserCard';
 
 const UserCardList = ({ title, seeAllLink, users }) => {
     return (
-        <Stack mt="lg">
+        <Stack mt="lg" px="md">
             <Group position="apart">
-                <Title order={2} size={21}>
+                <Title order={2} size={20}>
                     {title}
                 </Title>
                 <Anchor component={Link} to={seeAllLink}>

@@ -20,11 +20,25 @@ dayjs.extend(relativeTime);
 
 const useStyles = createStyles((theme) => ({
     comment: {
+        backgroundColor:
+            theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+        borderTop: `1px solid ${
+            theme.colorScheme === 'dark'
+                ? theme.colors.dark[6]
+                : theme.colors.gray[2]
+        }`,
+        borderRadius: 0,
         padding: `${theme.spacing.lg}px ${theme.spacing.xl}px`,
+
+        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            border: 'none',
+            borderRadius: theme.radius.lg,
+            boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
+        },
     },
 
     body: {
-        paddingLeft: 54,
+        paddingLeft: 65,
         paddingTop: theme.spacing.sm,
     },
 }));
@@ -37,7 +51,7 @@ const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
 
     const likeComment = () => {
         setIsLiked(true);
-        setLikeCount(likes + 1);
+        setLikeCount(likeCount + 1);
 
         fetch(`/api/comments/${id}/like`, {
             method: 'PATCH',
@@ -75,13 +89,14 @@ const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
     };
 
     return (
-        <Paper withBorder radius="md" className={classes.comment}>
+        <Paper className={classes.comment}>
             <Group>
                 <Anchor component={Link} to={`/users/${author.username}`}>
                     <Avatar
                         src={author.avatar_url}
                         alt={author.username}
                         radius="xl"
+                        size={50}
                     />
                 </Anchor>
                 <div>
@@ -92,7 +107,9 @@ const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
                     >
                         <Text weight={500}>{author.username}</Text>
                     </Anchor>
-                    <Text color="dimmed">{dayjs(createdAt).fromNow()}</Text>
+                    <Text color="dimmed" size="sm">
+                        {dayjs(createdAt).fromNow()}
+                    </Text>
                 </div>
             </Group>
             <TypographyStylesProvider className={classes.body}>
@@ -102,12 +119,12 @@ const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
                         <Group spacing={2} sx={{ marginLeft: 'auto' }}>
                             <ActionIcon size="sm" onClick={handleClick}>
                                 {isLiked ? (
-                                    <IconHeart color="red" fill="red" />
+                                    <IconHeart color="#F06595" fill="#F06595" />
                                 ) : (
                                     <IconHeart />
                                 )}
                             </ActionIcon>
-                            <Text color="dimmed">{likeCount}</Text>
+                            <Text size="sm">{likeCount}</Text>
                         </Group>
                     </Group>
                 </Stack>
