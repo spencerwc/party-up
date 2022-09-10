@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {
     createStyles,
     Text,
     Avatar,
+    Anchor,
     Group,
     TypographyStylesProvider,
     Paper,
@@ -75,13 +77,21 @@ const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
     return (
         <Paper withBorder radius="md" className={classes.comment}>
             <Group>
-                <Avatar
-                    src={author.avatar_url}
-                    alt={author.username}
-                    radius="xl"
-                />
+                <Anchor component={Link} to={`/users/${author.username}`}>
+                    <Avatar
+                        src={author.avatar_url}
+                        alt={author.username}
+                        radius="xl"
+                    />
+                </Anchor>
                 <div>
-                    <Text>{author.username}</Text>
+                    <Anchor
+                        component={Link}
+                        to={`/users/${author.username}`}
+                        variant="text"
+                    >
+                        <Text weight={500}>{author.username}</Text>
+                    </Anchor>
                     <Text color="dimmed">{dayjs(createdAt).fromNow()}</Text>
                 </div>
             </Group>
