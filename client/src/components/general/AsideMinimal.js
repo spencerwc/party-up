@@ -35,7 +35,14 @@ const AsideMinimal = () => {
                 <Button onClick={() => navigate('/parties/new')} radius="md">
                     Start a Party
                 </Button>
-                <Paper my="md" p="md" radius="lg">
+                <Paper
+                    my="md"
+                    p="md"
+                    radius="lg"
+                    sx={{
+                        boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
+                    }}
+                >
                     <Center>
                         <ColorSchemeToggle />
                     </Center>

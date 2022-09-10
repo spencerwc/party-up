@@ -1,12 +1,4 @@
-import {
-    createStyles,
-    Card,
-    Avatar,
-    Text,
-    Group,
-    Stack,
-    ThemeIcon,
-} from '@mantine/core';
+import { createStyles, Card, Avatar, Text, Group, Stack } from '@mantine/core';
 import {
     IconUser,
     IconUsers,
@@ -31,22 +23,21 @@ const useStyles = createStyles((theme) => ({
                 : theme.colors.gray[2]
         }`,
         borderRadius: 0,
-
-        '&:hover': {
-            backgroundColor:
-                theme.colorScheme === 'dark'
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[0],
-        },
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             padding: 0,
-            border: `1px solid ${
-                theme.colorScheme === 'dark'
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[2]
-            }`,
-            borderRadius: theme.radius.md,
+            border: 'none',
+            borderRadius: theme.radius.lg,
+            boxShadow:
+                theme.colorScheme === 'light' &&
+                'rgba(0, 0, 0, 0.04) 0px 3px 5px',
+
+            '&:hover': {
+                boxShadow:
+                    'rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+            },
         },
     },
 
@@ -55,21 +46,26 @@ const useStyles = createStyles((theme) => ({
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             padding: `${theme.spacing.sm}px`,
-            paddingLeft: `${theme.spacing.md}px`,
+            paddingLeft: `${theme.spacing.xl}px`,
         },
     },
 
-    title: {
-        fontWeight: 700,
-        fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-        lineHeight: 1.2,
-    },
-
-    memberDetails: {
-        width: '100%',
+    partyImage: {
+        width: 60,
+        height: 60,
+        flexShrink: 0,
 
         [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-            width: 'auto',
+            width: 70,
+            height: 70,
+        },
+    },
+
+    mobileHidden: {
+        display: 'none',
+
+        [`@media (min-width: 390px)`]: {
+            display: 'inline',
         },
     },
 }));
@@ -82,53 +78,75 @@ const PartyCard = ({ party }) => {
         <li>
             <Link to={party._id} className={classes.link}>
                 <Card className={classes.card}>
-                    <Group className={classes.inner} noWrap spacing="md">
+                    <Group className={classes.inner} noWrap spacing="lg">
                         <Avatar
+                            className={classes.partyImage}
                             src={party.game.cover ? party.game.cover.url : null}
-                            size={90}
+                            radius="lg"
                         >
                             <IconQuestionMark />
                         </Avatar>
                         <Stack spacing={0}>
-                            <Text color="dimmed">
+                            <Text color="dimmed" size="xs">
                                 {dayjs(party.date).format('dddd, MMMM D')}
                             </Text>
-                            <Text className={classes.title} my={6}>
+                            <Text weight={600} className={classes.partyName}>
                                 {party.name}
                             </Text>
-                            <Text size="sm" color="dimmed" mb="sm">
+                            <Text size="xs" color="dimmed" mb={8}>
                                 {party.game.name}
                             </Text>
                             <Group spacing="sm">
-                                <Group
-                                    className={classes.memberDetails}
-                                    noWrap
-                                    spacing="sm"
-                                >
-                                    <ThemeIcon variant="light" radius="xl">
-                                        {party.members.length > 1 ? (
-                                            <IconUsers size={16} />
-                                        ) : (
-                                            <IconUser size={16} />
-                                        )}
-                                    </ThemeIcon>
-                                    <Text size="sm" color="dimmed">
-                                        {party.members.length} member
-                                        {party.members.length > 1 && 's'}
+                                <Group noWrap spacing={5}>
+                                    {party.members.length > 1 ? (
+                                        <IconUsers
+                                            size={16}
+                                            color="#22B8CF"
+                                            fill="#22B8CF"
+                                        />
+                                    ) : (
+                                        <IconUser
+                                            size={16}
+                                            color="#22B8CF"
+                                            fill="#22B8CF"
+                                        />
+                                    )}
+                                    <Text size="xs" weight={500}>
+                                        {party.members.length}{' '}
+                                        <span className={classes.mobileHidden}>
+                                            member
+                                            {party.members.length > 1 && 's'}
+                                        </span>
                                     </Text>
                                 </Group>
                                 <Group
                                     className={classes.memberDetails}
                                     noWrap
-                                    spacing="sm"
+                                    spacing={4}
                                 >
-                                    <ThemeIcon variant="light" radius="xl">
-                                        <IconSearch size={16} />
-                                    </ThemeIcon>
-                                    <Text size="sm" color="dimmed">
-                                        {openings > 0
-                                            ? `Looking for ${openings} more`
-                                            : 'Filled'}
+                                    <IconSearch size={16} color="#845EF7" />
+                                    <Text size="xs" weight={500}>
+                                        {openings > 0 ? (
+                                            <>
+                                                <span
+                                                    className={
+                                                        classes.mobileHidden
+                                                    }
+                                                >
+                                                    Looking for
+                                                </span>{' '}
+                                                {openings}{' '}
+                                                <span
+                                                    className={
+                                                        classes.mobileHidden
+                                                    }
+                                                >
+                                                    more
+                                                </span>
+                                            </>
+                                        ) : (
+                                            'Filled'
+                                        )}
                                     </Text>
                                 </Group>
                             </Group>
