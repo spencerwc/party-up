@@ -7,9 +7,10 @@ const useStyles = createStyles((theme) => ({
         flexDirection: 'column',
         listStyle: 'none',
         padding: 0,
+        paddingBottom: 52,
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
-            gap: theme.spacing.sm,
+            gap: theme.spacing.md,
             margin: theme.spacing.md,
         },
     },
@@ -25,7 +26,9 @@ const PartiesList = ({ parties }) => {
     return (
         <ul className={classes.parties}>
             {parties.map((party) => (
-                <PartyCard key={party._id} party={party} />
+                <li key={party._id}>
+                    <PartyCard party={party} />
+                </li>
             ))}
         </ul>
     );

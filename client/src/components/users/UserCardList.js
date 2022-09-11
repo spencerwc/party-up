@@ -4,12 +4,12 @@ import UserCard from './UserCard';
 
 const UserCardList = ({ title, seeAllLink, users }) => {
     return (
-        <Stack mt="lg" px="md">
+        <Stack px="md">
             <Group position="apart">
                 <Title order={2} size={20}>
                     {title}
                 </Title>
-                <Anchor component={Link} to={seeAllLink}>
+                <Anchor component={Link} to={seeAllLink} weight={500}>
                     See All
                 </Anchor>
             </Group>

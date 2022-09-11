@@ -2,7 +2,7 @@ import { Text, Stack, Title } from '@mantine/core';
 
 const TextBlock = ({ title, body }) => {
     return (
-        <Stack mt="lg" mx="md">
+        <Stack mx="md">
             <Title order={2} size={20}>
                 {title}
             </Title>

@@ -9,7 +9,7 @@ const Parties = () => {
     if (parties) {
         return (
             <>
-                <Title order={1} size={24} m="md">
+                <Title order={1} size={20} m="md">
                     Parties
                 </Title>
                 <PartiesList parties={parties} />
