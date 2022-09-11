@@ -3,7 +3,12 @@ import { render, screen } from '@testing-library/react';
 import { AuthProvider } from '../context/AuthContext';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
-import UserCardList from '../components/UserCardList';
+import UserCardList from '../components/users/UserCardList';
+
+class ResizeObserver {
+    observe() {}
+    unobserve() {}
+}
 
 const Wrapper = ({ children }) => {
     return (
@@ -25,6 +30,8 @@ const seedUsers = [
 ];
 
 describe('User card list', () => {
+    window.ResizeObserver = ResizeObserver;
+
     it('renders a heading', () => {
         render(<UserCardList title="Test List" seeAllLink="#" users={[]} />, {
             wrapper: Wrapper,

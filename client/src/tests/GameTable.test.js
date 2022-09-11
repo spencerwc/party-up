@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
 import '@testing-library/jest-dom';
-import GameTable from '../components/GameTable';
+import GameTable from '../components/party/GameTable';
 
 const Wrapper = ({ children }) => {
     return (

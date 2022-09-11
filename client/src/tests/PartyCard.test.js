@@ -4,7 +4,7 @@ import { AuthProvider } from '../context/AuthContext';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import dayjs from 'dayjs';
-import PartyCard from '../components/PartyCard';
+import PartyCard from '../components/parties/PartyCard';
 
 const Wrapper = ({ children }) => {
     return (
@@ -45,11 +45,6 @@ const seedParties = [
 
 describe('Party card', () => {
     describe('Card structure', () => {
-        it('renders a listitem', () => {
-            render(<PartyCard party={seedParties[0]} />, { wrapper: Wrapper });
-            expect(screen.getByRole('listitem')).toBeInTheDocument();
-        });
-
         it('links to the party page', () => {
             render(<PartyCard party={seedParties[0]} />, { wrapper: Wrapper });
             expect(screen.getByRole('link')).toBeInTheDocument();
@@ -83,27 +78,22 @@ describe('Party card', () => {
         it('details the party member count', () => {
             render(<PartyCard party={seedParties[1]} />, { wrapper: Wrapper });
             expect(
-                screen.getByText(`${seedParties[1].members.length} members`)
+                screen.getByText(seedParties[1].members.length)
             ).toBeInTheDocument();
         });
 
         it('adjusts member count for single party member', () => {
             render(<PartyCard party={seedParties[0]} />, { wrapper: Wrapper });
-            expect(
-                screen.getByText(`${seedParties[0].members.length} member`)
-            ).toBeInTheDocument();
+            expect(screen.getByText('member')).toBeInTheDocument();
         });
 
         it('details the looking for amount', () => {
             render(<PartyCard party={seedParties[0]} />, { wrapper: Wrapper });
-            expect(
-                screen.getByText(
-                    `Looking for ${
-                        seedParties[0].lookingFor -
-                        (seedParties[0].members.length - 1)
-                    } more`
-                )
-            ).toBeInTheDocument();
+
+            const openings =
+                seedParties[0].lookingFor - seedParties[0].members.length - 1;
+
+            expect(screen.getByText(openings)).toBeInTheDocument();
         });
 
         it('accounts for filled parties', () => {

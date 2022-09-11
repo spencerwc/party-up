@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
-import PartiesList from '../components/PartiesList';
+import PartiesList from '../components/parties/PartiesList';
 
 const Wrapper = ({ children }) => {
     return <MemoryRouter>{children}</MemoryRouter>;

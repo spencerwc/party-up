@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import CreatePartyForm from '../components/CreatePartyForm';
+import CreatePartyForm from '../components/party/CreatePartyForm';
 
 const Wrapper = ({ children }) => {
     return (

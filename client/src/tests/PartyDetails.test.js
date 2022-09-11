@@ -4,7 +4,13 @@ import { MemoryRouter } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '@testing-library/jest-dom';
 import dayjs from 'dayjs';
-import PartyDetails from '../components/PartyDetails';
+import PartyDetails from '../components/party/PartyDetails';
+
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    disconnect: jest.fn(),
+}));
 
 const Wrapper = ({ children }) => {
     return (
@@ -44,7 +50,7 @@ const seedParties = [
             websites: ['#'],
             platform: '',
         },
-        lookingFor: '1',
+        lookingFor: '3',
         members: ['', ''],
         name: 'Friday Fright Night',
     },
@@ -71,6 +77,15 @@ describe('Party details', () => {
             ).toBeInTheDocument();
         });
 
+        it('displays the party game name', () => {
+            render(<PartyDetails party={seedParties[1]} />, {
+                wrapper: Wrapper,
+            });
+            expect(
+                screen.getByText(seedParties[1].game.name)
+            ).toBeInTheDocument();
+        });
+
         it('displays the leader username', () => {
             render(<PartyDetails party={seedParties[0]} />, {
                 wrapper: Wrapper,
@@ -78,6 +93,30 @@ describe('Party details', () => {
             expect(
                 screen.getByText(seedParties[0].leader.username)
             ).toBeInTheDocument();
+        });
+    });
+
+    describe('Party membership details', () => {
+        it('renders the member count', () => {
+            render(<PartyDetails party={seedParties[0]} />, {
+                wrapper: Wrapper,
+            });
+            expect(
+                screen.getByText(seedParties[0].members.length)
+            ).toBeInTheDocument();
+        });
+
+        it('renders the openings count', () => {
+            const openings = 3;
+
+            render(
+                <PartyDetails party={seedParties[1]} openings={openings} />,
+                {
+                    wrapper: Wrapper,
+                }
+            );
+
+            expect(screen.getByText(openings)).toBeInTheDocument();
         });
     });
 });

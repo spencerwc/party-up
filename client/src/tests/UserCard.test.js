@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { AuthProvider } from '../context/AuthContext';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
-import UserCard from '../components/UserCard';
+import UserCard from '../components/users/UserCard';
 
 const Wrapper = ({ children }) => {
     return (
