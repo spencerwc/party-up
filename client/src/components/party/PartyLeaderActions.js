@@ -13,12 +13,12 @@ const PartyLeaderActions = ({ setIsConfirmingDelete }) => {
         <Menu
             shadow="md"
             width={200}
-            mt="lg"
+            radius="lg"
             trigger="hover"
             position="bottom-start"
         >
             <Menu.Target>
-                <Button>Party Actions</Button>
+                <Button radius="lg">Party Actions</Button>
             </Menu.Target>
             <Menu.Dropdown>
                 <Menu.Label>Actions</Menu.Label>

@@ -1,5 +1,5 @@
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { Button, Text } from '@mantine/core';
+import { Button, Text, Stack } from '@mantine/core';
 
 const PartyMembershipActions = ({
     openings,
@@ -20,14 +20,18 @@ const PartyMembershipActions = ({
     // Otherwise - if user is a member, allow them to leave
     if (isMember) {
         return (
-            <Button
-                size="md"
-                my="md"
-                onClick={() => setIsConfirmingLeave(true)}
-                disabled={isPending}
-            >
-                Leave Party
-            </Button>
+            <Stack>
+                <Text color="dimmed">You are a member of this party.</Text>
+                <Button
+                    radius="lg"
+                    color="red.8"
+                    onClick={() => setIsConfirmingLeave(true)}
+                    disabled={isPending}
+                    sx={{ width: 'fit-content' }}
+                >
+                    Leave Party
+                </Button>
+            </Stack>
         );
     }
 
@@ -39,8 +43,8 @@ const PartyMembershipActions = ({
     // Default action to join the party
     return (
         <Button
-            size="md"
-            my="md"
+            radius="lg"
+            mt="sm"
             disabled={!user || isPending || memberError}
             onClick={handleJoin}
         >

@@ -1,72 +1,89 @@
 import { Link } from 'react-router-dom';
 import {
-    Image,
     Title,
     Group,
     Stack,
     Text,
     Avatar,
     Anchor,
-    MediaQuery,
     Badge,
+    Center,
+    createStyles,
 } from '@mantine/core';
+import { IconUsers, IconSearch } from '@tabler/icons';
 import dayjs from 'dayjs';
 
+const useStyles = createStyles((theme) => ({
+    mobileHidden: {
+        display: 'none',
+        [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+            display: 'inline',
+        },
+    },
+}));
+
 const PartyDetails = ({ party, openings }) => {
+    const { classes } = useStyles();
+
     return (
-        <Group noWrap sx={{ justifyContent: 'space-between' }}>
-            <Stack spacing={0} mb="auto" pb="md">
-                <Title size={32}>{party.name}</Title>
-                <Text color="dimmed" size="xl">
+        <Stack spacing={0}>
+            <div>
+                <Text color="dimmed" weight={500}>
                     {dayjs(party.date).format('dddd, MMMM D YYYY')}
                 </Text>
-                {openings > 0 && (
-                    <Badge size="lg" mt="sm" radius="md">
-                        Looking for {openings} more
-                    </Badge>
-                )}
-                <Anchor
-                    component={Link}
-                    to={`/users/${[party.leader.username]}`}
-                    underline={false}
-                    sx={(theme) => ({
-                        color:
-                            theme.colorScheme === 'dark'
-                                ? theme.white
-                                : theme.black,
-                    })}
+                <Title size={24}>{party.name}</Title>
+                <Text color="dimmed">{party.game.name}</Text>
+            </div>
+
+            <Group spacing="xs">
+                <Badge
+                    mt="sm"
+                    radius="md"
+                    variant="filled"
+                    color="teal.7"
+                    sx={{ width: 'fit-content' }}
+                    leftSection={
+                        <Center>
+                            <IconUsers size={14} />
+                        </Center>
+                    }
                 >
-                    <Group mt="xl">
-                        <Avatar
-                            src={party.leader.avatar}
-                            alt="avatar"
-                            size="lg"
-                            radius="xl"
-                        />
-                        <Stack spacing={0}>
-                            <Text>Led by</Text>
-                            <Text weight="bold">{party.leader.username}</Text>
-                        </Stack>
-                    </Group>
-                </Anchor>
-            </Stack>
-            <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
-                <Image
-                    src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${party.game.cover.image_id}.jpg`}
-                    width={160}
-                    ml="sm"
-                    withPlaceholder
-                />
-            </MediaQuery>
-            <MediaQuery largerThan="xs" styles={{ display: 'none' }}>
-                <Image
-                    src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${party.game.cover.image_id}.jpg`}
-                    width={120}
-                    withPlaceholder
-                    mb="auto"
-                />
-            </MediaQuery>
-        </Group>
+                    {party.members.length}{' '}
+                    <span className={classes.mobileHidden}>members</span>
+                </Badge>
+                <Badge
+                    mt="sm"
+                    radius="md"
+                    variant="filled"
+                    color="violet.7"
+                    sx={{ width: 'fit-content' }}
+                    leftSection={
+                        <Center>
+                            <IconSearch size={14} />
+                        </Center>
+                    }
+                >
+                    {openings}{' '}
+                    <span className={classes.mobileHidden}>openings</span>
+                </Badge>
+            </Group>
+
+            <Anchor
+                component={Link}
+                to={`/users/${[party.leader.username]}`}
+                underline={false}
+                variant="text"
+                mt="xl"
+            >
+                <Group spacing="xs">
+                    <Avatar src={party.leader.avatar} size={50} radius="xl" />
+                    <Stack spacing={0}>
+                        <Text size="sm">Led by</Text>
+                        <Text weight={500}>{party.leader.username}</Text>
+                    </Stack>
+                </Group>
+            </Anchor>
+        </Stack>
     );
 };
 
