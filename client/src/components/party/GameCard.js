@@ -1,30 +1,60 @@
-import { Avatar, Text, Group, Badge, ActionIcon, Tooltip } from '@mantine/core';
+import {
+    Avatar,
+    Text,
+    Group,
+    Badge,
+    ActionIcon,
+    Tooltip,
+    Paper,
+    createStyles,
+} from '@mantine/core';
 import { IconX } from '@tabler/icons';
 
+const useStyles = createStyles((theme) => ({
+    wrapper: {
+        backgroundColor:
+            theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+        boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
+        padding: theme.spacing.md,
+
+        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            padding: 0,
+        },
+    },
+}));
+
 const GameCard = ({ game, setGame }) => {
+    const { classes } = useStyles();
+
     const handleClear = () => {
         setGame(null);
     };
 
     return (
-        <Group noWrap mt="md">
-            <Avatar
-                src={game.cover ? game.cover.url : null}
-                size={90}
-                radius="md"
-            />
-            <div>
-                <Text size="lg" weight={500}>
-                    {game.name}
-                </Text>
-                {game.genres && <Badge>{game.genres[0].name}</Badge>}
-            </div>
-            <Tooltip label="Clear Game">
-                <ActionIcon ml="xl" onClick={handleClear}>
-                    <IconX stroke={1.5} />
-                </ActionIcon>
-            </Tooltip>
-        </Group>
+        <Paper className={classes.wrapper}>
+            <Group noWrap>
+                <Avatar
+                    src={game.cover ? game.cover.url : null}
+                    size={70}
+                    radius="lg"
+                />
+                <div>
+                    <Text size="lg" weight={500}>
+                        {game.name}
+                    </Text>
+                    {game.genres && (
+                        <Badge variant="filled">{game.genres[0].name}</Badge>
+                    )}
+                </div>
+                <Tooltip label="Clear Game">
+                    <ActionIcon ml="auto" onClick={handleClear}>
+                        <IconX stroke={1.5} />
+                    </ActionIcon>
+                </Tooltip>
+            </Group>
+        </Paper>
     );
 };
 
