@@ -14,6 +14,7 @@ const useStyles = createStyles((theme) => ({
         display: 'none',
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            width: 550,
             position: 'sticky',
             top: 0,
             display: 'flex',
@@ -31,7 +32,7 @@ const AsideMinimal = () => {
 
     return (
         <MediaQuery className={classes.aside}>
-            <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+            <Aside py="md" pr="md" hiddenBreakpoint="sm">
                 <Button onClick={() => navigate('/parties/new')} radius="md">
                     Start a Party
                 </Button>

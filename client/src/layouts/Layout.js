@@ -12,17 +12,18 @@ const useStyles = createStyles((theme) => ({
     container: {
         display: 'flex',
         flexDirection: 'column',
-        gap: `${theme.spacing.md}px`,
 
         // Media query with value from theme
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             flexDirection: 'row',
-            maxWidth: '1200px',
+            maxWidth: '1210px',
             margin: '0 auto',
+            gap: theme.spacing.sm,
         },
     },
     content: {
-        flexGrow: 1,
+        minWidth: 0,
+        width: '100%',
     },
     header: {
         position: 'sticky',
