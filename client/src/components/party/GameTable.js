@@ -85,7 +85,7 @@ const GameTable = ({ games, handleSelect }) => {
                             </td>
                             <td className={classes.genre}>
                                 {game.genres ? (
-                                    <Badge variant="filled">
+                                    <Badge size="sm" variant="filled">
                                         {game.genres[0].name}
                                     </Badge>
                                 ) : (

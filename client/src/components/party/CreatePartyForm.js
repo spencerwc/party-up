@@ -17,7 +17,6 @@ import {
 import { DatePicker } from '@mantine/dates';
 import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
 import dayjs from 'dayjs';
-import GameSelect from '../../pages/GameSelect';
 import GameCard from './GameCard';
 
 const useStyles = createStyles((theme) => ({
@@ -37,14 +36,12 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const CreatePartyForm = () => {
+const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
     const { user } = useAuthContext();
     const { classes } = useStyles();
     const navigate = useNavigate();
     const theme = useMantineTheme();
     const [error, setError] = useState(null);
-    const [game, setGame] = useState(null);
-    const [selectingGame, setSelectingGame] = useState(null);
 
     const gameForm = useForm({
         initialValues: {
@@ -82,6 +79,7 @@ const CreatePartyForm = () => {
     });
 
     const handleGameSearch = () => {
+        setGameName(gameForm.values.gameName);
         setSelectingGame(true);
     };
 
@@ -122,16 +120,6 @@ const CreatePartyForm = () => {
     const handleCancel = () => {
         navigate('/parties');
     };
-
-    if (selectingGame) {
-        return (
-            <GameSelect
-                name={gameForm.values.gameName}
-                setGame={setGame}
-                setSelectingGame={setSelectingGame}
-            />
-        );
-    }
 
     return (
         <Paper className={classes.wrapper} radius="lg" mt="md">

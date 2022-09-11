@@ -1,12 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { Button } from '@mantine/core';
-import { IconArrowLeft } from '@tabler/icons';
+import {
+    Box,
+    Group,
+    Stack,
+    Anchor,
+    Title,
+    ActionIcon,
+    createStyles,
+} from '@mantine/core';
+import { IconChevronLeft } from '@tabler/icons';
 import MinimalLoader from '../components/general/MinimalLoader';
 import GameTable from '../components/party/GameTable';
 
-const GameSelect = ({ name, setGame, setSelectingGame }) => {
+const useStyles = createStyles((theme) => ({
+    backButton: {
+        '&:hover': {
+            backgroundColor:
+                theme.colorScheme === 'dark'
+                    ? theme.colors.dark[7]
+                    : theme.colors.gray[2],
+        },
+    },
+}));
+
+const GameSelect = ({ name, setGame, setSelectingGame, breadcrumb }) => {
     const { user } = useAuthContext();
+    const { classes } = useStyles();
     const [games, setGames] = useState(null);
     const [error, setError] = useState(null);
 
@@ -49,17 +69,29 @@ const GameSelect = ({ name, setGame, setSelectingGame }) => {
 
     if (games) {
         return (
-            <>
-                <Button
-                    mt="md"
-                    variant="light"
-                    leftIcon={<IconArrowLeft size={20} stroke={1.5} />}
-                    onClick={handleClose}
-                >
-                    Back
-                </Button>
+            <Box pt="md" pb={68}>
+                <Group ml="md">
+                    <ActionIcon
+                        className={classes.backButton}
+                        onClick={() => setSelectingGame(false)}
+                    >
+                        <IconChevronLeft />
+                    </ActionIcon>
+                    <Stack spacing={0}>
+                        <Title order={1} size={20}>
+                            Select a Game
+                        </Title>
+                        <Anchor
+                            weight={500}
+                            onClick={() => setSelectingGame(false)}
+                        >
+                            {breadcrumb}
+                        </Anchor>
+                    </Stack>
+                </Group>
+
                 <GameTable games={games} handleSelect={handleSelect} />
-            </>
+            </Box>
         );
     }
 

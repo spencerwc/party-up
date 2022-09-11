@@ -14,6 +14,7 @@ import {
 import { IconChevronLeft } from '@tabler/icons';
 import MinimalLoader from '../components/general/MinimalLoader';
 import EditPartyForm from '../components/party/EditPartyForm';
+import GameSelect from './GameSelect';
 
 const useStyles = createStyles((theme) => ({
     backButton: {
@@ -31,6 +32,9 @@ const EditParty = () => {
     const { user } = useAuthContext();
     const { classes } = useStyles();
     const [party, setParty] = useState(null);
+    const [game, setGame] = useState(null);
+    const [gameName, setGameName] = useState('');
+    const [selectingGame, setSelectingGame] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -44,8 +48,11 @@ const EditParty = () => {
 
             if (response.ok) {
                 setParty(json);
+                setGame(json.game);
+                setGameName(json.game.name);
             }
         };
+
         getParty();
     }, [id]);
 
@@ -53,34 +60,52 @@ const EditParty = () => {
         // If user is not the leader, navigate them back
         if (user.username !== party.leader.username) {
             return <Navigate to={`/parties/${party._id}`} />;
-        } else {
+        }
+
+        if (selectingGame) {
             return (
-                <Box p="md">
-                    <Group>
-                        <ActionIcon
-                            className={classes.backButton}
-                            component={Link}
-                            to={`/parties/${party._id}`}
-                        >
-                            <IconChevronLeft />
-                        </ActionIcon>
-                        <Stack spacing={0}>
-                            <Title order={1} size={20}>
-                                Edit Party
-                            </Title>
-                            <Anchor
-                                component={Link}
-                                to={`/parties/${party._id}`}
-                                weight={500}
-                            >
-                                {party.name}
-                            </Anchor>
-                        </Stack>
-                    </Group>
-                    <EditPartyForm party={party} />
-                </Box>
+                <GameSelect
+                    name={gameName}
+                    setGame={setGame}
+                    setSelectingGame={setSelectingGame}
+                    breadcrumb="Edit Party"
+                />
             );
         }
+
+        return (
+            <Box p="md">
+                <Group>
+                    <ActionIcon
+                        className={classes.backButton}
+                        component={Link}
+                        to={`/parties/${party._id}`}
+                    >
+                        <IconChevronLeft />
+                    </ActionIcon>
+                    <Stack spacing={0}>
+                        <Title order={1} size={20}>
+                            Edit Party
+                        </Title>
+                        <Anchor
+                            component={Link}
+                            to={`/parties/${party._id}`}
+                            weight={500}
+                        >
+                            {party.name}
+                        </Anchor>
+                    </Stack>
+                </Group>
+
+                <EditPartyForm
+                    party={party}
+                    game={game}
+                    setGame={setGame}
+                    setGameName={setGameName}
+                    setSelectingGame={setSelectingGame}
+                />
+            </Box>
+        );
     }
 
     if (error) {

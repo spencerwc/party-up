@@ -8,7 +8,7 @@ import {
     Paper,
     createStyles,
 } from '@mantine/core';
-import { IconX } from '@tabler/icons';
+import { IconX, IconQuestionMark } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
     wrapper: {
@@ -39,13 +39,15 @@ const GameCard = ({ game, setGame }) => {
                     src={game.cover ? game.cover.url : null}
                     size={70}
                     radius="lg"
-                />
+                >
+                    <IconQuestionMark size={30} />
+                </Avatar>
                 <div>
-                    <Text size="lg" weight={500}>
-                        {game.name}
-                    </Text>
+                    <Text weight={500}>{game.name}</Text>
                     {game.genres && (
-                        <Badge variant="filled">{game.genres[0].name}</Badge>
+                        <Badge size="sm" variant="filled">
+                            {game.genres[0].name}
+                        </Badge>
                     )}
                 </div>
                 <Tooltip label="Clear Game">

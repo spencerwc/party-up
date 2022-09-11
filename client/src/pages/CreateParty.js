@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Link } from 'react-router-dom';
@@ -12,6 +13,7 @@ import {
 } from '@mantine/core';
 import { IconChevronLeft } from '@tabler/icons';
 import CreatePartyForm from '../components/party/CreatePartyForm';
+import GameSelect from './GameSelect';
 
 const useStyles = createStyles((theme) => ({
     backButton: {
@@ -27,33 +29,53 @@ const useStyles = createStyles((theme) => ({
 const CreateParty = () => {
     const { user } = useAuthContext();
     const { classes } = useStyles();
+    const [game, setGame] = useState(null);
+    const [gameName, setGameName] = useState('');
+    const [selectingGame, setSelectingGame] = useState(false);
 
     if (!user) {
         return <Navigate to="/login" />;
-    } else {
+    }
+
+    if (selectingGame) {
         return (
-            <Box p="md">
-                <Group>
-                    <ActionIcon
-                        className={classes.backButton}
-                        component={Link}
-                        to="/parties"
-                    >
-                        <IconChevronLeft />
-                    </ActionIcon>
-                    <Stack spacing={0}>
-                        <Title order={1} size={20}>
-                            Start a Party
-                        </Title>
-                        <Anchor component={Link} to="/parties" weight={500}>
-                            Parties
-                        </Anchor>
-                    </Stack>
-                </Group>
-                <CreatePartyForm />
-            </Box>
+            <GameSelect
+                name={gameName}
+                setGame={setGame}
+                setSelectingGame={setSelectingGame}
+                breadcrumb="Start a Party"
+            />
         );
     }
+
+    return (
+        <Box p="md">
+            <Group>
+                <ActionIcon
+                    className={classes.backButton}
+                    component={Link}
+                    to="/parties"
+                >
+                    <IconChevronLeft />
+                </ActionIcon>
+                <Stack spacing={0}>
+                    <Title order={1} size={20}>
+                        Start a Party
+                    </Title>
+                    <Anchor component={Link} to="/parties" weight={500}>
+                        Parties
+                    </Anchor>
+                </Stack>
+            </Group>
+
+            <CreatePartyForm
+                game={game}
+                setGame={setGame}
+                setGameName={setGameName}
+                setSelectingGame={setSelectingGame}
+            />
+        </Box>
+    );
 };
 
 export default CreateParty;
