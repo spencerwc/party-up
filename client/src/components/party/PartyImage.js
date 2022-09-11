@@ -27,7 +27,6 @@ const PartyImage = ({ imageId }) => {
         <Image
             className={classes.gameImage}
             src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${imageId}.jpg`}
-            withPlaceholder
         />
     );
 };

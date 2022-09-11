@@ -7,7 +7,7 @@ import {
     Center,
     createStyles,
 } from '@mantine/core';
-import ColorSchemeToggle from '../ColorSchemeToggle';
+import ColorSchemeToggle from '../general/ColorSchemeToggle';
 
 const useStyles = createStyles((theme) => ({
     aside: {

@@ -180,7 +180,10 @@ const Party = () => {
                             </Group>
                         )}
                     </Stack>
-                    <PartyImage imageId={party.game.cover.image_id} />
+
+                    {party.game.cover && (
+                        <PartyImage imageId={party.game.cover.image_id} />
+                    )}
                 </Group>
 
                 <Stack spacing="lg">
