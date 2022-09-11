@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { Container, Group, Text } from '@mantine/core';
+import { Box, Group, Stack, Text } from '@mantine/core';
 import MinimalLoader from '../components/general/MinimalLoader';
 import PartyDetails from '../components/party/PartyDetails';
+import PartyImage from '../components/party/PartyImage';
 import PartyMembershipActions from '../components/party/PartyMembershipActions';
 import UserCardList from '../components/users/UserCardList';
 import TextBlock from '../components/general/TextBlock';
@@ -122,24 +123,7 @@ const Party = () => {
         const openings = party.lookingFor - (party.members.length - 1);
 
         return (
-            <Container p="md">
-                {/* General party details */}
-                <PartyDetails party={party} openings={openings} />
-
-                {/* Actions for joining / leaving the party */}
-                <Group>
-                    <PartyMembershipActions
-                        openings={openings}
-                        isMember={isMember}
-                        isLeader={isLeader}
-                        isPending={isPending}
-                        handleJoin={handleJoin}
-                        setIsConfirmingLeave={setIsConfirmingLeave}
-                        memberError={memberError}
-                    />
-                    {memberError && <Text color="red">{memberError}</Text>}
-                </Group>
-
+            <Box pb={68}>
                 {/* Confirm leaving the party */}
                 <ConfirmationModal
                     isConfirming={isConfirmingLeave}
@@ -148,22 +132,6 @@ const Party = () => {
                     body="You will be removed from the party."
                     action={handleLeave}
                 />
-
-                {/* These management actions are only displayed to the leader */}
-
-                {isLeader && (
-                    <Group>
-                        <PartyLeaderActions
-                            setIsConfirmingDelete={setIsConfirmingDelete}
-                        />
-                        {/* Display any errors from leader actions */}
-                        {partyError && (
-                            <Text color="red" mt="lg">
-                                {partyError}
-                            </Text>
-                        )}
-                    </Group>
-                )}
 
                 {/* Party deletion confirmation */}
                 <ConfirmationModal
@@ -174,19 +142,65 @@ const Party = () => {
                     action={handleDelete}
                 />
 
-                {/* Party Description */}
-                <TextBlock title="About the Party" body={party.details} />
+                {/* General party details */}
+                <Group p="md" position="apart" noWrap>
+                    <Stack>
+                        <PartyDetails party={party} openings={openings} />
 
-                {/* Party members list */}
-                <UserCardList
-                    title="Members"
-                    seeAllLink={`members`}
-                    users={party.members.slice(0, 5)}
-                />
+                        {/* Actions for joining / leaving the party */}
+                        <Group>
+                            <PartyMembershipActions
+                                openings={openings}
+                                isMember={isMember}
+                                isLeader={isLeader}
+                                isPending={isPending}
+                                handleJoin={handleJoin}
+                                setIsConfirmingLeave={setIsConfirmingLeave}
+                                memberError={memberError}
+                            />
+                            {memberError && (
+                                <Text color="red">{memberError}</Text>
+                            )}
+                        </Group>
 
-                {/* Party Comments */}
-                <CommentsList title="Comments" commentData={party.comments} />
-            </Container>
+                        {/* These management actions are only displayed to the leader */}
+                        {isLeader && (
+                            <Group>
+                                <PartyLeaderActions
+                                    setIsConfirmingDelete={
+                                        setIsConfirmingDelete
+                                    }
+                                />
+                                {/* Display any errors from leader actions */}
+                                {partyError && (
+                                    <Text color="red" mt="lg">
+                                        {partyError}
+                                    </Text>
+                                )}
+                            </Group>
+                        )}
+                    </Stack>
+                    <PartyImage imageId={party.game.cover.image_id} />
+                </Group>
+
+                <Stack spacing="lg">
+                    {/* Party Description */}
+                    <TextBlock title="About the Party" body={party.details} />
+
+                    {/* Party members list */}
+                    <UserCardList
+                        title="Members"
+                        seeAllLink={`members`}
+                        users={party.members.slice(0, 5)}
+                    />
+
+                    {/* Party Comments */}
+                    <CommentsList
+                        title="Comments"
+                        commentData={party.comments}
+                    />
+                </Stack>
+            </Box>
         );
     }
 
