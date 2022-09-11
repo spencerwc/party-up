@@ -9,7 +9,10 @@ import {
     Textarea,
     Button,
     Text,
+    Group,
     ActionIcon,
+    Paper,
+    createStyles,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
@@ -17,8 +20,26 @@ import dayjs from 'dayjs';
 import GameSelect from '../../pages/GameSelect';
 import GameCard from './GameCard';
 
+const useStyles = createStyles((theme) => ({
+    wrapper: {
+        backgroundColor: 'transparent',
+        padding: 0,
+
+        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            padding: theme.spacing.md,
+            paddingBottom: theme.spacing.lg,
+            backgroundColor:
+                theme.colorScheme === 'dark'
+                    ? theme.colors.dark[7]
+                    : theme.white,
+            boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
+        },
+    },
+}));
+
 const CreatePartyForm = () => {
     const { user } = useAuthContext();
+    const { classes } = useStyles();
     const navigate = useNavigate();
     const theme = useMantineTheme();
     const [error, setError] = useState(null);
@@ -45,8 +66,11 @@ const CreatePartyForm = () => {
 
         validate: {
             name: (value) =>
-                value.length < 2 ? 'Name must have at least 2 letters' : null,
-
+                value.length < 2
+                    ? 'Name must have at least 2 letters'
+                    : value.length > 100
+                    ? 'Name must have fewer than 100 letters'
+                    : null,
             date: (value) => (!value ? 'Date must be selected' : null),
             lookingFor: (value) =>
                 value < 1 || value > 100
@@ -95,6 +119,10 @@ const CreatePartyForm = () => {
         }
     };
 
+    const handleCancel = () => {
+        navigate('/parties');
+    };
+
     if (selectingGame) {
         return (
             <GameSelect
@@ -106,7 +134,7 @@ const CreatePartyForm = () => {
     }
 
     return (
-        <>
+        <Paper className={classes.wrapper} radius="lg" mt="md">
             {/* This form is used to search for the game. If a game has been selected, render that instead */}
 
             {!game ? (
@@ -115,22 +143,21 @@ const CreatePartyForm = () => {
                     onSubmit={gameForm.onSubmit(handleGameSearch)}
                 >
                     <TextInput
-                        mt="md"
+                        radius="md"
                         icon={<IconSearch size={18} stroke={1.5} />}
-                        size="md"
                         label="Game"
                         withAsterisk
                         rightSection={
                             <ActionIcon
-                                size={32}
                                 color={theme.primaryColor}
                                 variant="filled"
+                                radius="md"
                                 onClick={handleGameSearch}
                             >
                                 {theme.dir === 'ltr' ? (
-                                    <IconArrowRight size={18} stroke={1.5} />
+                                    <IconArrowRight stroke={1.5} />
                                 ) : (
-                                    <IconArrowLeft size={18} stroke={1.5} />
+                                    <IconArrowLeft stroke={1.5} />
                                 )}
                             </ActionIcon>
                         }
@@ -151,6 +178,7 @@ const CreatePartyForm = () => {
             >
                 <TextInput
                     mt="md"
+                    radius="md"
                     label="Party Name"
                     placeholder="My Cool Party"
                     {...partyForm.getInputProps('name')}
@@ -158,6 +186,7 @@ const CreatePartyForm = () => {
                 />
                 <DatePicker
                     mt="sm"
+                    radius="md"
                     placeholder="Date of the event"
                     label="When to Meet"
                     minDate={new Date(Date.now())}
@@ -167,31 +196,44 @@ const CreatePartyForm = () => {
                 />
                 <NumberInput
                     mt="sm"
+                    radius="md"
                     label="Looking For"
                     placeholder="# of Members"
-                    min={1}
+                    min={0}
                     max={100}
                     {...partyForm.getInputProps('lookingFor')}
                     withAsterisk
                 />
                 <Textarea
                     mt="sm"
+                    radius="md"
                     placeholder="Details about your party"
                     label="Party Details"
                     {...partyForm.getInputProps('details')}
                     minRows={4}
                     withAsterisk
                 />
+
                 {error && (
-                    <Text mt="sm" color="red">
+                    <Text mt="sm" size="sm" color="red">
                         {error}
                     </Text>
                 )}
-                <Button type="submit" mt="sm">
-                    Submit
-                </Button>
+
+                <Group mt="md" spacing="xs">
+                    <Button type="submit" radius="lg">
+                        Submit
+                    </Button>
+                    <Button
+                        variant="outline"
+                        radius="lg"
+                        onClick={handleCancel}
+                    >
+                        Cancel
+                    </Button>
+                </Group>
             </form>
-        </>
+        </Paper>
     );
 };
 

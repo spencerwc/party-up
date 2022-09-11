@@ -11,6 +11,14 @@ const GlobalStyle = () => {
                             ? theme.colors.dark[8]
                             : theme.colors.gray[1],
                 },
+
+                '.mantine-Input-input': {
+                    backgroundColor:
+                        theme.colorScheme === 'dark'
+                            ? theme.colors.dark[7]
+                            : theme.white,
+                    marginTop: 5,
+                },
             })}
         />
     );
