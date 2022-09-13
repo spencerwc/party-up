@@ -33,12 +33,12 @@ const useStyles = createStyles((theme) => ({
         borderRadius: 0,
         overflow: 'hidden',
         whiteSpace: 'nowrap',
+        boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             padding: 0,
             border: 'none',
             borderRadius: theme.radius.lg,
-            boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
             transition: 'all 0.25s',
 
             '&:hover': {

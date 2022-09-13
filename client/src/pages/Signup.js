@@ -22,24 +22,18 @@ const useStyles = createStyles((theme) => ({
     },
 
     form: {
-        borderRight: `1px solid ${
-            theme.colorScheme === 'dark'
-                ? theme.colors.dark[7]
-                : theme.colors.gray[3]
-        }`,
         height: '100%',
         maxWidth: '100%',
-        paddingTop: 80,
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             maxWidth: 500,
-            marginLeft: 100,
+            height: 'auto',
+            position: 'relative',
+            left: 200,
+            top: 200,
+            borderRadius: theme.radius.lg,
+            boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
         },
-    },
-
-    title: {
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     },
 
     logo: {
@@ -69,56 +63,50 @@ const Signup = () => {
 
     return (
         <div className={classes.wrapper}>
-            <Paper className={classes.form} radius={0} p={30}>
-                <Title
-                    order={2}
-                    className={classes.title}
-                    align="center"
-                    mt="md"
-                    mb={50}
-                >
+            <Paper className={classes.form} px="lg" py="xl">
+                <Title order={1} align="center" m="md" size={20}>
                     Get ready to party up!
                 </Title>
 
                 <form onSubmit={handleSubmit}>
                     <TextInput
+                        radius="md"
                         label="Email address"
                         placeholder="hello@gmail.com"
-                        size="md"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextInput
+                        radius="md"
                         label="Username"
                         placeholder="Your username"
                         mt="md"
-                        size="md"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                     <PasswordInput
+                        radius="md"
                         label="Password"
                         placeholder="Your password"
                         mt="md"
-                        size="md"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
                     {error && (
-                        <Text mt="md" color="red">
+                        <Text mt="md" size="sm" color="red">
                             {error}
                         </Text>
                     )}
 
-                    <Button type="submit" fullWidth mt="xl" size="md">
+                    <Button type="submit" fullWidth mt="xl" radius="md">
                         Sign up
                     </Button>
                 </form>
 
-                <Text align="center" mt="md">
+                <Text align="center" mt="xl">
                     Already have an account?{' '}
-                    <Anchor component={Link} to="/login" weight={700}>
+                    <Anchor component={Link} to="/login" weight={500}>
                         Log in
                     </Anchor>
                 </Text>
