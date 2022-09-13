@@ -10,7 +10,7 @@ const FilterForm = ({ placeholder, filter }) => {
         <TextInput
             mt="md"
             icon={<IconSearch size={18} stroke={1.5} />}
-            size="md"
+            radius="md"
             placeholder={placeholder}
             rightSectionWidth={42}
             onChange={handleChange}
