@@ -30,6 +30,10 @@ const useStyles = createStyles((theme) => ({
                 : theme.colors.gray[2]
         }`,
 
+        '&:first-of-type': {
+            borderTop: '0px',
+        },
+
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             transition: 'all 0.25s',
 
@@ -41,6 +45,11 @@ const useStyles = createStyles((theme) => ({
                 },
             },
         },
+    },
+
+    leader: {
+        color: theme.colors.yellow[6],
+        fill: theme.colors.yellow[6],
     },
 }));
 
@@ -67,7 +76,11 @@ const UserList = ({ leader, users }) => {
                                 <Text size="sm" color="dimmed">
                                     {user.username === leader.username ? (
                                         <Group spacing={5}>
-                                            <IconCrown size={18} /> Leader
+                                            <IconCrown
+                                                className={classes.leader}
+                                                size={18}
+                                            />{' '}
+                                            Leader
                                         </Group>
                                     ) : (
                                         'Member'
@@ -79,7 +92,7 @@ const UserList = ({ leader, users }) => {
                 ))
             ) : (
                 <Center p="md">
-                    <Text>No members found.</Text>
+                    <Text color="dimmed">No members found.</Text>
                 </Center>
             )}
         </Stack>

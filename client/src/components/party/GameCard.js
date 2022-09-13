@@ -16,6 +16,7 @@ const useStyles = createStyles((theme) => ({
             theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
         boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
         padding: theme.spacing.md,
+        borderRadius: theme.radius.lg,
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             backgroundColor: 'transparent',
