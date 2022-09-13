@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
-import {
-    Container,
-    Title,
-    Anchor,
-    Group,
-    Stack,
-    ActionIcon,
-} from '@mantine/core';
+import { Box, Title, Anchor, Group, Stack, ActionIcon } from '@mantine/core';
 import { IconChevronLeft } from '@tabler/icons';
 import MinimalLoader from '../components/general/MinimalLoader';
 import UserList from '../components/users/UserList';
@@ -33,26 +26,34 @@ const PartyMembers = () => {
 
     if (party) {
         return (
-            <Container m="md" p={0}>
-                <Group>
+            <Box mt="md" mb={68}>
+                <Group mx="md">
                     <ActionIcon component={Link} to={`/parties/${party._id}`}>
                         <IconChevronLeft />
                     </ActionIcon>
                     <Stack spacing={0}>
-                        <Title order={1} size={21}>
+                        <Title order={1} size={20}>
                             Members
                         </Title>
-                        <Anchor component={Link} to={`/parties/${party._id}`}>
+                        <Anchor
+                            weight={500}
+                            component={Link}
+                            to={`/parties/${party._id}`}
+                        >
                             {party.name}
                         </Anchor>
                     </Stack>
                 </Group>
-                <FilterForm
-                    placeholder="Search members"
-                    filter={filterMembers}
-                />
+
+                <Box mx="md">
+                    <FilterForm
+                        placeholder="Search members"
+                        filter={filterMembers}
+                    />
+                </Box>
+
                 <UserList leader={party.leader} users={filteredMembers} />
-            </Container>
+            </Box>
         );
     }
 
