@@ -12,6 +12,7 @@ import TextBlock from '../components/general/TextBlock';
 import ConfirmationModal from '../components/general/ConfirmationModal';
 import PartyLeaderActions from '../components/party/PartyLeaderActions';
 import CommentsList from '../components/general/CommentsList';
+import RegisterModal from '../components/general/RegisterModal';
 
 const Party = () => {
     const { user } = useAuthContext();
@@ -23,26 +24,35 @@ const Party = () => {
     const [isPending, setIsPending] = useState(false);
     const [isConfirmingLeave, setIsConfirmingLeave] = useState(false);
     const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+    const [isRegistering, setIsRegistering] = useState(false);
     const [memberError, setMemberError] = useState(null);
     const [partyError, setPartyError] = useState(null);
 
     const handleJoin = async () => {
-        setIsPending(true);
+        if (!user) {
+            setIsRegistering(true);
+            return;
+        } else {
+            setIsPending(true);
 
-        const response = await fetch(`/api/parties/${party._id}/members/join`, {
-            method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${user.token}`,
-            },
-        });
+            const response = await fetch(
+                `/api/parties/${party._id}/members/join`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                }
+            );
 
-        if (!response.ok) {
-            setMemberError('Could not join party');
-            setIsPending(false);
-        }
+            if (!response.ok) {
+                setMemberError('Could not join party');
+                setIsPending(false);
+            }
 
-        if (response.ok) {
-            navigate(0);
+            if (response.ok) {
+                navigate(0);
+            }
         }
     };
 
@@ -144,6 +154,12 @@ const Party = () => {
                     action={handleLeave}
                 />
 
+                {/* Displayed on action if user is not logged in or registered */}
+                <RegisterModal
+                    isOpen={isRegistering}
+                    setIsOpen={setIsRegistering}
+                />
+
                 {/* Party deletion confirmation */}
                 <ConfirmationModal
                     isConfirming={isConfirmingDelete}
@@ -213,6 +229,8 @@ const Party = () => {
                         title="Comments"
                         commentData={party.comments}
                         uri={`/api/parties/${id}/comments`}
+                        isRegistering={isRegistering}
+                        setIsRegistering={setIsRegistering}
                     />
                 </Stack>
             </Box>

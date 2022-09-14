@@ -1,4 +1,3 @@
-import { useAuthContext } from '../../hooks/useAuthContext';
 import { Button, Text, Stack } from '@mantine/core';
 
 const PartyMembershipActions = ({
@@ -10,8 +9,6 @@ const PartyMembershipActions = ({
     setIsConfirmingLeave,
     memberError,
 }) => {
-    const { user } = useAuthContext();
-
     // If user is leader, notify them
     if (isLeader) {
         return <Text color="dimmed">You are the leader of this party.</Text>;
@@ -26,7 +23,8 @@ const PartyMembershipActions = ({
                     radius="lg"
                     color="red.8"
                     onClick={() => setIsConfirmingLeave(true)}
-                    disabled={isPending}
+                    loading={isPending}
+                    disabled={memberError}
                     sx={{ width: 'fit-content' }}
                 >
                     Leave Party
@@ -45,7 +43,8 @@ const PartyMembershipActions = ({
         <Button
             radius="lg"
             mt="sm"
-            disabled={!user || isPending || memberError}
+            loading={isPending}
+            disabled={memberError}
             onClick={handleJoin}
         >
             Join Party

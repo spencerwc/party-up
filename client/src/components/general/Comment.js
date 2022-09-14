@@ -63,6 +63,7 @@ const Comment = ({
     likes,
     deleteComment,
     isPending,
+    setIsRegistering,
 }) => {
     const { classes } = useStyles();
     const { user } = useAuthContext();
@@ -103,9 +104,9 @@ const Comment = ({
         deleteComment(id);
     };
 
-    const handleClick = async () => {
+    const handleLike = async () => {
         if (!user) {
-            alert('Please log in');
+            setIsRegistering(true);
         } else if (!isLiked) {
             likeComment();
         } else {
@@ -155,6 +156,7 @@ const Comment = ({
                     </Center>
                 </Overlay>
             )}
+
             <Group position="apart">
                 <Group>
                     <Anchor component={Link} to={`/users/${author.username}`}>
@@ -165,6 +167,7 @@ const Comment = ({
                             size={50}
                         />
                     </Anchor>
+
                     <div>
                         <Anchor
                             component={Link}
@@ -178,7 +181,8 @@ const Comment = ({
                         </Text>
                     </div>
                 </Group>
-                {user.username === author.username && (
+
+                {user && user.username === author.username && (
                     <Menu position="bottom-end" radius="md">
                         <Menu.Target>
                             <OptionsButton />
@@ -203,12 +207,13 @@ const Comment = ({
                     </Menu>
                 )}
             </Group>
+
             <TypographyStylesProvider className={classes.body}>
                 <Stack>
                     <Text>{comment}</Text>
                     <Group>
                         <Group spacing={2} sx={{ marginLeft: 'auto' }}>
-                            <ActionIcon size="sm" onClick={handleClick}>
+                            <ActionIcon size="sm" onClick={handleLike}>
                                 {isLiked ? (
                                     <IconHeart color="#F06595" fill="#F06595" />
                                 ) : (

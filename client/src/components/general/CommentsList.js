@@ -32,7 +32,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const CommentsList = ({ title, commentData, uri }) => {
+const CommentsList = ({ title, commentData, uri, setIsRegistering }) => {
     const { user } = useAuthContext();
     const { classes } = useStyles();
     const [comments, setComments] = useState(commentData);
@@ -214,6 +214,7 @@ const CommentsList = ({ title, commentData, uri }) => {
                                         likes={comment.likes}
                                         deleteComment={deleteComment}
                                         isPending={isPending}
+                                        setIsRegistering={setIsRegistering}
                                     />
                                 </li>
                             );
