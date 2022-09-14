@@ -153,7 +153,7 @@ const CommentsList = ({ title, commentData, uri }) => {
                     data={['Most recent', 'Oldest', 'Most liked']}
                     radius="md"
                     mx="md"
-                    size="xs"
+                    size="sm"
                     sx={{ width: 'fit-content' }}
                 />
             )}

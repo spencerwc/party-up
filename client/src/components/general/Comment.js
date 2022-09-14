@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -13,8 +13,9 @@ import {
     Paper,
     Stack,
     ActionIcon,
+    Menu,
 } from '@mantine/core';
-import { IconHeart } from '@tabler/icons';
+import { IconHeart, IconDots, IconTrash, IconEdit } from '@tabler/icons';
 
 dayjs.extend(relativeTime);
 
@@ -42,6 +43,12 @@ const useStyles = createStyles((theme) => ({
         paddingTop: theme.spacing.sm,
     },
 }));
+
+const OptionsButton = forwardRef(({ ...props }, ref) => (
+    <ActionIcon ref={ref} {...props} mb="auto">
+        <IconDots size={20} />
+    </ActionIcon>
+));
 
 const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
     const { classes } = useStyles();
@@ -90,27 +97,55 @@ const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
 
     return (
         <Paper className={classes.comment}>
-            <Group>
-                <Anchor component={Link} to={`/users/${author.username}`}>
-                    <Avatar
-                        src={author.avatar_url}
-                        alt={author.username}
-                        radius="xl"
-                        size={50}
-                    />
-                </Anchor>
-                <div>
-                    <Anchor
-                        component={Link}
-                        to={`/users/${author.username}`}
-                        variant="text"
-                    >
-                        <Text weight={500}>{author.username}</Text>
+            <Group position="apart">
+                <Group>
+                    <Anchor component={Link} to={`/users/${author.username}`}>
+                        <Avatar
+                            src={author.avatar_url}
+                            alt={author.username}
+                            radius="xl"
+                            size={50}
+                        />
                     </Anchor>
-                    <Text color="dimmed" size="sm">
-                        {dayjs(createdAt).fromNow()}
-                    </Text>
-                </div>
+                    <div>
+                        <Anchor
+                            component={Link}
+                            to={`/users/${author.username}`}
+                            variant="text"
+                        >
+                            <Text weight={500}>{author.username}</Text>
+                        </Anchor>
+                        <Text color="dimmed" size="sm">
+                            {dayjs(createdAt).fromNow()}
+                        </Text>
+                    </div>
+                </Group>
+                {user.username === author.username && (
+                    <Menu position="bottom-end" radius="md">
+                        <Menu.Target>
+                            <OptionsButton />
+                        </Menu.Target>
+                        <Menu.Dropdown
+                            sx={(theme) => ({
+                                boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
+                                backgroundColor:
+                                    theme.colorScheme === 'dark'
+                                        ? theme.colors.dark[7]
+                                        : theme.white,
+                            })}
+                        >
+                            <Menu.Item icon={<IconEdit size={14} />}>
+                                Edit
+                            </Menu.Item>
+                            <Menu.Item
+                                color="red"
+                                icon={<IconTrash size={14} />}
+                            >
+                                Delete
+                            </Menu.Item>
+                        </Menu.Dropdown>
+                    </Menu>
+                )}
             </Group>
             <TypographyStylesProvider className={classes.body}>
                 <Stack>
