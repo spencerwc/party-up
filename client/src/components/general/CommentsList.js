@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { Title, Loader, Center, createStyles, Stack } from '@mantine/core';
+import {
+    Title,
+    Loader,
+    Center,
+    createStyles,
+    Stack,
+    Group,
+    Button,
+} from '@mantine/core';
+import { IconPencil } from '@tabler/icons';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 
@@ -27,6 +36,7 @@ const CommentsList = ({ title, commentData, uri }) => {
     const [likedComments, setLikedComments] = useState(null);
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState(null);
+    const [displayForm, setDisplayForm] = useState(false);
 
     const getLikedState = (id) => {
         return likedComments.includes(id);
@@ -90,15 +100,29 @@ const CommentsList = ({ title, commentData, uri }) => {
     }
     return (
         <Stack>
-            <Title order={2} size={20} ml="md">
-                {title}
-            </Title>
+            <Group position="apart">
+                <Title order={2} size={20} ml="md">
+                    {title}
+                </Title>
+                {user && (
+                    <Button
+                        compact
+                        leftIcon={<IconPencil size={16} />}
+                        onClick={() => setDisplayForm(!displayForm)}
+                        mr="md"
+                        radius="md"
+                    >
+                        Add a comment
+                    </Button>
+                )}
+            </Group>
 
-            {user && (
+            {user && displayForm && (
                 <CommentForm
                     addComment={addComment}
                     isPending={isPending}
                     error={error}
+                    setDisplayForm={setDisplayForm}
                 />
             )}
 

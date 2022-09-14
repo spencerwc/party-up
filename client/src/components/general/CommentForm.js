@@ -1,7 +1,7 @@
-import { Textarea, Box, Button, Group, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { Textarea, Box, Button, Group, Text } from '@mantine/core';
 
-const CommentForm = ({ addComment, isPending, error }) => {
+const CommentForm = ({ addComment, isPending, error, setDisplayForm }) => {
     const commentForm = useForm({
         initialValues: {
             comment: '',
@@ -21,12 +21,12 @@ const CommentForm = ({ addComment, isPending, error }) => {
         await addComment(values);
 
         if (!error) {
-            commentForm.reset();
+            setDisplayForm(false);
         }
     };
 
     const handleCancel = () => {
-        console.log('Canceled');
+        setDisplayForm(false);
     };
 
     return (
@@ -47,7 +47,7 @@ const CommentForm = ({ addComment, isPending, error }) => {
                     </Text>
                 )}
                 <Group mt="md" spacing="xs" position="right">
-                    <Button type="submit" radius="lg" disabled={isPending}>
+                    <Button type="submit" radius="lg" loading={isPending}>
                         Submit
                     </Button>
                     <Button
