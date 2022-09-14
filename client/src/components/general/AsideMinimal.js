@@ -8,6 +8,7 @@ import {
     createStyles,
 } from '@mantine/core';
 import ColorSchemeToggle from '../general/ColorSchemeToggle';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const useStyles = createStyles((theme) => ({
     aside: {
@@ -26,14 +27,23 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const AsideMinimal = () => {
+const AsideMinimal = ({ setIsRegistering }) => {
     const { classes } = useStyles();
+    const { user } = useAuthContext();
     const navigate = useNavigate();
+
+    const handleStartPartyClick = () => {
+        if (!user) {
+            setIsRegistering(true);
+        } else {
+            navigate('/parties/new');
+        }
+    };
 
     return (
         <MediaQuery className={classes.aside}>
             <Aside py="md" pr="md" hiddenBreakpoint="sm">
-                <Button onClick={() => navigate('/parties/new')} radius="md">
+                <Button onClick={handleStartPartyClick} radius="md">
                     Start a Party
                 </Button>
                 <Paper

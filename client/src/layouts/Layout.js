@@ -7,6 +7,8 @@ import Party from '../pages/Party';
 import CreateParty from '../pages/CreateParty';
 import EditParty from '../pages/EditParty';
 import PartyMembers from '../pages/PartyMembers';
+import RegisterModal from '../components/general/RegisterModal';
+import { useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -39,10 +41,17 @@ const useStyles = createStyles((theme) => ({
 
 const Layout = () => {
     const { classes } = useStyles();
+    const [isRegistering, setIsRegistering] = useState(false);
 
     return (
         <>
             <Header height={60} className={classes.header} />
+
+            {/* Displayed on action if user is not logged in or registered */}
+            <RegisterModal
+                isOpen={isRegistering}
+                setIsOpen={setIsRegistering}
+            />
 
             <div className={classes.container}>
                 <NavbarMinimal />
@@ -52,7 +61,12 @@ const Layout = () => {
                         <Route path="/" element={<h1>Home</h1>} />
                         <Route path="parties" element={<Parties />} />
                         <Route path="parties/new" element={<CreateParty />} />
-                        <Route path="parties/:id" element={<Party />} />
+                        <Route
+                            path="parties/:id"
+                            element={
+                                <Party setIsRegistering={setIsRegistering} />
+                            }
+                        />
                         <Route
                             path="parties/:id/edit"
                             element={<EditParty />}
@@ -64,7 +78,7 @@ const Layout = () => {
                     </Routes>
                 </main>
 
-                <AsideMinimal />
+                <AsideMinimal setIsRegistering={setIsRegistering} />
             </div>
         </>
     );

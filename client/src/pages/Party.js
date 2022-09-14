@@ -12,9 +12,8 @@ import TextBlock from '../components/general/TextBlock';
 import ConfirmationModal from '../components/general/ConfirmationModal';
 import PartyLeaderActions from '../components/party/PartyLeaderActions';
 import CommentsList from '../components/general/CommentsList';
-import RegisterModal from '../components/general/RegisterModal';
 
-const Party = () => {
+const Party = ({ setIsRegistering }) => {
     const { user } = useAuthContext();
     const { id } = useParams();
     const navigate = useNavigate();
@@ -24,7 +23,6 @@ const Party = () => {
     const [isPending, setIsPending] = useState(false);
     const [isConfirmingLeave, setIsConfirmingLeave] = useState(false);
     const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
-    const [isRegistering, setIsRegistering] = useState(false);
     const [memberError, setMemberError] = useState(null);
     const [partyError, setPartyError] = useState(null);
 
@@ -152,12 +150,7 @@ const Party = () => {
                     title="Are you sure you want to leave?"
                     body="You will be removed from the party."
                     action={handleLeave}
-                />
-
-                {/* Displayed on action if user is not logged in or registered */}
-                <RegisterModal
-                    isOpen={isRegistering}
-                    setIsOpen={setIsRegistering}
+                    isPending={isPending}
                 />
 
                 {/* Party deletion confirmation */}
@@ -167,6 +160,7 @@ const Party = () => {
                     title="Are you sure you want to disband?"
                     body="This action cannot be undone."
                     action={handleDelete}
+                    isPending={isPending}
                 />
 
                 {/* General party details */}
@@ -229,7 +223,6 @@ const Party = () => {
                         title="Comments"
                         commentData={party.comments}
                         uri={`/api/parties/${id}/comments`}
-                        isRegistering={isRegistering}
                         setIsRegistering={setIsRegistering}
                     />
                 </Stack>
