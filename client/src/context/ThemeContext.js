@@ -19,6 +19,10 @@ const GlobalStyle = () => {
                             : theme.white,
                     marginTop: 5,
                 },
+
+                '.mantine-Modal-header': {
+                    marginBottom: 0,
+                },
             })}
         />
     );
