@@ -9,6 +9,8 @@ import {
     Group,
     Button,
     Select,
+    Text,
+    Box,
 } from '@mantine/core';
 import { IconPencil } from '@tabler/icons';
 import Comment from './Comment';
@@ -172,38 +174,54 @@ const CommentsList = ({ title, commentData, uri }) => {
                 />
             )}
 
-            {!displayForm && (
-                <Select
-                    value={sortStyle}
-                    onChange={setSortStyle}
-                    data={['Most recent', 'Oldest', 'Most liked']}
-                    radius="md"
-                    mx="md"
-                    size="sm"
-                    sx={{ width: 'fit-content' }}
-                />
-            )}
+            {comments.length > 0 ? (
+                <>
+                    {!displayForm && (
+                        <Select
+                            value={sortStyle}
+                            onChange={setSortStyle}
+                            data={['Most recent', 'Oldest', 'Most liked']}
+                            radius="md"
+                            mx="md"
+                            size="sm"
+                            sx={{ width: 'fit-content' }}
+                        />
+                    )}
 
-            <ul className={classes.comments}>
-                {handleSort(comments).map((comment) => {
-                    return (
-                        <li key={comment._id}>
-                            <Comment
-                                id={comment._id}
-                                author={comment.user}
-                                comment={comment.comment}
-                                createdAt={comment.createdAt}
-                                isLikedState={
-                                    user ? getLikedState(comment._id) : false
-                                }
-                                likes={comment.likes ? comment.likes : 0}
-                                deleteComment={deleteComment}
-                                isPending={isPending}
-                            />
-                        </li>
-                    );
-                })}
-            </ul>
+                    <ul className={classes.comments}>
+                        {handleSort(comments).map((comment) => {
+                            return (
+                                <li key={comment._id}>
+                                    <Comment
+                                        id={comment._id}
+                                        author={comment.user}
+                                        comment={comment.comment}
+                                        createdAt={comment.createdAt}
+                                        isLikedState={
+                                            user
+                                                ? getLikedState(comment._id)
+                                                : false
+                                        }
+                                        likes={
+                                            comment.likes ? comment.likes : 0
+                                        }
+                                        deleteComment={deleteComment}
+                                        isPending={isPending}
+                                    />
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </>
+            ) : (
+                <Box px="md">
+                    {!displayForm && (
+                        <Text color="dimmed" mb={30}>
+                            No comments have been made yet.
+                        </Text>
+                    )}
+                </Box>
+            )}
         </Stack>
     );
 };
