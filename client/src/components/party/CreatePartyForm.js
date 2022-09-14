@@ -213,7 +213,7 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
                         Submit
                     </Button>
                     <Button
-                        variant="outline"
+                        variant="default"
                         radius="lg"
                         onClick={handleCancel}
                     >

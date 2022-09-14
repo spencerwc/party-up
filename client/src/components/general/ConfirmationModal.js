@@ -23,7 +23,7 @@ const ConfirmationModal = ({
                     </Button>
                     <Button
                         radius="lg"
-                        variant="outline"
+                        variant="default"
                         onClick={() => setIsConfirming(false)}
                     >
                         Cancel

@@ -219,7 +219,7 @@ const EditPartyForm = ({
                         Submit
                     </Button>
                     <Button
-                        variant="outline"
+                        variant="default"
                         radius="lg"
                         onClick={handleCancel}
                     >
