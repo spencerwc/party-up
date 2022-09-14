@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { Title, Loader, Center, createStyles, Stack } from '@mantine/core';
 import Comment from './Comment';
+import CommentForm from './CommentForm';
 
 const useStyles = createStyles((theme) => ({
     comments: {
@@ -19,14 +20,41 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const CommentsList = ({ title, commentData }) => {
+const CommentsList = ({ title, commentData, uri }) => {
     const { user } = useAuthContext();
     const { classes } = useStyles();
     const [comments, setComments] = useState(commentData);
     const [likedComments, setLikedComments] = useState(null);
+    const [isPending, setIsPending] = useState(false);
+    const [error, setError] = useState(null);
 
     const getLikedState = (id) => {
         return likedComments.includes(id);
+    };
+
+    const addComment = async (comment) => {
+        setIsPending(true);
+
+        const response = await fetch(uri, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(comment),
+        });
+
+        const json = await response.json();
+
+        if (!response.ok) {
+            setError(json.error);
+        }
+
+        if (response.ok) {
+            setComments([json, ...comments]);
+        }
+
+        setIsPending(false);
     };
 
     useEffect(() => {
@@ -65,6 +93,15 @@ const CommentsList = ({ title, commentData }) => {
             <Title order={2} size={20} ml="md">
                 {title}
             </Title>
+
+            {user && (
+                <CommentForm
+                    addComment={addComment}
+                    isPending={isPending}
+                    error={error}
+                />
+            )}
+
             <ul className={classes.comments}>
                 {comments.map((comment) => {
                     return (

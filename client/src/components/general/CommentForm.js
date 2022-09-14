@@ -1,7 +1,7 @@
-import { Textarea, Box, Button, Group } from '@mantine/core';
+import { Textarea, Box, Button, Group, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
-const CommentForm = () => {
+const CommentForm = ({ addComment, isPending, error }) => {
     const commentForm = useForm({
         initialValues: {
             comment: '',
@@ -18,7 +18,11 @@ const CommentForm = () => {
     });
 
     const handleSubmit = async (values) => {
-        console.log(values);
+        await addComment(values);
+
+        if (!error) {
+            commentForm.reset();
+        }
     };
 
     const handleCancel = () => {
@@ -33,17 +37,24 @@ const CommentForm = () => {
             >
                 <Textarea
                     radius="md"
+                    placeholder="Add a comment"
                     {...commentForm.getInputProps('comment')}
                     minRows={2}
                 />
+                {error && (
+                    <Text size="sm" color="red" m="sm">
+                        {error}
+                    </Text>
+                )}
                 <Group mt="md" spacing="xs" position="right">
-                    <Button type="submit" radius="lg">
+                    <Button type="submit" radius="lg" disabled={isPending}>
                         Submit
                     </Button>
                     <Button
                         variant="outline"
                         radius="lg"
                         onClick={handleCancel}
+                        disabled={isPending}
                     >
                         Cancel
                     </Button>

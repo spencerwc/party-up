@@ -29,19 +29,19 @@ const Party = () => {
     const handleJoin = async () => {
         setIsPending(true);
 
-        const res = await fetch(`/api/parties/${party._id}/members/join`, {
+        const response = await fetch(`/api/parties/${party._id}/members/join`, {
             method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${user.token}`,
             },
         });
 
-        if (!res.ok) {
+        if (!response.ok) {
             setMemberError('Could not join party');
             setIsPending(false);
         }
 
-        if (res.ok) {
+        if (response.ok) {
             navigate(0);
         }
     };
@@ -49,19 +49,22 @@ const Party = () => {
     const handleLeave = async () => {
         setIsPending(true);
 
-        const res = await fetch(`/api/parties/${party._id}/members/leave`, {
-            method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${user.token}`,
-            },
-        });
+        const response = await fetch(
+            `/api/parties/${party._id}/members/leave`,
+            {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
+        );
 
-        if (!res.ok) {
+        if (!response.ok) {
             setMemberError('Could not leave party');
             setIsPending(false);
         }
 
-        if (res.ok) {
+        if (response.ok) {
             navigate(0);
         }
     };
@@ -201,6 +204,7 @@ const Party = () => {
                     <CommentsList
                         title="Comments"
                         commentData={party.comments}
+                        uri={`/api/parties/${id}/comments`}
                     />
                 </Stack>
             </Box>

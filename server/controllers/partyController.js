@@ -265,7 +265,7 @@ const addComment = async (req, res) => {
 
     try {
         // Create the comment and add to the party
-        const comment = await Comment.create({
+        let comment = await Comment.create({
             user: userId,
             comment: req.body.comment,
         });
@@ -281,6 +281,8 @@ const addComment = async (req, res) => {
             }
         );
 
+        // Populate the user before sending response
+        comment = await comment.populate('user');
         res.status(200).json(comment);
     } catch (error) {
         res.status(400).json({ error: error.message });
