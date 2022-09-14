@@ -263,28 +263,70 @@ const addComment = async (req, res) => {
         return res.status(404).json({ error: 'Party not found' });
     }
 
+    const party = await Party.findById(id);
+
+    if (!party) {
+        return res.status(404).json({ error: 'Party not found' });
+    }
+
     try {
-        // Create the comment and add to the party
+        // Create a new comment
         let comment = await Comment.create({
             user: userId,
             comment: req.body.comment,
             likes: 0,
         });
 
-        await Party.findByIdAndUpdate(
-            {
-                _id: id,
+        // Add comment to party and save
+        await party.update({
+            $addToSet: {
+                comments: comment,
             },
-            {
-                $addToSet: {
-                    comments: comment,
-                },
-            }
-        );
+        });
+        await party.save();
 
         // Populate the user before sending response
         comment = await comment.populate('user');
+
         res.status(200).json(comment);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const deleteComment = async (req, res) => {
+    const { partyId, commentId } = req.params;
+    const userId = req.user._id;
+
+    const party = await Party.findById(partyId);
+
+    if (!party) {
+        return res.status(404).json({ error: 'Party not found' });
+    }
+
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+        return res.status(404).json({ error: 'Comment not found' });
+    }
+
+    // Check if user has permissions to delete
+    if (!userId.equals(comment.user)) {
+        return res.status(400).json({ error: 'Insufficient permissions' });
+    }
+
+    try {
+        // Delete comment from party and Comments db
+        await party.update({
+            $pull: {
+                comments: commentId,
+            },
+        });
+        await party.save();
+
+        const deleted = await comment.delete();
+
+        res.status(200).json(deleted);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -299,4 +341,5 @@ module.exports = {
     joinParty,
     leaveParty,
     addComment,
+    deleteComment,
 };

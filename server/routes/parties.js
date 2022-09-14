@@ -8,6 +8,7 @@ const {
     joinParty,
     leaveParty,
     addComment,
+    deleteComment,
 } = require('../controllers/partyController');
 const requireAuth = require('../middleware/requireAuth');
 
@@ -21,5 +22,6 @@ router.delete('/:id', requireAuth, deleteParty);
 router.patch('/:id/members/join', requireAuth, joinParty);
 router.patch('/:id/members/leave', requireAuth, leaveParty);
 router.post('/:id/comments', requireAuth, addComment);
+router.delete('/:partyId/comments/:commentId', requireAuth, deleteComment);
 
 module.exports = router;
