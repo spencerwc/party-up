@@ -8,6 +8,7 @@ import {
     Stack,
     Group,
     Button,
+    Select,
 } from '@mantine/core';
 import { IconPencil } from '@tabler/icons';
 import Comment from './Comment';
@@ -37,6 +38,24 @@ const CommentsList = ({ title, commentData, uri }) => {
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState(null);
     const [displayForm, setDisplayForm] = useState(false);
+    const [sortStyle, setSortStyle] = useState('Most recent');
+
+    const handleSort = () => {
+        switch (sortStyle) {
+            case 'Oldest': {
+                return comments.sort(
+                    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+                );
+            }
+            case 'Most liked': {
+                return comments.sort((a, b) => b.likes - a.likes);
+            }
+            default:
+                return comments.sort(
+                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                );
+        }
+    };
 
     const getLikedState = (id) => {
         return likedComments.includes(id);
@@ -104,12 +123,13 @@ const CommentsList = ({ title, commentData, uri }) => {
                 <Title order={2} size={20} ml="md">
                     {title}
                 </Title>
+
                 {user && (
                     <Button
                         compact
                         leftIcon={<IconPencil size={16} />}
                         onClick={() => setDisplayForm(!displayForm)}
-                        mr="md"
+                        mx="md"
                         radius="md"
                     >
                         Add a comment
@@ -126,8 +146,20 @@ const CommentsList = ({ title, commentData, uri }) => {
                 />
             )}
 
+            {!displayForm && (
+                <Select
+                    value={sortStyle}
+                    onChange={setSortStyle}
+                    data={['Most recent', 'Oldest', 'Most liked']}
+                    radius="md"
+                    mx="md"
+                    size="xs"
+                    sx={{ width: 'fit-content' }}
+                />
+            )}
+
             <ul className={classes.comments}>
-                {comments.map((comment) => {
+                {handleSort(comments).map((comment) => {
                     return (
                         <li key={comment._id}>
                             <Comment

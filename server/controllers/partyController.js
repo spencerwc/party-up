@@ -268,6 +268,7 @@ const addComment = async (req, res) => {
         let comment = await Comment.create({
             user: userId,
             comment: req.body.comment,
+            likes: 0,
         });
 
         await Party.findByIdAndUpdate(
