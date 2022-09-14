@@ -14,6 +14,9 @@ import {
     Stack,
     ActionIcon,
     Menu,
+    Overlay,
+    Center,
+    Button,
 } from '@mantine/core';
 import { IconHeart, IconDots, IconTrash, IconEdit } from '@tabler/icons';
 
@@ -30,6 +33,7 @@ const useStyles = createStyles((theme) => ({
         }`,
         borderRadius: 0,
         padding: `${theme.spacing.lg}px ${theme.spacing.xl}px`,
+        position: 'relative',
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             border: 'none',
@@ -50,11 +54,21 @@ const OptionsButton = forwardRef(({ ...props }, ref) => (
     </ActionIcon>
 ));
 
-const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
+const Comment = ({
+    id,
+    author,
+    comment,
+    createdAt,
+    isLikedState,
+    likes,
+    deleteComment,
+    isPending,
+}) => {
     const { classes } = useStyles();
     const { user } = useAuthContext();
     const [likeCount, setLikeCount] = useState(likes);
     const [isLiked, setIsLiked] = useState(isLikedState);
+    const [isConfirming, setIsConfirming] = useState(false);
 
     const likeComment = () => {
         setIsLiked(true);
@@ -85,6 +99,10 @@ const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
         });
     };
 
+    const handleDelete = () => {
+        deleteComment(id);
+    };
+
     const handleClick = async () => {
         if (!user) {
             alert('Please log in');
@@ -97,6 +115,46 @@ const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
 
     return (
         <Paper className={classes.comment}>
+            {isConfirming && (
+                <Overlay
+                    opacity={1}
+                    zIndex={5}
+                    radius="lg"
+                    p="md"
+                    sx={(theme) => ({
+                        backgroundColor:
+                            theme.colorScheme === 'dark'
+                                ? theme.colors.dark[7]
+                                : theme.white,
+                    })}
+                >
+                    <Center>
+                        <Stack mt="xl">
+                            <Text>
+                                Are you sure you want to delete this comment?
+                            </Text>
+                            <Group mx="auto" spacing="xs">
+                                <Button
+                                    color="red.8"
+                                    radius="lg"
+                                    onClick={handleDelete}
+                                    loading={isPending}
+                                >
+                                    Delete
+                                </Button>
+                                <Button
+                                    variant="default"
+                                    radius="lg"
+                                    onClick={() => setIsConfirming(false)}
+                                    disabled={isPending}
+                                >
+                                    Cancel
+                                </Button>
+                            </Group>
+                        </Stack>
+                    </Center>
+                </Overlay>
+            )}
             <Group position="apart">
                 <Group>
                     <Anchor component={Link} to={`/users/${author.username}`}>
@@ -140,6 +198,7 @@ const Comment = ({ id, author, comment, createdAt, isLikedState, likes }) => {
                             <Menu.Item
                                 color="red"
                                 icon={<IconTrash size={14} />}
+                                onClick={() => setIsConfirming(true)}
                             >
                                 Delete
                             </Menu.Item>

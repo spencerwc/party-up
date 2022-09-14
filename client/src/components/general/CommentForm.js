@@ -51,7 +51,7 @@ const CommentForm = ({ addComment, isPending, error, setDisplayForm }) => {
                         Submit
                     </Button>
                     <Button
-                        variant="outline"
+                        variant="default"
                         radius="lg"
                         onClick={handleCancel}
                         disabled={isPending}

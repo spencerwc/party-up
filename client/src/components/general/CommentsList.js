@@ -86,6 +86,32 @@ const CommentsList = ({ title, commentData, uri }) => {
         setIsPending(false);
     };
 
+    const deleteComment = async (commentId) => {
+        setIsPending(true);
+
+        const response = await fetch(`${uri}/${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const json = await response.json();
+
+        if (!response.ok) {
+            setError(json.error);
+        }
+
+        if (response.ok) {
+            setComments(
+                comments.filter((comment) => comment._id !== commentId)
+            );
+        }
+
+        setIsPending(false);
+    };
+
     useEffect(() => {
         const getLikedComments = async () => {
             const response = await fetch(`/api/comments/likes`, {
@@ -171,6 +197,8 @@ const CommentsList = ({ title, commentData, uri }) => {
                                     user ? getLikedState(comment._id) : false
                                 }
                                 likes={comment.likes ? comment.likes : 0}
+                                deleteComment={deleteComment}
+                                isPending={isPending}
                             />
                         </li>
                     );
