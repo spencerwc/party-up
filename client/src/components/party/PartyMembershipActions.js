@@ -23,7 +23,6 @@ const PartyMembershipActions = ({
                     radius="lg"
                     color="red.8"
                     onClick={() => setIsConfirmingLeave(true)}
-                    loading={isPending}
                     disabled={memberError}
                     sx={{ width: 'fit-content' }}
                 >
