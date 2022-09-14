@@ -126,7 +126,15 @@ const Party = () => {
         const openings = party.lookingFor - (party.members.length - 1);
 
         return (
-            <Box pb={68}>
+            <Box
+                sx={(theme) => ({
+                    paddingBottom: 68,
+
+                    [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+                        paddingBottom: theme.spacing.md,
+                    },
+                })}
+            >
                 {/* Confirm leaving the party */}
                 <ConfirmationModal
                     isConfirming={isConfirmingLeave}

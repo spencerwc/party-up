@@ -18,7 +18,7 @@ import {
     Center,
     Button,
 } from '@mantine/core';
-import { IconHeart, IconDots, IconTrash, IconEdit } from '@tabler/icons';
+import { IconHeart, IconDots, IconTrash } from '@tabler/icons';
 
 dayjs.extend(relativeTime);
 
@@ -34,11 +34,11 @@ const useStyles = createStyles((theme) => ({
         borderRadius: 0,
         padding: `${theme.spacing.lg}px ${theme.spacing.xl}px`,
         position: 'relative',
+        boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             border: 'none',
             borderRadius: theme.radius.lg,
-            boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
         },
     },
 
@@ -192,9 +192,6 @@ const Comment = ({
                                         : theme.white,
                             })}
                         >
-                            <Menu.Item icon={<IconEdit size={14} />}>
-                                Edit
-                            </Menu.Item>
                             <Menu.Item
                                 color="red"
                                 icon={<IconTrash size={14} />}

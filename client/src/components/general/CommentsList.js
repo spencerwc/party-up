@@ -41,6 +41,8 @@ const CommentsList = ({ title, commentData, uri }) => {
     const [error, setError] = useState(null);
     const [displayForm, setDisplayForm] = useState(false);
     const [sortStyle, setSortStyle] = useState('Most recent');
+    const [showAll, setShowAll] = useState(false);
+    const COMMENT_LIMIT = 3; // Used to limit initial comments displayed
 
     const handleSort = () => {
         switch (sortStyle) {
@@ -145,6 +147,13 @@ const CommentsList = ({ title, commentData, uri }) => {
             </Center>
         );
     }
+
+    let sortedComments = handleSort(comments);
+
+    if (!showAll) {
+        sortedComments = sortedComments.slice(0, COMMENT_LIMIT);
+    }
+
     return (
         <Stack>
             <Group position="apart">
@@ -175,7 +184,7 @@ const CommentsList = ({ title, commentData, uri }) => {
             )}
 
             {comments.length > 0 ? (
-                <>
+                <Stack>
                     {!displayForm && (
                         <Select
                             value={sortStyle}
@@ -189,7 +198,7 @@ const CommentsList = ({ title, commentData, uri }) => {
                     )}
 
                     <ul className={classes.comments}>
-                        {handleSort(comments).map((comment) => {
+                        {sortedComments.map((comment) => {
                             return (
                                 <li key={comment._id}>
                                     <Comment
@@ -202,9 +211,7 @@ const CommentsList = ({ title, commentData, uri }) => {
                                                 ? getLikedState(comment._id)
                                                 : false
                                         }
-                                        likes={
-                                            comment.likes ? comment.likes : 0
-                                        }
+                                        likes={comment.likes}
                                         deleteComment={deleteComment}
                                         isPending={isPending}
                                     />
@@ -212,7 +219,52 @@ const CommentsList = ({ title, commentData, uri }) => {
                             );
                         })}
                     </ul>
-                </>
+
+                    {/* If more than limit comments, show button to reveal/hide all */}
+                    {comments.length > COMMENT_LIMIT && (
+                        <Box
+                            px="md"
+                            sx={(theme) => ({
+                                paddingBottom: theme.spacing.sm,
+
+                                [`@media (min-width: ${theme.breakpoints.md}px)`]:
+                                    {
+                                        paddingBottom: 0,
+                                    },
+                            })}
+                        >
+                            <Center>
+                                {showAll ? (
+                                    <Button
+                                        variant="subtle"
+                                        color="dark"
+                                        onClick={() => setShowAll(false)}
+                                        sx={{
+                                            '&:hover': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                        }}
+                                    >
+                                        Hide Comments
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="subtle"
+                                        color="dark"
+                                        onClick={() => setShowAll(true)}
+                                        sx={{
+                                            '&:hover': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                        }}
+                                    >
+                                        Show All Comments
+                                    </Button>
+                                )}
+                            </Center>
+                        </Box>
+                    )}
+                </Stack>
             ) : (
                 <Box px="md">
                     {!displayForm && (
