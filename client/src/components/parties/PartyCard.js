@@ -1,12 +1,4 @@
-import {
-    createStyles,
-    Card,
-    Avatar,
-    Text,
-    Group,
-    Stack,
-    ThemeIcon,
-} from '@mantine/core';
+import { createStyles, Card, Avatar, Text, Group, Stack } from '@mantine/core';
 import {
     IconUser,
     IconUsers,
@@ -54,7 +46,7 @@ const useStyles = createStyles((theme) => ({
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             padding: `${theme.spacing.sm}px`,
-            paddingLeft: `${theme.spacing.xl}px`,
+            paddingLeft: `${theme.spacing.md}px`,
         },
     },
 
@@ -92,9 +84,9 @@ const PartyCard = ({ party }) => {
     const openings = party.lookingFor - (party.members.length - 1); // Subtract one for the slot filled by leader
 
     return (
-        <Link to={party._id} className={classes.link}>
+        <Link to={`/parties/${party._id}`} className={classes.link}>
             <Card className={classes.card}>
-                <Group className={classes.inner} noWrap spacing="lg">
+                <Group className={classes.inner} noWrap spacing="sm">
                     <Avatar
                         className={classes.partyImage}
                         src={party.game.cover ? party.game.cover.url : null}
@@ -106,10 +98,10 @@ const PartyCard = ({ party }) => {
                         <Text color="dimmed" size="xs">
                             {dayjs(party.date).format('dddd, MMMM D')}
                         </Text>
-                        <Text weight={600} className={classes.partyName}>
+                        <Text weight={500} size="sm">
                             {party.name}
                         </Text>
-                        <Text size="xs" color="dimmed" mb={8}>
+                        <Text size="xs" color="dimmed" mb={4}>
                             {party.game.name}
                         </Text>
                         <Group spacing="sm">
