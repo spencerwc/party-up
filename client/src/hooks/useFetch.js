@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 
 export const useFetch = (url) => {
     const [data, setData] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const controller = new AbortController();
 
         const fetchData = async () => {
+            setIsLoading(true);
+
             try {
                 const res = await fetch(url, { signal: controller.signal });
 
@@ -19,10 +22,12 @@ export const useFetch = (url) => {
 
                 setData(data);
                 setError(null);
+                setIsLoading(false);
             } catch (error) {
                 if (error.name !== 'AbortError') {
                     setError('Could not fetch data');
                 }
+                setIsLoading(false);
             }
         };
 
@@ -33,5 +38,5 @@ export const useFetch = (url) => {
         };
     }, [url]);
 
-    return { data, error };
+    return { data, isLoading, error };
 };
