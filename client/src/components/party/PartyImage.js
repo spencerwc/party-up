@@ -14,7 +14,7 @@ const useStyles = createStyles((theme) => ({
             boxShadow: `${theme.colors.indigo[8]}66 5px 5px, 
                 ${theme.colors.indigo[8]}4D 10px 10px, 
                 ${theme.colors.indigo[8]}33 15px 15px`,
-            marginRight: 50,
+            marginRight: 10,
             marginBottom: 0,
         },
     },

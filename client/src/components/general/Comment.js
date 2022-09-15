@@ -32,7 +32,7 @@ const useStyles = createStyles((theme) => ({
                 : theme.colors.gray[2]
         }`,
         borderRadius: 0,
-        padding: `${theme.spacing.lg}px ${theme.spacing.xl}px`,
+        padding: `${theme.spacing.md}px ${theme.spacing.lg}px`,
         position: 'relative',
         boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
 

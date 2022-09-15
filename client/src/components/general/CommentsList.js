@@ -25,7 +25,7 @@ const useStyles = createStyles((theme) => ({
         margin: 0,
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
-            gap: theme.spacing.md,
+            gap: theme.spacing.sm,
             marginLeft: theme.spacing.md,
             marginRight: theme.spacing.md,
         },

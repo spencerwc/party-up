@@ -17,7 +17,7 @@ const Party = ({ setIsRegistering }) => {
     const { user } = useAuthContext();
     const { id } = useParams();
     const navigate = useNavigate();
-    const { data: party, error } = useFetch(`/api/parties/${id}`);
+    const { data: party, isLoading, error } = useFetch(`/api/parties/${id}`);
     const [isMember, setIsMember] = useState(false);
     const [isLeader, setIsLeader] = useState(false);
     const [isPending, setIsPending] = useState(false);
@@ -129,6 +129,10 @@ const Party = ({ setIsRegistering }) => {
             checkIfLeader();
         }
     }, [party, user]);
+
+    if (isLoading) {
+        return <MinimalLoader />;
+    }
 
     if (party) {
         const openings = party.lookingFor - (party.members.length - 1);
