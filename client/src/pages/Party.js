@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Box, Group, Stack, Text } from '@mantine/core';
+import dayjs from 'dayjs';
 import MinimalLoader from '../components/general/MinimalLoader';
 import PartyDetails from '../components/party/PartyDetails';
 import PartyImage from '../components/party/PartyImage';
@@ -12,6 +13,7 @@ import TextBlock from '../components/general/TextBlock';
 import ConfirmationModal from '../components/general/ConfirmationModal';
 import PartyLeaderActions from '../components/party/PartyLeaderActions';
 import CommentsList from '../components/general/CommentsList';
+import PartyShare from '../components/party/PartyShare';
 
 const Party = ({ setIsRegistering }) => {
     const { user } = useAuthContext();
@@ -173,7 +175,7 @@ const Party = ({ setIsRegistering }) => {
                         <PartyDetails party={party} openings={openings} />
 
                         {/* Actions for joining / leaving the party */}
-                        <Group>
+                        <Stack>
                             <PartyMembershipActions
                                 openings={openings}
                                 isMember={isMember}
@@ -186,11 +188,11 @@ const Party = ({ setIsRegistering }) => {
                             {memberError && (
                                 <Text color="red">{memberError}</Text>
                             )}
-                        </Group>
+                        </Stack>
 
                         {/* These management actions are only displayed to the leader */}
                         {isLeader && (
-                            <Group>
+                            <Stack>
                                 <PartyLeaderActions
                                     setIsConfirmingDelete={
                                         setIsConfirmingDelete
@@ -202,7 +204,7 @@ const Party = ({ setIsRegistering }) => {
                                         {partyError}
                                     </Text>
                                 )}
-                            </Group>
+                            </Stack>
                         )}
                     </Stack>
 
@@ -212,6 +214,11 @@ const Party = ({ setIsRegistering }) => {
                 </Group>
 
                 <Stack spacing="lg">
+                    <PartyShare
+                        message={`Party up with me for ${party.name} on ${dayjs(
+                            party.date
+                        ).format('dddd, MMMM D YYYY')}!`}
+                    />
                     {/* Party Description */}
                     <TextBlock title="About the Party" body={party.details} />
 

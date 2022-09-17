@@ -45,6 +45,7 @@ const PartyMembershipActions = ({
             loading={isPending}
             disabled={memberError}
             onClick={handleJoin}
+            sx={{ width: 'fit-content' }}
         >
             Join Party
         </Button>

@@ -18,7 +18,9 @@ const PartyLeaderActions = ({ setIsConfirmingDelete }) => {
             position="bottom-start"
         >
             <Menu.Target>
-                <Button radius="lg">Party Actions</Button>
+                <Button radius="lg" sx={{ width: 'fit-content' }}>
+                    Party Actions
+                </Button>
             </Menu.Target>
             <Menu.Dropdown>
                 <Menu.Label>Actions</Menu.Label>

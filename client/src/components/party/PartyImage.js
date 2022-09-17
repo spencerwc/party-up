@@ -2,12 +2,17 @@ import { Image, createStyles } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
     gameImage: {
-        maxWidth: 120,
-        boxShadow: `${theme.colors.indigo[8]}66 0px 5px, 
+        display: 'none',
+
+        [`@media (min-width: 550px)`]: {
+            display: 'block',
+            maxWidth: 120,
+            boxShadow: `${theme.colors.indigo[8]}66 0px 5px, 
             ${theme.colors.indigo[8]}4D 0px 10px, 
             ${theme.colors.indigo[8]}33 0px 15px
             `,
-        marginBottom: 'auto',
+            marginBottom: 'auto',
+        },
 
         [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
             maxWidth: 200,

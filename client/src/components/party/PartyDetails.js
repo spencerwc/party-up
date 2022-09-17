@@ -14,10 +14,17 @@ import { IconUsers, IconSearch } from '@tabler/icons';
 import dayjs from 'dayjs';
 
 const useStyles = createStyles((theme) => ({
-    mobileHidden: {
+    partyAvatar: {
         display: 'none',
-        [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-            display: 'inline',
+
+        [`@media (min-width: 350px)`]: {
+            display: 'block',
+            marginBottom: 'auto',
+            marginTop: theme.spacing.md,
+        },
+
+        [`@media (min-width: 550px)`]: {
+            display: 'none',
         },
     },
 }));
@@ -27,13 +34,21 @@ const PartyDetails = ({ party, openings }) => {
 
     return (
         <Stack spacing={0}>
-            <div>
-                <Text color="dimmed" weight={500}>
-                    {dayjs(party.date).format('dddd, MMMM D YYYY')}
-                </Text>
-                <Title size={24}>{party.name}</Title>
-                <Text color="dimmed">{party.game.name}</Text>
-            </div>
+            <Group noWrap>
+                <Avatar
+                    className={classes.partyAvatar}
+                    size={60}
+                    src={party.game.cover.url}
+                    radius="lg"
+                />
+                <div>
+                    <Text color="dimmed" weight={500}>
+                        {dayjs(party.date).format('dddd, MMMM D YYYY')}
+                    </Text>
+                    <Title size={24}>{party.name}</Title>
+                    <Text color="dimmed">{party.game.name}</Text>
+                </div>
+            </Group>
 
             <Group spacing="xs">
                 <Badge
