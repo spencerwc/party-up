@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Box, Group, Stack, Text } from '@mantine/core';
@@ -20,8 +20,6 @@ const Party = ({ setIsRegistering }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { data: party, isLoading, error } = useFetch(`/api/parties/${id}`);
-    const [isMember, setIsMember] = useState(false);
-    const [isLeader, setIsLeader] = useState(false);
     const [isPending, setIsPending] = useState(false);
     const [isConfirmingLeave, setIsConfirmingLeave] = useState(false);
     const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
@@ -101,36 +99,20 @@ const Party = ({ setIsRegistering }) => {
     };
 
     // Check if the user is currently a member
-    useEffect(() => {
-        const checkIfMember = () => {
-            if (user) {
-                const index = party.members.findIndex(
-                    (member) => member.username === user.username
-                );
+    const checkIfMember = () => {
+        if (user) {
+            const index = party.members.findIndex(
+                (member) => member.username === user.username
+            );
 
-                if (index !== -1) {
-                    setIsMember(true);
-                }
-            }
-        };
-
-        if (party) {
-            checkIfMember();
+            return index !== -1;
         }
-    }, [party, user]);
+    };
 
     // Check if the user is the leader
-    useEffect(() => {
-        const checkIfLeader = () => {
-            if (user && user.username === party.leader.username) {
-                setIsLeader(true);
-            }
-        };
-
-        if (party) {
-            checkIfLeader();
-        }
-    }, [party, user]);
+    const checkIfLeader = () => {
+        return user && user.username === party.leader.username;
+    };
 
     if (isLoading) {
         return <MinimalLoader />;
@@ -138,6 +120,8 @@ const Party = ({ setIsRegistering }) => {
 
     if (party) {
         const openings = party.lookingFor - (party.members.length - 1);
+        const isLeader = checkIfLeader();
+        const isMember = checkIfMember();
 
         return (
             <Box
@@ -186,7 +170,9 @@ const Party = ({ setIsRegistering }) => {
                                 memberError={memberError}
                             />
                             {memberError && (
-                                <Text color="red">{memberError}</Text>
+                                <Text size="sm" color="red">
+                                    {memberError}
+                                </Text>
                             )}
                         </Stack>
 
@@ -200,7 +186,7 @@ const Party = ({ setIsRegistering }) => {
                                 />
                                 {/* Display any errors from leader actions */}
                                 {partyError && (
-                                    <Text color="red" mt="lg">
+                                    <Text size="sm" color="red">
                                         {partyError}
                                     </Text>
                                 )}
