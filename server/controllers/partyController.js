@@ -76,6 +76,17 @@ const createParty = async (req, res) => {
             game,
         });
 
+        await User.findByIdAndUpdate(
+            {
+                _id: userId,
+            },
+            {
+                $addToSet: {
+                    parties: party._id,
+                },
+            }
+        );
+
         res.status(200).json(party);
     } catch (error) {
         res.status(400).json({ error: error.message });

@@ -5,9 +5,17 @@ const createToken = (id) => {
     return jwt.sign({ _id: id }, process.env.SECRET, {});
 };
 
-const getUser = (req, res) => {
-    const { id } = req.params;
-    res.status(200).json({ message: `User route: ${id}` });
+const getUser = async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const user = await User.findOne({ username: username })
+            .select('username avatar parties -_id')
+            .populate('parties');
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 };
 
 const updateUser = (req, res) => {
