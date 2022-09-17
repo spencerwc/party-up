@@ -9,6 +9,7 @@ import EditParty from '../pages/EditParty';
 import PartyMembers from '../pages/PartyMembers';
 import RegisterModal from '../components/general/RegisterModal';
 import { useState } from 'react';
+import User from '../pages/User';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -74,6 +75,10 @@ const Layout = () => {
                         <Route
                             path="parties/:id/members"
                             element={<PartyMembers />}
+                        />
+                        <Route
+                            path="/users/:username"
+                            element={<User setIsRegistering={isRegistering} />}
                         />
                     </Routes>
                 </main>
