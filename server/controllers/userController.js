@@ -10,8 +10,12 @@ const getUser = async (req, res) => {
 
     try {
         const user = await User.findOne({ username: username })
-            .select('username avatar parties -_id')
-            .populate('parties');
+            .select('avatar bio friends parties username createdAt -_id')
+            .populate('parties')
+            .populate({
+                path: 'friends',
+                select: 'avatar username -_id',
+            });
         res.status(200).json(user);
     } catch (error) {
         res.status(400).json({ error: error.message });

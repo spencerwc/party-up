@@ -4,36 +4,48 @@ const validator = require('validator');
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-    avatar: {
-        type: String,
+const userSchema = new Schema(
+    {
+        avatar: {
+            type: String,
+        },
+        bio: {
+            type: String,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        groups: {
+            type: [Schema.Types.ObjectId],
+        },
+        friends: {
+            type: [Schema.Types.ObjectId],
+            ref: 'User',
+        },
+        likedComments: {
+            type: [Schema.Types.ObjectId],
+            ref: 'Comment',
+        },
+        parties: {
+            type: [Schema.Types.ObjectId],
+            ref: 'Party',
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+        },
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    groups: {
-        type: [Schema.Types.ObjectId],
-    },
-    likedComments: {
-        type: [Schema.Types.ObjectId],
-        ref: 'Comment',
-    },
-    parties: {
-        type: [Schema.Types.ObjectId],
-        ref: 'Party',
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-});
+    {
+        timestamps: true,
+    }
+);
 
 userSchema.statics.signup = async function (email, username, password) {
     if (!email || !password) {
