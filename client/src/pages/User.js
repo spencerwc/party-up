@@ -1,16 +1,20 @@
 import { useFetch } from '../hooks/useFetch';
 import { useParams } from 'react-router-dom';
-import { Title, Text } from '@mantine/core';
+import { Box, Text } from '@mantine/core';
 import MinimalLoader from '../components/general/MinimalLoader';
+import UserDetails from '../components/user/UserDetails';
 
 const User = ({ setIsRegistering }) => {
     const { username } = useParams();
 
-    const { data: user, error } = useFetch(`/api/users/${username}`);
+    const { data: userData, error } = useFetch(`/api/users/${username}`);
 
-    if (user) {
-        console.log(user);
-        return <Title order={1}>{user.username}</Title>;
+    if (userData) {
+        return (
+            <Box p="md">
+                <UserDetails user={userData} />
+            </Box>
+        );
     }
 
     if (error) {
