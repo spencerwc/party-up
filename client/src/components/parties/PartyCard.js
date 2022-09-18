@@ -71,7 +71,6 @@ const useStyles = createStyles((theme) => ({
 
     userIcon: {
         color: theme.colors.teal[7],
-        fill: theme.colors.teal[7],
     },
 
     searchIcon: {
@@ -95,17 +94,17 @@ const PartyCard = ({ party }) => {
                         <IconQuestionMark />
                     </Avatar>
                     <Stack spacing={0}>
-                        <Text color="dimmed" size="xs">
+                        <Text color="dimmed" size="xs" weight={500}>
                             {dayjs(party.date).format('dddd, MMMM D')}
                         </Text>
                         <Text weight={500} size="sm">
                             {party.name}
                         </Text>
-                        <Text size="xs" color="dimmed" mb={4}>
+                        <Text size="xs" color="dimmed" mb={2}>
                             {party.game.name}
                         </Text>
-                        <Group spacing="sm">
-                            <Group noWrap spacing={5}>
+                        <Group spacing="xs">
+                            <Group noWrap spacing={4}>
                                 {party.members.length > 1 ? (
                                     <IconUsers
                                         className={classes.userIcon}
@@ -113,12 +112,12 @@ const PartyCard = ({ party }) => {
                                     />
                                 ) : (
                                     <IconUser
-                                        size={16}
+                                        size={15}
                                         className={classes.userIcon}
                                     />
                                 )}
-                                <Text size="xs" weight={500}>
-                                    {party.members.length}{' '}
+                                <Text size="xs">
+                                    <strong>{party.members.length}</strong>{' '}
                                     <span className={classes.mobileHidden}>
                                         member
                                         {party.members.length > 1 && 's'}
@@ -132,9 +131,9 @@ const PartyCard = ({ party }) => {
                             >
                                 <IconSearch
                                     className={classes.searchIcon}
-                                    size={16}
+                                    size={15}
                                 />
-                                <Text size="xs" weight={500}>
+                                <Text size="xs">
                                     {openings > 0 ? (
                                         <>
                                             <span
@@ -142,7 +141,7 @@ const PartyCard = ({ party }) => {
                                             >
                                                 Looking for
                                             </span>{' '}
-                                            {openings}{' '}
+                                            <strong>{openings}</strong>{' '}
                                             <span
                                                 className={classes.mobileHidden}
                                             >

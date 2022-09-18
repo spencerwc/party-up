@@ -6,8 +6,6 @@ import {
     Text,
     Avatar,
     Anchor,
-    Badge,
-    Center,
     createStyles,
 } from '@mantine/core';
 import { IconUsers, IconSearch } from '@tabler/icons';
@@ -46,41 +44,36 @@ const PartyDetails = ({ party, openings }) => {
                         {dayjs(party.date).format('dddd, MMMM D YYYY')}
                     </Text>
                     <Title size={24}>{party.name}</Title>
-                    <Text color="dimmed">{party.game.name}</Text>
+                    <Text color="dimmed" size={15}>
+                        {party.game.name}
+                    </Text>
                 </div>
             </Group>
 
-            <Group spacing="xs">
-                <Badge
-                    mt="sm"
-                    radius="md"
-                    variant="filled"
-                    color="teal.7"
-                    sx={{ width: 'fit-content' }}
-                    leftSection={
-                        <Center>
-                            <IconUsers size={14} />
-                        </Center>
-                    }
-                >
-                    {party.members.length}{' '}
-                    <span className={classes.mobileHidden}>members</span>
-                </Badge>
-                <Badge
-                    mt="sm"
-                    radius="md"
-                    variant="filled"
-                    color="violet.7"
-                    sx={{ width: 'fit-content' }}
-                    leftSection={
-                        <Center>
-                            <IconSearch size={14} />
-                        </Center>
-                    }
-                >
-                    {openings}{' '}
-                    <span className={classes.mobileHidden}>openings</span>
-                </Badge>
+            <Group spacing="xs" mt={4}>
+                <Group spacing={4} align="flex-start">
+                    <Text color="teal.7">
+                        <IconUsers size={15} />
+                    </Text>
+                    <Text size="sm">
+                        <strong>{party.members.length}</strong>{' '}
+                        <span className={classes.mobileHidden}>
+                            member {party.members.length !== 1 && 's'}
+                        </span>
+                    </Text>
+                </Group>
+
+                <Group spacing={4} align="flex-start">
+                    <Text color="violet.7">
+                        <IconSearch size={14} />
+                    </Text>
+                    <Text size="sm">
+                        <strong>{openings}</strong>{' '}
+                        <span className={classes.mobileHidden}>
+                            opening{openings !== 1 && 's'}
+                        </span>
+                    </Text>
+                </Group>
             </Group>
 
             <Anchor
@@ -88,7 +81,7 @@ const PartyDetails = ({ party, openings }) => {
                 to={`/users/${[party.leader.username]}`}
                 underline={false}
                 variant="text"
-                mt="xl"
+                mt="sm"
             >
                 <Group spacing="xs">
                     <Avatar src={party.leader.avatar} size={50} radius="xl" />
