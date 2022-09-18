@@ -52,7 +52,11 @@ const PartyMembers = () => {
                     />
                 </Box>
 
-                <UserList leader={party.leader} users={filteredMembers} />
+                <UserList
+                    variant="party"
+                    leader={party.leader}
+                    users={filteredMembers}
+                />
             </Box>
         );
     }

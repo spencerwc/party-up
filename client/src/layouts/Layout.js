@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { createStyles, Header } from '@mantine/core';
 import NavbarMinimal from '../components/general/NavbarMinimal';
@@ -8,8 +9,8 @@ import CreateParty from '../pages/CreateParty';
 import EditParty from '../pages/EditParty';
 import PartyMembers from '../pages/PartyMembers';
 import RegisterModal from '../components/general/RegisterModal';
-import { useState } from 'react';
 import User from '../pages/User';
+import UserFriends from '../pages/UserFriends';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -79,6 +80,12 @@ const Layout = () => {
                         <Route
                             path="/users/:username"
                             element={<User setIsRegistering={isRegistering} />}
+                        />
+                        <Route
+                            path="/users/:username/friends"
+                            element={
+                                <UserFriends setIsRegistering={isRegistering} />
+                            }
                         />
                     </Routes>
                 </main>

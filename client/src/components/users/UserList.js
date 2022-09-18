@@ -53,7 +53,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const UserList = ({ leader, users }) => {
+const UserList = ({ leader, users, variant }) => {
     const { classes } = useStyles();
 
     return (
@@ -73,19 +73,22 @@ const UserList = ({ leader, users }) => {
                             <Avatar src={user.avatar} size={60} radius={120} />
                             <div>
                                 <Text weight={500}>{user.username}</Text>
-                                <Text size="sm" color="dimmed">
-                                    {user.username === leader.username ? (
-                                        <Group spacing={5}>
-                                            <IconCrown
-                                                className={classes.leader}
-                                                size={18}
-                                            />{' '}
-                                            Leader
-                                        </Group>
-                                    ) : (
-                                        'Member'
-                                    )}
-                                </Text>
+
+                                {variant === 'party' && (
+                                    <Text size="sm" color="dimmed">
+                                        {user.username === leader.username ? (
+                                            <Group spacing={5}>
+                                                <IconCrown
+                                                    className={classes.leader}
+                                                    size={18}
+                                                />{' '}
+                                                Leader
+                                            </Group>
+                                        ) : (
+                                            'Member'
+                                        )}
+                                    </Text>
+                                )}
                             </div>
                         </Group>
                     </Anchor>
