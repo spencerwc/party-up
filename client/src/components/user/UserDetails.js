@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 
 const UserDetails = ({ user }) => {
     return (
-        <Stack spacing="xs">
+        <Stack spacing="xs" px="md" pt="md">
             <Group spacing="xs" noWrap position="apart">
                 <Avatar src={user.avatar} radius={120} size={90} />
 

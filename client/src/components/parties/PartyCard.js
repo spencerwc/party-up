@@ -108,11 +108,11 @@ const PartyCard = ({ party }) => {
                                 {party.members.length > 1 ? (
                                     <IconUsers
                                         className={classes.userIcon}
-                                        size={16}
+                                        size={14}
                                     />
                                 ) : (
                                     <IconUser
-                                        size={15}
+                                        size={14}
                                         className={classes.userIcon}
                                     />
                                 )}
@@ -131,7 +131,7 @@ const PartyCard = ({ party }) => {
                             >
                                 <IconSearch
                                     className={classes.searchIcon}
-                                    size={15}
+                                    size={14}
                                 />
                                 <Text size="xs">
                                     {openings > 0 ? (

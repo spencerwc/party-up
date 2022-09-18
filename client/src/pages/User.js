@@ -1,8 +1,9 @@
 import { useFetch } from '../hooks/useFetch';
 import { useParams } from 'react-router-dom';
-import { Box, Text } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 import MinimalLoader from '../components/general/MinimalLoader';
 import UserDetails from '../components/user/UserDetails';
+import UserCardList from '../components/users/UserCardList';
 
 const User = ({ setIsRegistering }) => {
     const { username } = useParams();
@@ -11,14 +12,25 @@ const User = ({ setIsRegistering }) => {
 
     if (userData) {
         return (
-            <Box p="md">
+            <Stack>
                 <UserDetails user={userData} />
-            </Box>
+                {userData.friends.length > 0 && (
+                    <UserCardList
+                        title="Friends"
+                        seeAllLink="friends"
+                        users={userData.friends}
+                    />
+                )}
+            </Stack>
         );
     }
 
     if (error) {
-        return <Text m="md">{error}</Text>;
+        return (
+            <Text m="md" color="dimmed">
+                {error}
+            </Text>
+        );
     }
 
     return <MinimalLoader />;

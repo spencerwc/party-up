@@ -58,7 +58,7 @@ const PartyDetails = ({ party, openings }) => {
                     <Text size="sm">
                         <strong>{party.members.length}</strong>{' '}
                         <span className={classes.mobileHidden}>
-                            member {party.members.length !== 1 && 's'}
+                            member{party.members.length !== 1 && 's'}
                         </span>
                     </Text>
                 </Group>
