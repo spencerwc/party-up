@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useFetch } from '../hooks/useFetch';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Stack, Group, Text } from '@mantine/core';
 import MinimalLoader from '../components/general/MinimalLoader';
@@ -12,9 +12,12 @@ import ConfirmationModal from '../components/general/ConfirmationModal';
 const User = ({ setIsRegistering }) => {
     const { username } = useParams();
     const { user } = useAuthContext();
+    const navigate = useNavigate();
     const { data: userData, error } = useFetch(`/api/users/${username}`);
     const [isFriend, setIsFriend] = useState(false);
     const [isConfirmingRemove, setIsConfirmingRemove] = useState(false);
+    const [friendError, setFriendError] = useState(null);
+    const [isPending, setIsPending] = useState(false);
 
     const addFriend = async () => {
         // Connect fetch request here
@@ -26,9 +29,27 @@ const User = ({ setIsRegistering }) => {
     };
 
     const removeFriend = async () => {
-        // Connect fetch request here
-        setIsConfirmingRemove(false);
-        setIsFriend(false);
+        setIsPending(true);
+
+        const response = await fetch(
+            `/api/users/${userData.username}/friends/remove`,
+            {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
+        );
+
+        if (!response.ok) {
+            const json = await response.json();
+            setFriendError(json.error);
+            setIsPending(false);
+        }
+
+        if (response.ok) {
+            navigate(0);
+        }
     };
 
     useEffect(() => {
@@ -37,10 +58,9 @@ const User = ({ setIsRegistering }) => {
                 (friend) => friend.username === user.username
             );
 
-            if (index === 1) {
-                setIsFriend(false);
+            if (index !== -1) {
+                setIsFriend(true);
             }
-            setIsFriend(true);
         };
 
         if (user && userData) {
@@ -57,16 +77,20 @@ const User = ({ setIsRegistering }) => {
                     title={`Remove ${userData.username}?`}
                     body="You will no longer be friends and your messages will be locked."
                     action={removeFriend}
+                    isPending={isPending}
                 />
 
                 <Group spacing="xs" noWrap position="apart" align="flex-start">
                     <UserDetails user={userData} />
-                    <UserActions
-                        isFriend={isFriend}
-                        addFriend={addFriend}
-                        setIsConfirmingRemove={setIsConfirmingRemove}
-                        setIsRegistering={setIsRegistering}
-                    />
+
+                    {user.username !== username && (
+                        <UserActions
+                            isFriend={isFriend}
+                            addFriend={addFriend}
+                            setIsConfirmingRemove={setIsConfirmingRemove}
+                            setIsRegistering={setIsRegistering}
+                        />
+                    )}
                 </Group>
 
                 {userData.friends.length > 0 && (
