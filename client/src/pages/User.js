@@ -24,7 +24,27 @@ const User = ({ setIsRegistering }) => {
         if (!user) {
             setIsRegistering(true);
         } else {
-            setIsFriend(true);
+            setIsPending(true);
+
+            const response = await fetch(
+                `/api/users/${userData.username}/friends/add`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                const json = await response.json();
+                setFriendError(json.error);
+                setIsPending(false);
+            }
+
+            if (response.ok) {
+                navigate(0);
+            }
         }
     };
 
