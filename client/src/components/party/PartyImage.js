@@ -4,9 +4,9 @@ const useStyles = createStyles((theme) => ({
     gameImage: {
         display: 'none',
 
-        [`@media (min-width: 550px)`]: {
+        [`@media (min-width: 375px)`]: {
             display: 'block',
-            maxWidth: 120,
+            maxWidth: 100,
             boxShadow: `${theme.colors.indigo[8]}66 0px 5px, 
             ${theme.colors.indigo[8]}4D 0px 10px, 
             ${theme.colors.indigo[8]}33 0px 15px
@@ -15,7 +15,7 @@ const useStyles = createStyles((theme) => ({
         },
 
         [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-            maxWidth: 200,
+            maxWidth: 160,
             boxShadow: `${theme.colors.indigo[8]}66 5px 5px, 
                 ${theme.colors.indigo[8]}4D 10px 10px, 
                 ${theme.colors.indigo[8]}33 15px 15px`,

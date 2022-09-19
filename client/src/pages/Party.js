@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Box, Group, Stack, Text } from '@mantine/core';

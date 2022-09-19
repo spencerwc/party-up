@@ -32,23 +32,13 @@ const PartyDetails = ({ party, openings }) => {
 
     return (
         <Stack spacing={0}>
-            <Group noWrap>
-                <Avatar
-                    className={classes.partyAvatar}
-                    size={60}
-                    src={party.game.cover.url}
-                    radius="lg"
-                />
-                <div>
-                    <Text color="dimmed" weight={500}>
-                        {dayjs(party.date).format('dddd, MMMM D YYYY')}
-                    </Text>
-                    <Title size={24}>{party.name}</Title>
-                    <Text color="dimmed" size={15}>
-                        {party.game.name}
-                    </Text>
-                </div>
-            </Group>
+            <Text color="dimmed" weight={500}>
+                {dayjs(party.date).format('dddd, MMMM D YYYY')}
+            </Text>
+            <Title size={24}>{party.name}</Title>
+            <Text color="dimmed" size={15}>
+                {party.game.name}
+            </Text>
 
             <Group spacing="xs" mt={4}>
                 <Group spacing={4} align="flex-start">
