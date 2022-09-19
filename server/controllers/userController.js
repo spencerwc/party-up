@@ -27,6 +27,40 @@ const updateUser = (req, res) => {
     res.status(200).json({ message: `User PATCH route: ${id}` });
 };
 
+const addFriend = async (req, res) => {
+    const { username } = req.params;
+    const userId = req.user._id;
+
+    try {
+        const friend = await User.findOneAndUpdate(
+            { username: username },
+            {
+                $addToSet: {
+                    friends: userId,
+                },
+            }
+        );
+
+        if (!friend) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const user = await User.findByIdAndUpdate(
+            userId,
+            {
+                $addToSet: {
+                    friends: friend._id,
+                },
+            },
+            { new: true }
+        );
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 const removeFriend = async (req, res) => {
     const { username } = req.params;
     const userId = req.user._id;
@@ -88,4 +122,11 @@ const signup = async (req, res) => {
     }
 };
 
-module.exports = { getUser, updateUser, removeFriend, login, signup };
+module.exports = {
+    getUser,
+    updateUser,
+    addFriend,
+    removeFriend,
+    login,
+    signup,
+};
