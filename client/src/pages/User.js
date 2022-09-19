@@ -7,20 +7,27 @@ import MinimalLoader from '../components/general/MinimalLoader';
 import UserDetails from '../components/user/UserDetails';
 import UserActions from '../components/user/UserActions';
 import UserCardList from '../components/users/UserCardList';
+import ConfirmationModal from '../components/general/ConfirmationModal';
 
 const User = ({ setIsRegistering }) => {
     const { username } = useParams();
     const { user } = useAuthContext();
     const { data: userData, error } = useFetch(`/api/users/${username}`);
     const [isFriend, setIsFriend] = useState(false);
+    const [isConfirmingRemove, setIsConfirmingRemove] = useState(false);
 
     const addFriend = async () => {
         // Connect fetch request here
-        setIsFriend(true);
+        if (!user) {
+            setIsRegistering(true);
+        } else {
+            setIsFriend(true);
+        }
     };
 
     const removeFriend = async () => {
         // Connect fetch request here
+        setIsConfirmingRemove(false);
         setIsFriend(false);
     };
 
@@ -36,7 +43,7 @@ const User = ({ setIsRegistering }) => {
             setIsFriend(true);
         };
 
-        if (userData) {
+        if (user && userData) {
             checkIfFriend();
         }
     }, [userData, user]);
@@ -44,9 +51,22 @@ const User = ({ setIsRegistering }) => {
     if (userData) {
         return (
             <Stack>
+                <ConfirmationModal
+                    isConfirming={isConfirmingRemove}
+                    setIsConfirming={setIsConfirmingRemove}
+                    title={`Remove ${userData.username}?`}
+                    body="You will no longer be friends and your messages will be locked."
+                    action={removeFriend}
+                />
+
                 <Group spacing="xs" noWrap position="apart" align="flex-start">
                     <UserDetails user={userData} />
-                    <UserActions isFriend={isFriend} addFriend={addFriend} />
+                    <UserActions
+                        isFriend={isFriend}
+                        addFriend={addFriend}
+                        setIsConfirmingRemove={setIsConfirmingRemove}
+                        setIsRegistering={setIsRegistering}
+                    />
                 </Group>
 
                 {userData.friends.length > 0 && (

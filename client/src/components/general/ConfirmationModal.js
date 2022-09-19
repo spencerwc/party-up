@@ -7,7 +7,6 @@ const ConfirmationModal = ({
     body,
     action,
     isPending,
-    isDanger,
 }) => {
     return (
         <Modal

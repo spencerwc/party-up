@@ -79,12 +79,16 @@ const Layout = () => {
                         />
                         <Route
                             path="/users/:username"
-                            element={<User setIsRegistering={isRegistering} />}
+                            element={
+                                <User setIsRegistering={setIsRegistering} />
+                            }
                         />
                         <Route
                             path="/users/:username/friends"
                             element={
-                                <UserFriends setIsRegistering={isRegistering} />
+                                <UserFriends
+                                    setIsRegistering={setIsRegistering}
+                                />
                             }
                         />
                     </Routes>
