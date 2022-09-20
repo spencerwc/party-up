@@ -27,6 +27,27 @@ const updateUser = (req, res) => {
     res.status(200).json({ message: `User PATCH route: ${id}` });
 };
 
+const getFriendRequests = async (req, res) => {
+    const userId = req.user._id;
+
+    try {
+        const friendRequests = await User.findById(userId)
+            .select('friendRequestsSent friendRequestsReceived')
+            .populate({
+                path: 'friendRequestsSent',
+                select: 'avatar username -_id',
+            })
+            .populate({
+                path: 'friendRequestsReceived',
+                select: 'avatar username -_id',
+            });
+
+        res.status(200).json(friendRequests);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 const sendFriendRequest = async (req, res) => {
     const { username } = req.params;
     const userId = req.user._id;
@@ -61,6 +82,9 @@ const sendFriendRequest = async (req, res) => {
                     $addToSet: {
                         friends: recipient._id,
                     },
+                    $pull: {
+                        friendRequestsReceived: recipient._id,
+                    },
                 },
                 { new: true }
             );
@@ -83,6 +107,42 @@ const sendFriendRequest = async (req, res) => {
             userId,
             {
                 $addToSet: {
+                    friendRequestsSent: recipient._id,
+                },
+            },
+            { new: true }
+        );
+
+        res.status(200).json(sender);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const cancelFriendRequest = async (req, res) => {
+    const { username } = req.params;
+    const userId = req.user._id;
+
+    try {
+        const recipient = await User.findOne({ username: username });
+
+        if (!recipient) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        await User.updateOne(
+            { username: username },
+            {
+                $pull: {
+                    friendRequestsReceived: userId,
+                },
+            }
+        );
+
+        const sender = await User.findByIdAndUpdate(
+            userId,
+            {
+                $pull: {
                     friendRequestsSent: recipient._id,
                 },
             },
@@ -210,8 +270,10 @@ module.exports = {
     getUser,
     updateUser,
     addFriend,
-    sendFriendRequest,
     removeFriend,
+    getFriendRequests,
+    sendFriendRequest,
+    cancelFriendRequest,
     login,
     signup,
 };
