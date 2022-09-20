@@ -27,29 +27,113 @@ const updateUser = (req, res) => {
     res.status(200).json({ message: `User PATCH route: ${id}` });
 };
 
+const sendFriendRequest = async (req, res) => {
+    const { username } = req.params;
+    const userId = req.user._id;
+
+    try {
+        const recipient = await User.findOne({ username: username });
+
+        if (!recipient) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if recipient has already previously requested friend
+        if (recipient.friendRequestsSent.includes(userId)) {
+            // If the request exists, add friends
+            await User.updateOne(
+                {
+                    _id: recipient._id,
+                },
+                {
+                    $addToSet: {
+                        friends: userId,
+                    },
+                    $pull: {
+                        friendRequestsSent: userId,
+                    },
+                }
+            );
+
+            const user = await User.findByIdAndUpdate(
+                userId,
+                {
+                    $addToSet: {
+                        friends: recipient._id,
+                    },
+                },
+                { new: true }
+            );
+
+            return res.status(200).json(user);
+        }
+
+        // Send a request to the recipient
+        await User.updateOne(
+            { username: username },
+            {
+                $addToSet: {
+                    friendRequestsReceived: userId,
+                },
+            }
+        );
+
+        // Add the sent request to the sender
+        const sender = await User.findByIdAndUpdate(
+            userId,
+            {
+                $addToSet: {
+                    friendRequestsSent: recipient._id,
+                },
+            },
+            { new: true }
+        );
+
+        res.status(200).json(sender);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 const addFriend = async (req, res) => {
     const { username } = req.params;
     const userId = req.user._id;
 
     try {
-        const friend = await User.findOneAndUpdate(
-            { username: username },
+        // Query for the sender and add user to sender's friends list
+        const userToAdd = await User.findOne({ username: username });
+
+        if (!userToAdd) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        if (!userToAdd.friendRequestsSent.includes(userId)) {
+            return res.status(400).json({ error: 'Could not add friend' });
+        }
+
+        await User.updateOne(
+            {
+                _id: userToAdd._id,
+            },
             {
                 $addToSet: {
                     friends: userId,
                 },
+                $pull: {
+                    friendRequestsSent: userId,
+                },
             }
         );
 
-        if (!friend) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
+        // Add sender to the user's friend list
         const user = await User.findByIdAndUpdate(
             userId,
             {
                 $addToSet: {
-                    friends: friend._id,
+                    friends: userToAdd._id,
+                },
+                $pull: {
+                    friendRequestsReceived: userToAdd._id,
                 },
             },
             { new: true }
@@ -126,6 +210,7 @@ module.exports = {
     getUser,
     updateUser,
     addFriend,
+    sendFriendRequest,
     removeFriend,
     login,
     signup,

@@ -24,6 +24,14 @@ const userSchema = new Schema(
             type: [Schema.Types.ObjectId],
             ref: 'User',
         },
+        friendRequestsReceived: {
+            type: [Schema.Types.ObjectId],
+            ref: 'User',
+        },
+        friendRequestsSent: {
+            type: [Schema.Types.ObjectId],
+            ref: 'User',
+        },
         likedComments: {
             type: [Schema.Types.ObjectId],
             ref: 'Comment',
