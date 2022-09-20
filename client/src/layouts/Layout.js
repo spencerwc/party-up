@@ -11,6 +11,7 @@ import PartyMembers from '../pages/PartyMembers';
 import RegisterModal from '../components/general/RegisterModal';
 import User from '../pages/User';
 import UserFriends from '../pages/UserFriends';
+import Alerts from '../pages/Alerts';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -91,6 +92,7 @@ const Layout = () => {
                                 />
                             }
                         />
+                        <Route path="/alerts" element={<Alerts />} />
                     </Routes>
                 </main>
 

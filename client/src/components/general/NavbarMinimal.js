@@ -3,6 +3,7 @@ import { Navbar, Tooltip, createStyles } from '@mantine/core';
 import {
     IconHome2,
     IconDeviceGamepad2,
+    IconBell,
     IconLogout,
     IconLogin,
 } from '@tabler/icons';
@@ -144,6 +145,14 @@ const NavbarMinimal = () => {
                 {links.map((link) => (
                     <NavbarLink {...link} key={link.label} />
                 ))}
+
+                {user && (
+                    <NavbarLink
+                        icon={IconBell}
+                        label="Alerts"
+                        destination="/alerts"
+                    />
+                )}
 
                 {user ? (
                     <Tooltip
