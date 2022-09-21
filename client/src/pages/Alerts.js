@@ -3,10 +3,15 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import { Stack, Title } from '@mantine/core';
 import RequestList from '../components/general/RequestList';
 import MinimalLoader from '../components/general/MinimalLoader';
+import ConfirmationModal from '../components/general/ConfirmationModal';
 
 const Alerts = () => {
     const { user } = useAuthContext();
     const [friendRequests, setFriendRequests] = useState(null);
+    const [friendError, setFriendError] = useState(null);
+    const [isPending, setIsPending] = useState(false);
+    const [targetRequest, setTargetRequest] = useState(null);
+    const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
 
     useEffect(() => {
         const getFriendRequests = async () => {
@@ -31,12 +36,55 @@ const Alerts = () => {
         }
     }, [user]);
 
+    const cancelFriendRequest = async () => {
+        setIsPending(true);
+
+        const response = await fetch(
+            `/api/users/${targetRequest}/friends/request/cancel`,
+            {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
+        );
+
+        if (!response.ok) {
+            const json = await response.json();
+            setFriendError(json.error);
+            setIsConfirmingCancel(false);
+            // Notify error
+        }
+
+        if (response.ok) {
+            setIsConfirmingCancel(false);
+            setFriendRequests({
+                ...friendRequests,
+                friendRequestsSent: friendRequests.friendRequestsSent.filter(
+                    (request) => request.username === !targetRequest
+                ),
+            });
+            // Notify of removal
+        }
+        setIsPending(false);
+    };
+
     if (friendRequests) {
         return (
             <Stack mt="md" spacing={0}>
                 <Title mx="md" order={1} size={20}>
                     Alerts
                 </Title>
+
+                {/* Confirmation for canceling a request */}
+                <ConfirmationModal
+                    isConfirming={isConfirmingCancel}
+                    setIsConfirming={setIsConfirmingCancel}
+                    title="Cancel friend request?"
+                    body={`Your request to ${targetRequest} will be withdrawn.`}
+                    action={cancelFriendRequest}
+                    isPending={isPending}
+                />
 
                 <RequestList
                     title="Friend Requests"
@@ -48,6 +96,8 @@ const Alerts = () => {
                     title="Sent Requests"
                     type="sent"
                     requests={friendRequests.friendRequestsSent}
+                    setTargetRequest={setTargetRequest}
+                    setIsConfirming={setIsConfirmingCancel}
                 />
             </Stack>
         );

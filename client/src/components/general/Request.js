@@ -36,7 +36,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const Request = ({ type, request }) => {
+const Request = ({ type, request, handleCancel }) => {
     const { classes } = useStyles();
 
     return (
@@ -61,7 +61,7 @@ const Request = ({ type, request }) => {
             </Group>
             {type === 'sent' ? (
                 <Tooltip label="Cancel Request">
-                    <ActionIcon>
+                    <ActionIcon onClick={() => handleCancel(request.username)}>
                         <IconX size={18} stroke={1.5} />
                     </ActionIcon>
                 </Tooltip>

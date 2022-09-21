@@ -13,8 +13,19 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const RequestList = ({ title, type, requests }) => {
+const RequestList = ({
+    title,
+    type,
+    requests,
+    setTargetRequest,
+    setIsConfirming,
+}) => {
     const { classes } = useStyles();
+
+    const handleCancel = (request) => {
+        setTargetRequest(request);
+        setIsConfirming(true);
+    };
 
     return (
         <Stack>
@@ -25,7 +36,12 @@ const RequestList = ({ title, type, requests }) => {
             {requests.length > 0 ? (
                 <Paper className={classes.requests}>
                     {requests.map((request, index) => (
-                        <Request key={index} type={type} request={request} />
+                        <Request
+                            key={index}
+                            type={type}
+                            request={request}
+                            handleCancel={handleCancel}
+                        />
                     ))}
                 </Paper>
             ) : (
