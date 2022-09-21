@@ -18,6 +18,7 @@ const RequestList = ({
     type,
     requests,
     setTargetRequest,
+    acceptRequest,
     setIsConfirming,
 }) => {
     const { classes } = useStyles();
@@ -40,6 +41,7 @@ const RequestList = ({
                             key={index}
                             type={type}
                             request={request}
+                            acceptRequest={acceptRequest}
                             handleCancel={handleCancel}
                         />
                     ))}

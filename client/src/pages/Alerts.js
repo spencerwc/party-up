@@ -36,6 +36,37 @@ const Alerts = () => {
         }
     }, [user]);
 
+    const acceptFriendRequest = async (username) => {
+        setIsPending(true);
+
+        const response = await fetch(`/api/users/${username}/friends/add`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        });
+
+        if (!response.ok) {
+            const json = await response.json();
+            setFriendError(json.error);
+            setTargetRequest(null);
+        }
+
+        if (response.ok) {
+            // Update requested state and Notify that the request was sent
+            setTargetRequest(null);
+            setFriendRequests({
+                ...friendRequests,
+                friendRequestsReceived:
+                    friendRequests.friendRequestsReceived.filter(
+                        (request) => request.username === !targetRequest
+                    ),
+            });
+        }
+
+        setIsPending(false);
+    };
+
     const cancelFriendRequest = async () => {
         setIsPending(true);
 
@@ -52,11 +83,13 @@ const Alerts = () => {
         if (!response.ok) {
             const json = await response.json();
             setFriendError(json.error);
+            setTargetRequest(null);
             setIsConfirmingCancel(false);
             // Notify error
         }
 
         if (response.ok) {
+            setTargetRequest(null);
             setIsConfirmingCancel(false);
             setFriendRequests({
                 ...friendRequests,
@@ -90,6 +123,8 @@ const Alerts = () => {
                     title="Friend Requests"
                     type="received"
                     requests={friendRequests.friendRequestsReceived}
+                    setTargetRequest={setTargetRequest}
+                    acceptRequest={acceptFriendRequest}
                 />
 
                 <RequestList

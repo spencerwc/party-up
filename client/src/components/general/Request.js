@@ -36,7 +36,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const Request = ({ type, request, handleCancel }) => {
+const Request = ({ type, request, acceptRequest, handleCancel }) => {
     const { classes } = useStyles();
 
     return (
@@ -68,7 +68,9 @@ const Request = ({ type, request, handleCancel }) => {
             ) : (
                 <Group spacing={6}>
                     <Tooltip label="Accept request">
-                        <ActionIcon>
+                        <ActionIcon
+                            onClick={() => acceptRequest(request.username)}
+                        >
                             <IconCheck size={18} stroke={1.5} />
                         </ActionIcon>
                     </Tooltip>
