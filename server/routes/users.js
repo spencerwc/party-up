@@ -5,6 +5,7 @@ const {
     getFriendRequests,
     sendFriendRequest,
     cancelFriendRequest,
+    declineFriendRequest,
     addFriend,
     removeFriend,
     login,
@@ -22,6 +23,11 @@ router.patch(
     '/:username/friends/request/cancel',
     requireAuth,
     cancelFriendRequest
+);
+router.patch(
+    '/:username/friends/request/decline',
+    requireAuth,
+    declineFriendRequest
 );
 router.patch('/:username/friends/add', requireAuth, addFriend);
 router.patch('/:username/friends/remove', requireAuth, removeFriend);

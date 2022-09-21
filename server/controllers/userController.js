@@ -155,6 +155,42 @@ const cancelFriendRequest = async (req, res) => {
     }
 };
 
+const declineFriendRequest = async (req, res) => {
+    const { username } = req.params;
+    const userId = req.user._id;
+
+    try {
+        const sender = await User.findOne({ username: username });
+
+        if (!sender) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        await User.updateOne(
+            { username: username },
+            {
+                $pull: {
+                    friendRequestsSent: userId,
+                },
+            }
+        );
+
+        const recipient = await User.findByIdAndUpdate(
+            userId,
+            {
+                $pull: {
+                    friendRequestsReceived: sender._id,
+                },
+            },
+            { new: true }
+        );
+
+        res.status(200).json(recipient);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 const addFriend = async (req, res) => {
     const { username } = req.params;
     const userId = req.user._id;
@@ -274,6 +310,7 @@ module.exports = {
     getFriendRequests,
     sendFriendRequest,
     cancelFriendRequest,
+    declineFriendRequest,
     login,
     signup,
 };
