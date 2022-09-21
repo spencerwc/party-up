@@ -36,7 +36,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const Request = ({ type, request, acceptRequest, handleCancel }) => {
+const Request = ({ type, request, acceptRequest, handleConfirm }) => {
     const { classes } = useStyles();
 
     return (
@@ -61,21 +61,23 @@ const Request = ({ type, request, acceptRequest, handleCancel }) => {
             </Group>
             {type === 'sent' ? (
                 <Tooltip label="Cancel Request">
-                    <ActionIcon onClick={() => handleCancel(request.username)}>
+                    <ActionIcon onClick={() => handleConfirm(request.username)}>
                         <IconX size={18} stroke={1.5} />
                     </ActionIcon>
                 </Tooltip>
             ) : (
                 <Group spacing={6}>
-                    <Tooltip label="Accept request">
+                    <Tooltip label="Accept Request">
                         <ActionIcon
                             onClick={() => acceptRequest(request.username)}
                         >
                             <IconCheck size={18} stroke={1.5} />
                         </ActionIcon>
                     </Tooltip>
-                    <Tooltip label="Deny Request">
-                        <ActionIcon>
+                    <Tooltip label="Decline Request">
+                        <ActionIcon
+                            onClick={() => handleConfirm(request.username)}
+                        >
                             <IconX size={18} stroke={1.5} />
                         </ActionIcon>
                     </Tooltip>

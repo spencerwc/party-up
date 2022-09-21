@@ -23,7 +23,7 @@ const RequestList = ({
 }) => {
     const { classes } = useStyles();
 
-    const handleCancel = (request) => {
+    const handleConfirm = (request) => {
         setTargetRequest(request);
         setIsConfirming(true);
     };
@@ -42,7 +42,7 @@ const RequestList = ({
                             type={type}
                             request={request}
                             acceptRequest={acceptRequest}
-                            handleCancel={handleCancel}
+                            handleConfirm={handleConfirm}
                         />
                     ))}
                 </Paper>

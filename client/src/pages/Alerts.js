@@ -11,6 +11,7 @@ const Alerts = () => {
     const [friendError, setFriendError] = useState(null);
     const [isPending, setIsPending] = useState(false);
     const [targetRequest, setTargetRequest] = useState(null);
+    const [isConfirmingDeclined, setIsConfirmingDecline] = useState(false);
     const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
 
     useEffect(() => {
@@ -49,21 +50,55 @@ const Alerts = () => {
         if (!response.ok) {
             const json = await response.json();
             setFriendError(json.error);
-            setTargetRequest(null);
         }
 
         if (response.ok) {
             // Update requested state and Notify that the request was sent
-            setTargetRequest(null);
             setFriendRequests({
                 ...friendRequests,
                 friendRequestsReceived:
                     friendRequests.friendRequestsReceived.filter(
-                        (request) => request.username === !targetRequest
+                        (request) => request.username !== username
                     ),
             });
         }
 
+        setIsPending(false);
+    };
+
+    const declineFriendRequest = async () => {
+        setIsPending(true);
+
+        const response = await fetch(
+            `/api/users/${targetRequest}/friends/request/decline`,
+            {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
+        );
+
+        if (!response.ok) {
+            const json = await response.json();
+            setFriendError(json.error);
+            setTargetRequest(null);
+            setIsConfirmingDecline(false);
+            // Notify error
+        }
+
+        if (response.ok) {
+            setTargetRequest(null);
+            setIsConfirmingDecline(false);
+            setFriendRequests({
+                ...friendRequests,
+                friendRequestsReceived:
+                    friendRequests.friendRequestsReceived.filter(
+                        (request) => request.username !== targetRequest
+                    ),
+            });
+            // Notify of decline
+        }
         setIsPending(false);
     };
 
@@ -94,7 +129,7 @@ const Alerts = () => {
             setFriendRequests({
                 ...friendRequests,
                 friendRequestsSent: friendRequests.friendRequestsSent.filter(
-                    (request) => request.username === !targetRequest
+                    (request) => request.username !== targetRequest
                 ),
             });
             // Notify of removal
@@ -108,6 +143,16 @@ const Alerts = () => {
                 <Title mx="md" order={1} size={20}>
                     Alerts
                 </Title>
+
+                {/* Confirmation for declining a request */}
+                <ConfirmationModal
+                    isConfirming={isConfirmingDeclined}
+                    setIsConfirming={setIsConfirmingDecline}
+                    title="Decline friend request?"
+                    body={`The request from ${targetRequest} will be removed.`}
+                    action={declineFriendRequest}
+                    isPending={isPending}
+                />
 
                 {/* Confirmation for canceling a request */}
                 <ConfirmationModal
@@ -125,6 +170,7 @@ const Alerts = () => {
                     requests={friendRequests.friendRequestsReceived}
                     setTargetRequest={setTargetRequest}
                     acceptRequest={acceptFriendRequest}
+                    setIsConfirming={setIsConfirmingDecline}
                 />
 
                 <RequestList
