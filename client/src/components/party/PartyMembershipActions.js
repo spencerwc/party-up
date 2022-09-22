@@ -7,7 +7,6 @@ const PartyMembershipActions = ({
     isPending,
     handleJoin,
     setIsConfirmingLeave,
-    memberError,
 }) => {
     // If user is leader, notify them
     if (isLeader) {
@@ -23,7 +22,6 @@ const PartyMembershipActions = ({
                     radius="lg"
                     color="red.8"
                     onClick={() => setIsConfirmingLeave(true)}
-                    disabled={memberError}
                     sx={{ width: 'fit-content' }}
                 >
                     Leave Party
@@ -43,7 +41,6 @@ const PartyMembershipActions = ({
             radius="lg"
             mt="sm"
             loading={isPending}
-            disabled={memberError}
             onClick={handleJoin}
             sx={{ width: 'fit-content' }}
         >

@@ -2,7 +2,12 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { Box, Group, Stack, Text } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
+import {
+    getSuccessNotification,
+    getErrorNotification,
+} from '../utils/notifications';
+import { Box, Group, Stack } from '@mantine/core';
 import dayjs from 'dayjs';
 import MinimalLoader from '../components/general/MinimalLoader';
 import PartyDetails from '../components/party/PartyDetails';
@@ -23,8 +28,6 @@ const Party = ({ setIsRegistering }) => {
     const [isPending, setIsPending] = useState(false);
     const [isConfirmingLeave, setIsConfirmingLeave] = useState(false);
     const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
-    const [memberError, setMemberError] = useState(null);
-    const [partyError, setPartyError] = useState(null);
 
     const handleJoin = async () => {
         if (!user) {
@@ -44,11 +47,21 @@ const Party = ({ setIsRegistering }) => {
             );
 
             if (!response.ok) {
-                setMemberError('Could not join party');
+                const notification = getErrorNotification(
+                    'Failed to join the party.'
+                );
+
+                showNotification(notification);
                 setIsPending(false);
             }
 
             if (response.ok) {
+                const notification = getSuccessNotification(
+                    'Party Joined',
+                    `You joined ${party.name}.`
+                );
+
+                showNotification(notification);
                 navigate(0);
             }
         }
@@ -68,11 +81,21 @@ const Party = ({ setIsRegistering }) => {
         );
 
         if (!response.ok) {
-            setMemberError('Could not leave party');
+            const notification = getErrorNotification(
+                'Failed to leave the party.'
+            );
+
+            showNotification(notification);
             setIsPending(false);
         }
 
         if (response.ok) {
+            const notification = getSuccessNotification(
+                'Party left',
+                `You left ${party.name}.`
+            );
+
+            showNotification(notification);
             navigate(0);
         }
     };
@@ -90,11 +113,19 @@ const Party = ({ setIsRegistering }) => {
         const json = await response.json();
 
         if (response.ok) {
+            const notification = getSuccessNotification(
+                'Party Disbanded',
+                `You disbanded ${party.name}.`
+            );
+
+            showNotification(notification);
             navigate('/parties');
         }
 
         if (!response.ok) {
-            setPartyError(json.error);
+            const notification = getErrorNotification(json.error);
+
+            showNotification(notification);
         }
     };
 
@@ -159,38 +190,20 @@ const Party = ({ setIsRegistering }) => {
                         <PartyDetails party={party} openings={openings} />
 
                         {/* Actions for joining / leaving the party */}
-                        <Stack>
-                            <PartyMembershipActions
-                                openings={openings}
-                                isMember={isMember}
-                                isLeader={isLeader}
-                                isPending={isPending}
-                                handleJoin={handleJoin}
-                                setIsConfirmingLeave={setIsConfirmingLeave}
-                                memberError={memberError}
-                            />
-                            {memberError && (
-                                <Text size="sm" color="red">
-                                    {memberError}
-                                </Text>
-                            )}
-                        </Stack>
+                        <PartyMembershipActions
+                            openings={openings}
+                            isMember={isMember}
+                            isLeader={isLeader}
+                            isPending={isPending}
+                            handleJoin={handleJoin}
+                            setIsConfirmingLeave={setIsConfirmingLeave}
+                        />
 
                         {/* These management actions are only displayed to the leader */}
                         {isLeader && (
-                            <Stack>
-                                <PartyLeaderActions
-                                    setIsConfirmingDelete={
-                                        setIsConfirmingDelete
-                                    }
-                                />
-                                {/* Display any errors from leader actions */}
-                                {partyError && (
-                                    <Text size="sm" color="red">
-                                        {partyError}
-                                    </Text>
-                                )}
-                            </Stack>
+                            <PartyLeaderActions
+                                setIsConfirmingDelete={setIsConfirmingDelete}
+                            />
                         )}
                     </Stack>
 
