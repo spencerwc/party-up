@@ -4,7 +4,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Stack, Group, Text, Title } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { IconCheck, IconX } from '@tabler/icons';
+import {
+    getSuccessNotification,
+    getErrorNotification,
+} from '../utils/notifications';
 import MinimalLoader from '../components/general/MinimalLoader';
 import UserDetails from '../components/user/UserDetails';
 import UserActions from '../components/user/UserActions';
@@ -22,25 +25,6 @@ const User = () => {
     const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
     const [isConfirmingRemove, setIsConfirmingRemove] = useState(false);
     const [isPending, setIsPending] = useState(false);
-
-    const getSuccessNotification = (title, message) => {
-        return {
-            title: title,
-            message: message,
-            icon: <IconCheck />,
-            radius: 'lg',
-        };
-    };
-
-    const getErrorNotification = (message) => {
-        return {
-            title: 'Something went wrong',
-            message: message,
-            color: 'red.8',
-            icon: <IconX />,
-            radius: 'lg',
-        };
-    };
 
     const sendFriendRequest = async () => {
         setIsPending(true);
