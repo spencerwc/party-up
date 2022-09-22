@@ -3,6 +3,8 @@ import { useFetch } from '../hooks/useFetch';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Stack, Group, Text, Title } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
+import { IconCheck, IconX } from '@tabler/icons';
 import MinimalLoader from '../components/general/MinimalLoader';
 import UserDetails from '../components/user/UserDetails';
 import UserActions from '../components/user/UserActions';
@@ -20,9 +22,29 @@ const User = () => {
     const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
     const [isConfirmingRemove, setIsConfirmingRemove] = useState(false);
     const [isPending, setIsPending] = useState(false);
-    const [friendError, setFriendError] = useState(null);
+
+    const getSuccessNotification = (title, message) => {
+        return {
+            title: title,
+            message: message,
+            icon: <IconCheck />,
+            radius: 'lg',
+        };
+    };
+
+    const getErrorNotification = (message) => {
+        return {
+            title: 'Something went wrong',
+            message: message,
+            color: 'red.8',
+            icon: <IconX />,
+            radius: 'lg',
+        };
+    };
 
     const sendFriendRequest = async () => {
+        setIsPending(true);
+
         const response = await fetch(
             `/api/users/${userData.username}/friends/request`,
             {
@@ -35,17 +57,29 @@ const User = () => {
 
         if (!response.ok) {
             const json = await response.json();
-            setFriendError(json.error);
-            setIsPending(false);
+            const notification = getErrorNotification(json.error);
+
+            showNotification(notification);
         }
 
         if (response.ok) {
             // Update requested state and Notify that the request was sent
             setHasRequestedFriend(true);
+
+            const notification = getSuccessNotification(
+                'Request Sent',
+                `Your request to ${username} was sent.`
+            );
+
+            showNotification(notification);
         }
+
+        setIsPending(false);
     };
 
     const cancelFriendRequest = async () => {
+        setIsPending(true);
+
         const response = await fetch(
             `/api/users/${userData.username}/friends/request/cancel`,
             {
@@ -58,7 +92,9 @@ const User = () => {
 
         if (!response.ok) {
             const json = await response.json();
-            setFriendError(json.error);
+            const notification = getErrorNotification(json.error);
+
+            showNotification(notification);
             setIsConfirmingCancel(false);
         }
 
@@ -66,7 +102,16 @@ const User = () => {
             // Update requested state and Notify that the request was canceled
             setHasRequestedFriend(false);
             setIsConfirmingCancel(false);
+
+            const notification = getSuccessNotification(
+                'Request Canceled',
+                `Your request to ${username} was canceled.`
+            );
+
+            showNotification(notification);
         }
+
+        setIsPending(false);
     };
 
     const removeFriend = async () => {
@@ -84,11 +129,19 @@ const User = () => {
 
         if (!response.ok) {
             const json = await response.json();
-            setFriendError(json.error);
+            const notification = getErrorNotification(json.error);
+
+            showNotification(notification);
             setIsPending(false);
         }
 
         if (response.ok) {
+            const notification = getSuccessNotification(
+                'Friend Removed',
+                `You removed ${username} from your friends.`
+            );
+
+            showNotification(notification);
             navigate(0);
         }
     };
