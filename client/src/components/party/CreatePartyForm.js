@@ -1,6 +1,11 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { showNotification } from '@mantine/notifications';
+import {
+    getSuccessNotification,
+    getErrorNotification,
+} from '../../utils/notifications';
+
 import { useForm } from '@mantine/form';
 import {
     useMantineTheme,
@@ -8,7 +13,6 @@ import {
     TextInput,
     Textarea,
     Button,
-    Text,
     Group,
     ActionIcon,
     Paper,
@@ -41,7 +45,6 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
     const { classes } = useStyles();
     const navigate = useNavigate();
     const theme = useMantineTheme();
-    const [error, setError] = useState(null);
 
     const gameForm = useForm({
         initialValues: {
@@ -84,13 +87,11 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
     };
 
     const handleSubmit = async (values) => {
-        if (!user) {
-            setError('You must be logged in');
-            return;
-        }
-
         if (!game) {
-            setError('You must select a game');
+            const notification = getErrorNotification(
+                'A game must be selected.'
+            );
+            showNotification(notification);
             return;
         }
 
@@ -108,16 +109,30 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
         const json = await response.json();
 
         if (!response.ok) {
-            setError(json.error);
+            const json = await response.json();
+            const notification = getErrorNotification(json.error);
+
+            showNotification(notification);
         }
 
         if (response.ok) {
-            setError(null);
+            const notification = getSuccessNotification(
+                'Party Created',
+                `You created ${partyForm.values.name}.`
+            );
+
+            showNotification(notification);
             navigate(`/parties/${json._id}`);
         }
     };
 
     const handleCancel = () => {
+        const notification = getSuccessNotification(
+            'Party Canceled',
+            'You canceled the party creation.'
+        );
+
+        showNotification(notification);
         navigate('/parties');
     };
 
@@ -201,12 +216,6 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
                     minRows={4}
                     withAsterisk
                 />
-
-                {error && (
-                    <Text mt="sm" size="sm" color="red">
-                        {error}
-                    </Text>
-                )}
 
                 <Group mt="md" spacing="xs">
                     <Button type="submit" radius="lg">
