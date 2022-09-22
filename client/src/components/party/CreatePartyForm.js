@@ -18,7 +18,7 @@ import {
     Paper,
     createStyles,
 } from '@mantine/core';
-import { DatePicker } from '@mantine/dates';
+import { DatePicker, TimeInput } from '@mantine/dates';
 import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
 import dayjs from 'dayjs';
 import GameCard from './GameCard';
@@ -72,6 +72,7 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
                     ? 'Name must have fewer than 100 letters'
                     : null,
             date: (value) => (!value ? 'Date must be selected' : null),
+            time: (value) => (!value ? 'A time must be set' : null),
             lookingFor: (value) =>
                 value < 1 || value > 100
                     ? 'Looking for must be between 1 to 100 members'
@@ -109,7 +110,6 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
         const json = await response.json();
 
         if (!response.ok) {
-            const json = await response.json();
             const notification = getErrorNotification(json.error);
 
             showNotification(notification);
@@ -127,12 +127,6 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
     };
 
     const handleCancel = () => {
-        const notification = getSuccessNotification(
-            'Party Canceled',
-            'You canceled the party creation.'
-        );
-
-        showNotification(notification);
         navigate('/parties');
     };
 
@@ -174,7 +168,6 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
             )}
 
             {/* This form collects the party details and handles submission */}
-
             <form
                 aria-label="Start a Party"
                 onSubmit={partyForm.onSubmit((values) => handleSubmit(values))}
@@ -195,6 +188,15 @@ const CreatePartyForm = ({ game, setGame, setGameName, setSelectingGame }) => {
                     minDate={new Date(Date.now())}
                     maxDate={dayjs(new Date()).endOf('year').toDate()}
                     {...partyForm.getInputProps('date')}
+                    withAsterisk
+                />
+                <TimeInput
+                    mt="sm"
+                    radius="md"
+                    label="Time"
+                    format="12"
+                    clearable
+                    {...partyForm.getInputProps('time')}
                     withAsterisk
                 />
                 <NumberInput

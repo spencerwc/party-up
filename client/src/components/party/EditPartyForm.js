@@ -17,7 +17,7 @@ import {
     Paper,
     createStyles,
 } from '@mantine/core';
-import { DatePicker } from '@mantine/dates';
+import { DatePicker, TimeInput } from '@mantine/dates';
 import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
 import dayjs from 'dayjs';
 import GameCard from './GameCard';
@@ -65,6 +65,7 @@ const EditPartyForm = ({
         initialValues: {
             name: party.name,
             date: new Date(party.date),
+            time: new Date(party.time),
             lookingFor: party.lookingFor,
             details: party.details,
         },
@@ -77,6 +78,7 @@ const EditPartyForm = ({
                     ? 'Name must have fewer than 100 letters'
                     : null,
             date: (value) => (!value ? 'Date must be selected' : null),
+            time: (value) => (!value ? 'A time must be set' : null),
             lookingFor: (value) =>
                 value < 1 || value > 100
                     ? 'Looking for must be between 1 to 100 members'
@@ -198,6 +200,15 @@ const EditPartyForm = ({
                     minDate={new Date(Date.now())}
                     maxDate={dayjs(new Date()).endOf('year').toDate()}
                     {...partyForm.getInputProps('date')}
+                    withAsterisk
+                />
+                <TimeInput
+                    mt="sm"
+                    radius="md"
+                    label="Time"
+                    format="12"
+                    clearable
+                    {...partyForm.getInputProps('time')}
                     withAsterisk
                 />
                 <NumberInput

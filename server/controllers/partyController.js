@@ -96,11 +96,11 @@ const createParty = async (req, res) => {
 
 const updateParty = async (req, res) => {
     const { id } = req.params;
-    const { date, details, lookingFor, name, game } = req.body;
+    const { date, details, lookingFor, name, game, time } = req.body;
     const userId = req.user._id;
 
     // TODO: Add validation checks
-    if (!date || !details || !lookingFor || !name) {
+    if (!date || !details || !lookingFor || !name || !time) {
         return res.status(400).json({ error: 'All fields must be filled' });
     }
 
@@ -146,6 +146,7 @@ const updateParty = async (req, res) => {
             lookingFor,
             name,
             game,
+            time,
         },
         { new: true }
     );
