@@ -1,4 +1,12 @@
-import { createStyles, Card, Avatar, Text, Group, Stack } from '@mantine/core';
+import {
+    createStyles,
+    Card,
+    Avatar,
+    Text,
+    Group,
+    Stack,
+    MediaQuery,
+} from '@mantine/core';
 import {
     IconUser,
     IconUsers,
@@ -94,9 +102,24 @@ const PartyCard = ({ party }) => {
                         <IconQuestionMark />
                     </Avatar>
                     <Stack spacing={0}>
-                        <Text color="dimmed" size="xs" weight={500}>
-                            {dayjs(party.date).format('dddd, MMMM D')}
-                        </Text>
+                        <MediaQuery
+                            largerThan={390}
+                            styles={{ display: 'none' }}
+                        >
+                            <Text color="dimmed" size="xs" weight={500}>
+                                {dayjs(party.date).format('ddd, MMM. D, YYYY')},{' '}
+                                {dayjs(party.time).format('h:mm A')}
+                            </Text>
+                        </MediaQuery>
+                        <MediaQuery
+                            smallerThan={390}
+                            styles={{ display: 'none' }}
+                        >
+                            <Text color="dimmed" size="xs" weight={500}>
+                                {dayjs(party.date).format('ddd, MMMM. D, YYYY')}
+                                , {dayjs(party.time).format('h:mm A')}
+                            </Text>
+                        </MediaQuery>
                         <Text weight={500} size="sm">
                             {party.name}
                         </Text>

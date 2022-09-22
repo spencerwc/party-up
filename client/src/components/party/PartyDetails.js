@@ -7,6 +7,7 @@ import {
     Avatar,
     Anchor,
     createStyles,
+    MediaQuery,
 } from '@mantine/core';
 import { IconUsers, IconSearch } from '@tabler/icons';
 import dayjs from 'dayjs';
@@ -32,9 +33,18 @@ const PartyDetails = ({ party, openings }) => {
 
     return (
         <Stack spacing={0}>
-            <Text color="dimmed" weight={500}>
-                {dayjs(party.date).format('dddd, MMMM D YYYY')}
-            </Text>
+            <MediaQuery largerThan="xs" styles={{ display: 'none' }}>
+                <Text color="dimmed" weight={500}>
+                    {dayjs(party.date).format('ddd, MMM. D, YYYY')},{' '}
+                    {dayjs(party.time).format('h:mm A')}
+                </Text>
+            </MediaQuery>
+            <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
+                <Text color="dimmed" weight={500}>
+                    {dayjs(party.date).format('dddd, MMMM D, YYYY')},{' '}
+                    {dayjs(party.time).format('h:mm A')}
+                </Text>
+            </MediaQuery>
             <Title size={24}>{party.name}</Title>
             <Text color="dimmed" size={15}>
                 {party.game.name}
