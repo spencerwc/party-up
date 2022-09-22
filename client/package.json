@@ -9,6 +9,7 @@
     "@mantine/dates": "^5.2.3",
     "@mantine/form": "^5.2.3",
     "@mantine/hooks": "^5.2.3",
+    "@mantine/notifications": "^5.4.0",
     "@tabler/icons": "^1.82.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
