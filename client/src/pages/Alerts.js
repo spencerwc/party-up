@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { showNotification } from '@mantine/notifications';
+import {
+    getSuccessNotification,
+    getErrorNotification,
+} from '../utils/notifications';
 import { Stack, Title } from '@mantine/core';
 import RequestList from '../components/general/RequestList';
 import MinimalLoader from '../components/general/MinimalLoader';
@@ -8,7 +13,6 @@ import ConfirmationModal from '../components/general/ConfirmationModal';
 const Alerts = () => {
     const { user } = useAuthContext();
     const [friendRequests, setFriendRequests] = useState(null);
-    const [friendError, setFriendError] = useState(null);
     const [isPending, setIsPending] = useState(false);
     const [targetRequest, setTargetRequest] = useState(null);
     const [isConfirmingDeclined, setIsConfirmingDecline] = useState(false);
@@ -26,6 +30,11 @@ const Alerts = () => {
             );
 
             const json = await response.json();
+
+            if (!response.ok) {
+                const notification = getErrorNotification(json.error);
+                showNotification(notification);
+            }
 
             if (response.ok) {
                 setFriendRequests(json);
@@ -49,11 +58,19 @@ const Alerts = () => {
 
         if (!response.ok) {
             const json = await response.json();
-            setFriendError(json.error);
+            const notification = getErrorNotification(json.error);
+
+            showNotification(notification);
         }
 
         if (response.ok) {
             // Update requested state and Notify that the request was sent
+            const notification = getSuccessNotification(
+                'Request Accepted',
+                `${username} has been added to your friends.`
+            );
+
+            showNotification(notification);
             setFriendRequests({
                 ...friendRequests,
                 friendRequestsReceived:
@@ -81,15 +98,23 @@ const Alerts = () => {
 
         if (!response.ok) {
             const json = await response.json();
-            setFriendError(json.error);
+            const notification = getErrorNotification(json.error);
+
+            showNotification(notification);
             setTargetRequest(null);
             setIsConfirmingDecline(false);
-            // Notify error
         }
 
         if (response.ok) {
+            const notification = getSuccessNotification(
+                'Request Declined',
+                `You declined the request from ${targetRequest}`
+            );
+
+            showNotification(notification);
             setTargetRequest(null);
             setIsConfirmingDecline(false);
+
             setFriendRequests({
                 ...friendRequests,
                 friendRequestsReceived:
@@ -97,7 +122,6 @@ const Alerts = () => {
                         (request) => request.username !== targetRequest
                     ),
             });
-            // Notify of decline
         }
         setIsPending(false);
     };
@@ -117,15 +141,23 @@ const Alerts = () => {
 
         if (!response.ok) {
             const json = await response.json();
-            setFriendError(json.error);
+            const notification = getErrorNotification(json.error);
+
+            showNotification(notification);
             setTargetRequest(null);
             setIsConfirmingCancel(false);
-            // Notify error
         }
 
         if (response.ok) {
+            const notification = getSuccessNotification(
+                'Request Canceled',
+                `Your request to ${targetRequest} was canceled.`
+            );
+
+            showNotification(notification);
             setTargetRequest(null);
             setIsConfirmingCancel(false);
+
             setFriendRequests({
                 ...friendRequests,
                 friendRequestsSent: friendRequests.friendRequestsSent.filter(
@@ -139,7 +171,7 @@ const Alerts = () => {
 
     if (friendRequests) {
         return (
-            <Stack mt="md" spacing={0}>
+            <Stack mt="md" pb={68} spacing={0}>
                 <Title mx="md" order={1} size={20}>
                     Alerts
                 </Title>
