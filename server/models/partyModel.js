@@ -40,6 +40,10 @@ const partySchema = new Schema(
             type: String,
             required: true,
         },
+        time: {
+            type: Date,
+            required: true,
+        },
     },
     {
         timestamps: true,

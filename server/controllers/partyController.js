@@ -40,10 +40,10 @@ const getParty = async (req, res) => {
 };
 
 const createParty = async (req, res) => {
-    const { date, details, lookingFor, name, game } = req.body;
+    const { date, details, lookingFor, name, game, time } = req.body;
     const userId = req.user._id;
 
-    if (!date || !details || !lookingFor || !name) {
+    if (!date || !details || !lookingFor || !name || !time) {
         return res.status(400).json({ error: 'All fields must be filled' });
     }
 
@@ -74,6 +74,7 @@ const createParty = async (req, res) => {
             members: [userId],
             name,
             game,
+            time,
         });
 
         await User.findByIdAndUpdate(
