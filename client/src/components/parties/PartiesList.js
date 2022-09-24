@@ -1,4 +1,4 @@
-import { createStyles, Text } from '@mantine/core';
+import { createStyles } from '@mantine/core';
 import PartyCard from './PartyCard';
 
 const useStyles = createStyles((theme) => ({
@@ -17,10 +17,6 @@ const useStyles = createStyles((theme) => ({
 
 const PartiesList = ({ parties }) => {
     const { classes } = useStyles();
-
-    if (parties.length === 0) {
-        return <Text m="md">No parties found.</Text>;
-    }
 
     return (
         <ul className={classes.parties}>

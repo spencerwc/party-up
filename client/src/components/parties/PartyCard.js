@@ -72,7 +72,7 @@ const useStyles = createStyles((theme) => ({
     mobileHidden: {
         display: 'none',
 
-        [`@media (min-width: 390px)`]: {
+        [`@media (min-width: 370px)`]: {
             display: 'inline',
         },
     },

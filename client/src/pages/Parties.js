@@ -1,4 +1,4 @@
-import { Box, Title, Group, Select, Checkbox, MediaQuery } from '@mantine/core';
+import { Box, Title, Group, Select, Checkbox, Text } from '@mantine/core';
 import { useFetch } from '../hooks/useFetch';
 import MinimalLoader from '../components/general/MinimalLoader';
 import PartiesList from '../components/parties/PartiesList';
@@ -15,8 +15,8 @@ dayjs.extend(isSameOrAfter);
 const Parties = () => {
     const { data: parties, error } = useFetch('/api/parties');
     const [range, setRange] = useState('Today');
-    const [hideFilled, setHideFilled] = useState(false);
-    const [hidePast, setHidePast] = useState(false);
+    const [showFilled, setShowFilled] = useState(false);
+    const [showCompleted, setShowCompleted] = useState(false);
 
     const getPartiesInRange = () => {
         switch (range) {
@@ -25,16 +25,14 @@ const Parties = () => {
             case 'This Week':
                 return parties.filter((party) =>
                     dayjs(party.date).isBetween(
-                        dayjs().subtract(1, 'day'),
+                        dayjs().day(0),
                         dayjs().day(6),
-                        '(]'
+                        '[]'
                     )
                 );
             case 'This Month':
                 return parties.filter(
-                    (party) =>
-                        dayjs(party.date).isSameOrAfter(dayjs(), 'day') &&
-                        dayjs(party.date).month() === dayjs().month()
+                    (party) => dayjs(party.date).month() === dayjs().month()
                 );
             default:
                 return parties;
@@ -42,21 +40,23 @@ const Parties = () => {
     };
 
     const getFilteredParties = () => {
-        let filteredParties = getPartiesInRange(parties);
+        let filteredParties = getPartiesInRange();
 
-        if (hideFilled) {
+        if (!showFilled) {
             filteredParties = filteredParties.filter(
                 (party) => party.members.length - 1 !== party.lookingFor
             );
         }
 
-        if (hidePast) {
+        if (!showCompleted) {
             filteredParties = filteredParties.filter((party) =>
-                dayjs(party.date).isSameOrAfter(dayjs(), 'day')
+                dayjs(party.date).isSameOrAfter(Date.now())
             );
         }
 
-        return filteredParties;
+        return filteredParties.sort(
+            (a, b) => new Date(a.date) - new Date(b.date)
+        );
     };
 
     if (parties) {
@@ -67,37 +67,13 @@ const Parties = () => {
                 sx={(theme) => ({
                     paddingTop: theme.spacing.md,
                     paddingBottom: 68,
-
-                    [`@media (min-width: ${theme.breakpoints.md}px)`]: {
-                        padding: theme.spacing.md,
-                    },
                 })}
             >
-                <Title
-                    order={1}
-                    size={20}
-                    mb="sm"
-                    sx={(theme) => ({
-                        marginLeft: theme.spacing.md,
-
-                        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
-                            marginLeft: 0,
-                        },
-                    })}
-                >
+                <Title order={1} size={20} mb="sm" mx="md">
                     Parties
                 </Title>
 
-                <Group
-                    mb="md"
-                    sx={(theme) => ({
-                        [`@media (max-width: ${theme.breakpoints.md}px)`]: {
-                            marginLeft: theme.spacing.md,
-                            marginRight: theme.spacing.md,
-                        },
-                    })}
-                    noWrap
-                >
+                <Group mb="md" mx="md" noWrap>
                     <Select
                         value={range}
                         onChange={setRange}
@@ -110,24 +86,39 @@ const Parties = () => {
                         variant="filled"
                     />
                     <Checkbox
-                        label="Hide filled"
-                        checked={hideFilled}
+                        label="Show filled"
+                        checked={showFilled}
                         onChange={(event) =>
-                            setHideFilled(event.currentTarget.checked)
+                            setShowFilled(event.currentTarget.checked)
                         }
                         size="xs"
                     />
                     <Checkbox
-                        label="Hide past"
-                        checked={hidePast}
+                        label="Show completed"
+                        checked={showCompleted}
                         onChange={(event) =>
-                            setHidePast(event.currentTarget.checked)
+                            setShowCompleted(event.currentTarget.checked)
                         }
                         size="xs"
                     />
                 </Group>
 
-                <PartiesList parties={filtered} />
+                {filtered.length > 0 ? (
+                    <Box
+                        sx={(theme) => ({
+                            [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+                                paddingLeft: theme.spacing.md,
+                                paddingRight: theme.spacing.md,
+                            },
+                        })}
+                    >
+                        <PartiesList parties={filtered} />
+                    </Box>
+                ) : (
+                    <Text mx="md" color="dimmed">
+                        No parties found.
+                    </Text>
+                )}
             </Box>
         );
     }
