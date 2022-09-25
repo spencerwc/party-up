@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useColorScheme, useLocalStorage } from '@mantine/hooks';
 import { Global, MantineProvider, ColorSchemeProvider } from '@mantine/core';
 
 const GlobalStyle = () => {
@@ -29,7 +29,13 @@ const GlobalStyle = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-    const [colorScheme, setColorScheme] = useState('light');
+    const preferredColorScheme = useColorScheme();
+    const [colorScheme, setColorScheme] = useLocalStorage({
+        key: 'partyup-color-scheme',
+        defaultValue: preferredColorScheme,
+        getInitialValueInEffect: true,
+    });
+
     const toggleColorScheme = () => {
         setColorScheme(colorScheme === 'light' ? 'dark' : 'light');
     };

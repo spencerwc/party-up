@@ -65,7 +65,7 @@ const EditPartyForm = ({
         initialValues: {
             name: party.name,
             date: new Date(party.date),
-            time: new Date(party.time),
+            time: new Date(party.date),
             lookingFor: party.lookingFor,
             details: party.details,
         },

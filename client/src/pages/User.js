@@ -18,7 +18,11 @@ const User = () => {
     const { username } = useParams();
     const { user } = useAuthContext();
     const navigate = useNavigate();
-    const { data: userData, error } = useFetch(`/api/users/${username}`);
+    const {
+        data: userData,
+        isLoading,
+        error,
+    } = useFetch(`/api/users/${username}`);
     const [friendRequests, setFriendRequests] = useState(null);
     const [isFriend, setIsFriend] = useState(false);
     const [hasRequestedFriend, setHasRequestedFriend] = useState(false);
@@ -178,6 +182,8 @@ const User = () => {
 
             if (index !== -1) {
                 setHasRequestedFriend(true);
+            } else {
+                setHasRequestedFriend(false);
             }
         };
 
@@ -185,6 +191,10 @@ const User = () => {
             checkIfRequested();
         }
     }, [user, userData, friendRequests]);
+
+    if (isLoading) {
+        return <MinimalLoader />;
+    }
 
     if (userData) {
         return (
