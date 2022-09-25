@@ -35,14 +35,12 @@ const PartyDetails = ({ party, members, openings }) => {
         <Stack spacing={0}>
             <MediaQuery largerThan="xs" styles={{ display: 'none' }}>
                 <Text color="dimmed" weight={500}>
-                    {dayjs(party.date).format('ddd, MMM. D, YYYY')},{' '}
-                    {dayjs(party.time).format('h:mm A')}
+                    {dayjs(party.date).format('ddd, MMM. D, YYYY, h:mm A')}
                 </Text>
             </MediaQuery>
             <MediaQuery smallerThan="xs" styles={{ display: 'none' }}>
                 <Text color="dimmed" weight={500}>
-                    {dayjs(party.date).format('dddd, MMMM D, YYYY')},{' '}
-                    {dayjs(party.time).format('h:mm A')}
+                    {dayjs(party.date).format('dddd, MMMM D, YYYY, h:mm A')}
                 </Text>
             </MediaQuery>
             <Title size={24}>{party.name}</Title>

@@ -20,7 +20,6 @@ const useStyles = createStyles((theme) => ({
                 ${theme.colors.indigo[8]}4D 10px 10px, 
                 ${theme.colors.indigo[8]}33 15px 15px`,
             marginRight: 10,
-            marginBottom: 0,
         },
     },
 }));

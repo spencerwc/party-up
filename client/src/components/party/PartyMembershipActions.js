@@ -13,6 +13,11 @@ const PartyMembershipActions = ({
         return <Text color="dimmed">You are the leader of this party.</Text>;
     }
 
+    // If user is not a member and no openings are available, membership is not allowed
+    if (openings === 0 && !isMember) {
+        return <Text color="dimmed">The party has filled.</Text>;
+    }
+
     // Otherwise - if user is a member, allow them to leave
     if (isMember) {
         return (
@@ -28,11 +33,6 @@ const PartyMembershipActions = ({
                 </Button>
             </Stack>
         );
-    }
-
-    // If user is not a member and no openings are available, membership is not allowed
-    if (openings === 0) {
-        return <Text color="dimmed">The party has filled.</Text>;
     }
 
     // Default action to join the party

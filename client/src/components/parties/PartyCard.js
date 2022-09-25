@@ -107,8 +107,9 @@ const PartyCard = ({ party }) => {
                             styles={{ display: 'none' }}
                         >
                             <Text color="dimmed" size="xs" weight={500}>
-                                {dayjs(party.date).format('ddd, MMM. D, YYYY')},{' '}
-                                {dayjs(party.time).format('h:mm A')}
+                                {dayjs(party.date).format(
+                                    'ddd, MMM. D, YYYY, h:mm A'
+                                )}
                             </Text>
                         </MediaQuery>
                         <MediaQuery
@@ -116,8 +117,9 @@ const PartyCard = ({ party }) => {
                             styles={{ display: 'none' }}
                         >
                             <Text color="dimmed" size="xs" weight={500}>
-                                {dayjs(party.date).format('ddd, MMMM. D, YYYY')}
-                                , {dayjs(party.time).format('h:mm A')}
+                                {dayjs(party.date).format(
+                                    'ddd, MMMM. D, YYYY, h:mm A'
+                                )}
                             </Text>
                         </MediaQuery>
                         <Text weight={500} size="sm">
