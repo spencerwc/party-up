@@ -28,7 +28,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const PartyDetails = ({ party, openings }) => {
+const PartyDetails = ({ party, members, openings }) => {
     const { classes } = useStyles();
 
     return (
@@ -56,9 +56,9 @@ const PartyDetails = ({ party, openings }) => {
                         <IconUsers size={15} />
                     </Text>
                     <Text size="sm">
-                        <strong>{party.members.length}</strong>{' '}
+                        <strong>{members.length}</strong>{' '}
                         <span className={classes.mobileHidden}>
-                            member{party.members.length !== 1 && 's'}
+                            member{members.length !== 1 && 's'}
                         </span>
                     </Text>
                 </Group>
@@ -67,12 +67,18 @@ const PartyDetails = ({ party, openings }) => {
                     <Text color="violet.7">
                         <IconSearch size={14} />
                     </Text>
-                    <Text size="sm">
-                        <strong>{openings}</strong>{' '}
-                        <span className={classes.mobileHidden}>
-                            opening{openings !== 1 && 's'}
-                        </span>
-                    </Text>
+                    {openings > 0 ? (
+                        <Text size="sm">
+                            <strong>{openings}</strong>{' '}
+                            <span className={classes.mobileHidden}>
+                                opening{openings !== 1 && 's'}
+                            </span>
+                        </Text>
+                    ) : (
+                        <Text size="sm" weight={600}>
+                            Filled
+                        </Text>
+                    )}
                 </Group>
             </Group>
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -25,9 +25,39 @@ const Party = ({ setIsRegistering }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { data: party, isLoading, error } = useFetch(`/api/parties/${id}`);
+    const [members, setMembers] = useState([]);
+    const [openings, setOpenings] = useState(null);
     const [isPending, setIsPending] = useState(false);
     const [isConfirmingLeave, setIsConfirmingLeave] = useState(false);
     const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+    const [isMember, setIsMember] = useState(false);
+    const [isLeader, setIsLeader] = useState(false);
+    const PARTY_MEMBER_CARDS = 10;
+
+    useEffect(() => {
+        // Check if the user is currently a member
+        const checkIfMember = () => {
+            if (user) {
+                const index = party.members.findIndex(
+                    (member) => member.username === user.username
+                );
+
+                return index !== -1;
+            }
+        };
+
+        // Check if the user is the leader
+        const checkIfLeader = () => {
+            return user && user.username === party.leader.username;
+        };
+
+        if (party) {
+            setMembers(party.members);
+            setOpenings(party.lookingFor - (party.members.length - 1));
+            setIsLeader(checkIfLeader());
+            setIsMember(checkIfMember());
+        }
+    }, [party, user]);
 
     const handleJoin = async () => {
         if (!user) {
@@ -52,7 +82,6 @@ const Party = ({ setIsRegistering }) => {
                 );
 
                 showNotification(notification);
-                setIsPending(false);
             }
 
             if (response.ok) {
@@ -62,8 +91,18 @@ const Party = ({ setIsRegistering }) => {
                 );
 
                 showNotification(notification);
-                navigate(0);
+                setIsMember(true);
+                setOpenings(openings - 1);
+
+                setMembers([
+                    ...members,
+                    {
+                        avatar: user.avatar,
+                        username: user.username,
+                    },
+                ]);
             }
+            setIsPending(false);
         }
     };
 
@@ -86,7 +125,6 @@ const Party = ({ setIsRegistering }) => {
             );
 
             showNotification(notification);
-            setIsPending(false);
         }
 
         if (response.ok) {
@@ -96,8 +134,15 @@ const Party = ({ setIsRegistering }) => {
             );
 
             showNotification(notification);
-            navigate(0);
+            setIsMember(false);
+            setOpenings(openings + 1);
+
+            setMembers(
+                members.filter((member) => member.username !== user.username)
+            );
         }
+        setIsConfirmingLeave(false);
+        setIsPending(false);
     };
 
     const handleDelete = async () => {
@@ -129,31 +174,11 @@ const Party = ({ setIsRegistering }) => {
         }
     };
 
-    // Check if the user is currently a member
-    const checkIfMember = () => {
-        if (user) {
-            const index = party.members.findIndex(
-                (member) => member.username === user.username
-            );
-
-            return index !== -1;
-        }
-    };
-
-    // Check if the user is the leader
-    const checkIfLeader = () => {
-        return user && user.username === party.leader.username;
-    };
-
     if (isLoading) {
         return <MinimalLoader />;
     }
 
     if (party) {
-        const openings = party.lookingFor - (party.members.length - 1);
-        const isLeader = checkIfLeader();
-        const isMember = checkIfMember();
-
         return (
             <Box
                 sx={(theme) => ({
@@ -187,7 +212,11 @@ const Party = ({ setIsRegistering }) => {
                 {/* General party details */}
                 <Group p="md" position="apart" noWrap>
                     <Stack>
-                        <PartyDetails party={party} openings={openings} />
+                        <PartyDetails
+                            party={party}
+                            members={members}
+                            openings={openings}
+                        />
 
                         {/* Actions for joining / leaving the party */}
                         <PartyMembershipActions
@@ -225,7 +254,7 @@ const Party = ({ setIsRegistering }) => {
                     <UserCardList
                         title="Members"
                         seeAllLink={`members`}
-                        users={party.members.slice(0, 5)}
+                        users={members.slice(0, PARTY_MEMBER_CARDS)}
                     />
 
                     {/* Party Comments */}

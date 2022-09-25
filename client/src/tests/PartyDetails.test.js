@@ -59,17 +59,29 @@ const seedParties = [
 describe('Party details', () => {
     describe('Party main banner', () => {
         it('renders the party name as a heading', () => {
-            render(<PartyDetails party={seedParties[0]} />, {
-                wrapper: Wrapper,
-            });
+            render(
+                <PartyDetails
+                    party={seedParties[0]}
+                    members={seedParties[0].members}
+                />,
+                {
+                    wrapper: Wrapper,
+                }
+            );
             expect(screen.getByRole('heading')).toBeInTheDocument();
             expect(screen.getByText(seedParties[0].name)).toBeInTheDocument();
         });
 
         it('displays the party date', () => {
-            render(<PartyDetails party={seedParties[1]} />, {
-                wrapper: Wrapper,
-            });
+            render(
+                <PartyDetails
+                    party={seedParties[1]}
+                    members={seedParties[1].members}
+                />,
+                {
+                    wrapper: Wrapper,
+                }
+            );
             expect(
                 screen.getByText(
                     dayjs(seedParties[1].date).format('dddd, MMMM D YYYY')
@@ -78,18 +90,30 @@ describe('Party details', () => {
         });
 
         it('displays the party game name', () => {
-            render(<PartyDetails party={seedParties[1]} />, {
-                wrapper: Wrapper,
-            });
+            render(
+                <PartyDetails
+                    party={seedParties[1]}
+                    members={seedParties[1].members}
+                />,
+                {
+                    wrapper: Wrapper,
+                }
+            );
             expect(
                 screen.getByText(seedParties[1].game.name)
             ).toBeInTheDocument();
         });
 
         it('displays the leader username', () => {
-            render(<PartyDetails party={seedParties[0]} />, {
-                wrapper: Wrapper,
-            });
+            render(
+                <PartyDetails
+                    party={seedParties[0]}
+                    members={seedParties[0].members}
+                />,
+                {
+                    wrapper: Wrapper,
+                }
+            );
             expect(
                 screen.getByText(seedParties[0].leader.username)
             ).toBeInTheDocument();
@@ -98,9 +122,15 @@ describe('Party details', () => {
 
     describe('Party membership details', () => {
         it('renders the member count', () => {
-            render(<PartyDetails party={seedParties[0]} />, {
-                wrapper: Wrapper,
-            });
+            render(
+                <PartyDetails
+                    party={seedParties[0]}
+                    members={seedParties[0].members}
+                />,
+                {
+                    wrapper: Wrapper,
+                }
+            );
             expect(
                 screen.getByText(seedParties[0].members.length)
             ).toBeInTheDocument();
@@ -110,7 +140,11 @@ describe('Party details', () => {
             const openings = 3;
 
             render(
-                <PartyDetails party={seedParties[1]} openings={openings} />,
+                <PartyDetails
+                    party={seedParties[1]}
+                    members={seedParties[1].members}
+                    openings={openings}
+                />,
                 {
                     wrapper: Wrapper,
                 }
