@@ -5,7 +5,7 @@ const Comment = require('../models/commentModel');
 
 const getParties = async (req, res) => {
     try {
-        const parties = await Party.find().sort({ time: 1 });
+        const parties = await Party.find().sort({ date: 1 });
         res.status(200).json(parties);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -65,16 +65,17 @@ const createParty = async (req, res) => {
         return res.stats(400).json({ error: 'A game must be provided' });
     }
 
+    const dateTime = `${date.split('T')[0]}T${time.split('T')[1]}`;
+
     try {
         const party = await Party.create({
-            date,
+            date: dateTime,
             details,
             leader: userId,
             lookingFor,
             members: [userId],
             name,
             game,
-            time,
         });
 
         await User.findByIdAndUpdate(
@@ -138,15 +139,16 @@ const updateParty = async (req, res) => {
         return res.status(400).json({ error: 'Insufficient permissions' });
     }
 
+    const dateTime = `${date.split('T')[0]}T${time.split('T')[1]}`;
+
     const updated = await Party.findOneAndUpdate(
         { _id: id },
         {
-            date,
+            date: dateTime,
             details,
             lookingFor,
             name,
             game,
-            time,
         },
         { new: true }
     );
