@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { useFetch } from '../../hooks/useFetch';
 import { Link } from 'react-router-dom';
 import {
     MediaQuery,
@@ -17,6 +17,11 @@ import {
 } from '@mantine/core';
 import ColorSchemeToggle from '../general/ColorSchemeToggle';
 import PartiesList from '../parties/PartiesList';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+import { useEffect, useState } from 'react';
+
+dayjs.extend(isBetween);
 
 const useStyles = createStyles((theme) => ({
     aside: {
@@ -38,8 +43,10 @@ const useStyles = createStyles((theme) => ({
 const AsideMinimal = ({ setIsRegistering }) => {
     const { classes } = useStyles();
     const { user } = useAuthContext();
+    const { data: parties } = useFetch('/api/parties');
+    const [upcomingParties, setUpcomingParties] = useState(null);
     const navigate = useNavigate();
-    const [newParties, setNewParties] = useState(null);
+    const PARTY_LIMIT = 3;
 
     const handleStartPartyClick = () => {
         if (!user) {
@@ -50,18 +57,18 @@ const AsideMinimal = ({ setIsRegistering }) => {
     };
 
     useEffect(() => {
-        const getParties = async () => {
-            const response = await fetch('/api/parties');
-            const json = await response.json();
-
-            if (response.ok) {
-                const parties = json.slice(0, 3);
-                setNewParties(parties);
-            }
-        };
-
-        getParties();
-    }, []);
+        if (parties) {
+            setUpcomingParties(
+                parties.filter((party) =>
+                    dayjs(party.date).isBetween(
+                        dayjs(),
+                        dayjs().add(7, 'days'),
+                        '[]'
+                    )
+                )
+            );
+        }
+    }, [parties]);
 
     return (
         <MediaQuery className={classes.aside}>
@@ -71,10 +78,10 @@ const AsideMinimal = ({ setIsRegistering }) => {
                         Start a Party
                     </Button>
 
-                    {newParties && (
+                    {upcomingParties && upcomingParties.length > 0 && (
                         <Box>
                             <Group mb="sm" position="apart">
-                                <Text weight={700}>New Parties</Text>
+                                <Text weight={700}>Upcoming Parties</Text>
                                 <Anchor
                                     component={Link}
                                     to="/parties"
@@ -84,7 +91,9 @@ const AsideMinimal = ({ setIsRegistering }) => {
                                     See All
                                 </Anchor>
                             </Group>
-                            <PartiesList parties={newParties} />
+                            <PartiesList
+                                parties={upcomingParties.slice(0, PARTY_LIMIT)}
+                            />
                         </Box>
                     )}
 
