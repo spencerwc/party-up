@@ -40,7 +40,7 @@ const CommentsList = ({ title, commentData, uri, setIsRegistering }) => {
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState(null);
     const [displayForm, setDisplayForm] = useState(false);
-    const [sortStyle, setSortStyle] = useState('Most recent');
+    const [sortStyle, setSortStyle] = useState('Most Recent');
     const [showAll, setShowAll] = useState(false);
     const COMMENT_LIMIT = 3; // Used to limit initial comments displayed
 
@@ -51,7 +51,7 @@ const CommentsList = ({ title, commentData, uri, setIsRegistering }) => {
                     (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
                 );
             }
-            case 'Most liked': {
+            case 'Most Liked': {
                 return comments.sort((a, b) => b.likes - a.likes);
             }
             default:
@@ -189,11 +189,12 @@ const CommentsList = ({ title, commentData, uri, setIsRegistering }) => {
                         <Select
                             value={sortStyle}
                             onChange={setSortStyle}
-                            data={['Most recent', 'Oldest', 'Most liked']}
+                            data={['Most Recent', 'Oldest', 'Most Liked']}
                             radius="md"
                             mx="md"
                             size="sm"
                             sx={{ width: 'fit-content' }}
+                            variant="filled"
                         />
                     )}
 

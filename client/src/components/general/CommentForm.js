@@ -37,6 +37,7 @@ const CommentForm = ({ addComment, isPending, error, setDisplayForm }) => {
             >
                 <Textarea
                     radius="md"
+                    variant="filled"
                     placeholder="Type your message"
                     {...commentForm.getInputProps('comment')}
                     minRows={2}
