@@ -1,8 +1,11 @@
+import { useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useFetch } from '../hooks/useFetch';
 import { Link } from 'react-router-dom';
 import { Anchor, Box, Group, Stack, Title, Text } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
 import { IconCalendarOff } from '@tabler/icons';
+import { getErrorNotification } from '../utils/notifications';
 import MinimalLoader from '../components/general/MinimalLoader';
 import PartiesList from '../components/parties/PartiesList';
 import dayjs from 'dayjs';
@@ -28,12 +31,18 @@ const Dashboard = () => {
         }
     };
 
+    useEffect(() => {
+        if (error) {
+            showNotification(getErrorNotification(error));
+        }
+    }, [error]);
+
     if (userData) {
         const partiesToday = getPartiesInRange('today', userData.parties);
         const partiesWeek = getPartiesInRange('week', userData.parties);
 
         return (
-            <Stack pt="md" spacing="lg">
+            <Stack pt="md" spacing="lg" pb={68}>
                 <Title size={20} mx="md">
                     Hey {user.username}! 👋
                 </Title>

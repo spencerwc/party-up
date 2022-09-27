@@ -34,31 +34,6 @@ const Party = ({ setIsRegistering }) => {
     const [isLeader, setIsLeader] = useState(false);
     const PARTY_MEMBER_CARDS = 10;
 
-    useEffect(() => {
-        // Check if the user is currently a member
-        const checkIfMember = () => {
-            if (user) {
-                const index = party.members.findIndex(
-                    (member) => member.username === user.username
-                );
-
-                return index !== -1;
-            }
-        };
-
-        // Check if the user is the leader
-        const checkIfLeader = () => {
-            return user && user.username === party.leader.username;
-        };
-
-        if (party) {
-            setMembers(party.members);
-            setOpenings(party.lookingFor - (party.members.length - 1));
-            setIsLeader(checkIfLeader());
-            setIsMember(checkIfMember());
-        }
-    }, [party, user]);
-
     const handleJoin = async () => {
         if (!user) {
             setIsRegistering(true);
@@ -174,6 +149,37 @@ const Party = ({ setIsRegistering }) => {
         }
     };
 
+    useEffect(() => {
+        // Check if the user is currently a member
+        const checkIfMember = () => {
+            if (user) {
+                const index = party.members.findIndex(
+                    (member) => member.username === user.username
+                );
+
+                return index !== -1;
+            }
+        };
+
+        // Check if the user is the leader
+        const checkIfLeader = () => {
+            return user && user.username === party.leader.username;
+        };
+
+        if (party) {
+            setMembers(party.members);
+            setOpenings(party.lookingFor - (party.members.length - 1));
+            setIsLeader(checkIfLeader());
+            setIsMember(checkIfMember());
+        }
+    }, [party, user]);
+
+    useEffect(() => {
+        if (error) {
+            showNotification(getErrorNotification(error));
+        }
+    }, [error]);
+
     if (isLoading) {
         return <MinimalLoader />;
     }
@@ -267,10 +273,6 @@ const Party = ({ setIsRegistering }) => {
                 </Stack>
             </Box>
         );
-    }
-
-    if (error) {
-        return <div>{error}</div>;
     }
 
     return <MinimalLoader />;
