@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuthContext } from '../hooks/useAuthContext';
 import { createStyles, Header } from '@mantine/core';
 import NavbarMinimal from '../components/general/NavbarMinimal';
 import AsideMinimal from '../components/general/AsideMinimal';
@@ -44,6 +45,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Layout = () => {
+    const { user } = useAuthContext();
     const { classes } = useStyles();
     const [isRegistering, setIsRegistering] = useState(false);
 
@@ -62,9 +64,23 @@ const Layout = () => {
 
                 <main className={classes.content}>
                     <Routes>
-                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route
+                            path="/dashboard"
+                            element={
+                                user ? <Dashboard /> : <Navigate to="/login" />
+                            }
+                        />
                         <Route path="parties" element={<Parties />} />
-                        <Route path="parties/new" element={<CreateParty />} />
+                        <Route
+                            path="parties/new"
+                            element={
+                                user ? (
+                                    <CreateParty />
+                                ) : (
+                                    <Navigate to="/login" />
+                                )
+                            }
+                        />
                         <Route
                             path="parties/:id"
                             element={
@@ -73,7 +89,9 @@ const Layout = () => {
                         />
                         <Route
                             path="parties/:id/edit"
-                            element={<EditParty />}
+                            element={
+                                user ? <EditParty /> : <Navigate to="/login" />
+                            }
                         />
                         <Route
                             path="parties/:id/members"
@@ -93,7 +111,12 @@ const Layout = () => {
                                 />
                             }
                         />
-                        <Route path="/alerts" element={<Alerts />} />
+                        <Route
+                            path="/alerts"
+                            element={
+                                user ? <Alerts /> : <Navigate to="/login" />
+                            }
+                        />
                     </Routes>
                 </main>
 
