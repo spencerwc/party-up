@@ -22,13 +22,14 @@ const App = () => {
         <>
             <ScrollToTop />
             <Routes>
+                <Route path="/" element={<h1>Home</h1>} />
                 <Route
                     path="/signup"
-                    element={!user ? <Signup /> : <Navigate to="/" />}
+                    element={!user ? <Signup /> : <Navigate to="/dashboard" />}
                 />
                 <Route
                     path="/login"
-                    element={!user ? <Login /> : <Navigate to="/" />}
+                    element={!user ? <Login /> : <Navigate to="/dashboard" />}
                 />
                 <Route path="*" element={<Layout />} />
             </Routes>

@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { createStyles, Header } from '@mantine/core';
 import NavbarMinimal from '../components/general/NavbarMinimal';
 import AsideMinimal from '../components/general/AsideMinimal';
+import Dashboard from '../pages/Dashboard';
 import Parties from '../pages/Parties';
 import Party from '../pages/Party';
 import CreateParty from '../pages/CreateParty';
@@ -61,7 +62,7 @@ const Layout = () => {
 
                 <main className={classes.content}>
                     <Routes>
-                        <Route path="/" element={<h1>Home</h1>} />
+                        <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="parties" element={<Parties />} />
                         <Route path="parties/new" element={<CreateParty />} />
                         <Route
