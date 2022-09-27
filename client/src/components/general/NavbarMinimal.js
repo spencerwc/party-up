@@ -123,7 +123,7 @@ function NavbarLink({ icon: Icon, label, destination }) {
 }
 
 const links = [
-    { icon: IconHome2, label: 'Home', destination: '/' },
+    { icon: IconHome2, label: 'Home', destination: '/dashboard' },
     { icon: IconDeviceGamepad2, label: 'Parties', destination: '/parties' },
 ];
 
