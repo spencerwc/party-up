@@ -21,8 +21,9 @@ const Dashboard = () => {
             case 'week':
                 return parties.filter((party) =>
                     dayjs(party.date).isBetween(
-                        dayjs().day(0),
+                        dayjs().add(1, 'day'),
                         dayjs().day(6),
+                        'day',
                         '[]'
                     )
                 );
@@ -38,8 +39,12 @@ const Dashboard = () => {
     }, [error]);
 
     if (userData) {
-        const partiesToday = getPartiesInRange('today', userData.parties);
-        const partiesWeek = getPartiesInRange('week', userData.parties);
+        const partiesToday = getPartiesInRange('today', userData.parties).sort(
+            (a, b) => new Date(a.date) - new Date(b.date)
+        );
+        const partiesWeek = getPartiesInRange('week', userData.parties).sort(
+            (a, b) => new Date(a.date) - new Date(b.date)
+        );
 
         return (
             <Stack pt="md" spacing="lg" pb={68}>
