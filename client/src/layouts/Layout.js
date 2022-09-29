@@ -5,6 +5,7 @@ import { createStyles, Header } from '@mantine/core';
 import NavbarMinimal from '../components/general/NavbarMinimal';
 import AsideMinimal from '../components/general/AsideMinimal';
 import Dashboard from '../pages/Dashboard';
+import PartyDashboard from '../pages/PartyDashboard';
 import Parties from '../pages/Parties';
 import Party from '../pages/Party';
 import CreateParty from '../pages/CreateParty';
@@ -68,6 +69,16 @@ const Layout = () => {
                             path="/dashboard"
                             element={
                                 user ? <Dashboard /> : <Navigate to="/login" />
+                            }
+                        />
+                        <Route
+                            path="/my/parties"
+                            element={
+                                user ? (
+                                    <PartyDashboard />
+                                ) : (
+                                    <Navigate to="/login" />
+                                )
                             }
                         />
                         <Route path="parties" element={<Parties />} />

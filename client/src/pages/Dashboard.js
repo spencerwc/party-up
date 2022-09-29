@@ -56,7 +56,7 @@ const Dashboard = () => {
                         <Title order={2} size={17} weight={500}>
                             Your Upcoming Parties
                         </Title>
-                        <Anchor component={Link} to="/me/parties" weight={500}>
+                        <Anchor component={Link} to="/my/parties" weight={500}>
                             See All
                         </Anchor>
                     </Group>

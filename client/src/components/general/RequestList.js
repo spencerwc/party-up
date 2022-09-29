@@ -1,4 +1,5 @@
-import { Stack, Title, Text, Paper, createStyles } from '@mantine/core';
+import { Stack, Title, Text, Paper, createStyles, Group } from '@mantine/core';
+import { IconMailOff } from '@tabler/icons';
 import Request from './Request';
 
 const useStyles = createStyles((theme) => ({
@@ -47,9 +48,12 @@ const RequestList = ({
                     ))}
                 </Paper>
             ) : (
-                <Text mx="md" color="dimmed">
-                    You have no requests.
-                </Text>
+                <Group spacing="xs" mx="md" align="start">
+                    <Text color="dimmed">
+                        <IconMailOff stroke={1.5} />
+                    </Text>
+                    <Text color="dimmed">You have no requests.</Text>
+                </Group>
             )}
         </Stack>
     );
