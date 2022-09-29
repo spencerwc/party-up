@@ -6,6 +6,7 @@ import {
     IconBell,
     IconLogout,
     IconLogin,
+    IconUsers,
 } from '@tabler/icons';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useLogout } from '../../hooks/useLogout';
@@ -151,6 +152,14 @@ const NavbarMinimal = () => {
                         icon={IconBell}
                         label="Alerts"
                         destination="/alerts"
+                    />
+                )}
+
+                {user && (
+                    <NavbarLink
+                        icon={IconUsers}
+                        label="Friends"
+                        destination="/friends"
                     />
                 )}
 

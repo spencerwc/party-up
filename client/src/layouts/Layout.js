@@ -15,6 +15,7 @@ import RegisterModal from '../components/general/RegisterModal';
 import User from '../pages/User';
 import UserFriends from '../pages/UserFriends';
 import Alerts from '../pages/Alerts';
+import FriendDashboard from '../pages/FriendDashboard';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -71,16 +72,6 @@ const Layout = () => {
                                 user ? <Dashboard /> : <Navigate to="/login" />
                             }
                         />
-                        <Route
-                            path="/my/parties"
-                            element={
-                                user ? (
-                                    <PartyDashboard />
-                                ) : (
-                                    <Navigate to="/login" />
-                                )
-                            }
-                        />
                         <Route path="parties" element={<Parties />} />
                         <Route
                             path="parties/new"
@@ -126,6 +117,26 @@ const Layout = () => {
                             path="/alerts"
                             element={
                                 user ? <Alerts /> : <Navigate to="/login" />
+                            }
+                        />
+                        <Route
+                            path="/friends"
+                            element={
+                                user ? (
+                                    <FriendDashboard />
+                                ) : (
+                                    <Navigate to="/login" />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/my/parties"
+                            element={
+                                user ? (
+                                    <PartyDashboard />
+                                ) : (
+                                    <Navigate to="/login" />
+                                )
                             }
                         />
                     </Routes>
