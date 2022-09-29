@@ -1,3 +1,4 @@
+import { useAuthContext } from '../../hooks/useAuthContext';
 import { Link } from 'react-router-dom';
 import {
     Group,
@@ -8,7 +9,6 @@ import {
     Center,
     createStyles,
 } from '@mantine/core';
-import { IconCrown } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
     wrapper: {
@@ -53,13 +53,14 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const UserList = ({ leader, users }) => {
+const FriendList = ({ username, friends }) => {
     const { classes } = useStyles();
+    const { user } = useAuthContext();
 
     return (
         <Stack className={classes.wrapper} mt="lg" spacing={0}>
-            {users.length > 0 ? (
-                users.map((user) => (
+            {friends.length > 0 ? (
+                friends.map((user) => (
                     <Anchor
                         className={classes.user}
                         key={user.username}
@@ -71,33 +72,21 @@ const UserList = ({ leader, users }) => {
                     >
                         <Group>
                             <Avatar src={user.avatar} size={60} radius={120} />
-                            <div>
-                                <Text weight={500}>{user.username}</Text>
-
-                                <Text size="sm" color="dimmed">
-                                    {user.username === leader.username ? (
-                                        <Group spacing={5}>
-                                            <IconCrown
-                                                className={classes.leader}
-                                                size={18}
-                                            />{' '}
-                                            Leader
-                                        </Group>
-                                    ) : (
-                                        'Member'
-                                    )}
-                                </Text>
-                            </div>
+                            <Text weight={500}>{user.username}</Text>
                         </Group>
                     </Anchor>
                 ))
             ) : (
                 <Center p="md">
-                    <Text color="dimmed">No members found.</Text>
+                    <Text color="dimmed">
+                        {username === user.username
+                            ? "You haven't added any friends yet."
+                            : `${username} hasn't added any friends yet.`}
+                    </Text>
                 </Center>
             )}
         </Stack>
     );
 };
 
-export default UserList;
+export default FriendList;

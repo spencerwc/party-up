@@ -3,7 +3,7 @@ import { useFetch } from '../hooks/useFetch';
 import { Box, Title, Anchor, Group, Stack, ActionIcon } from '@mantine/core';
 import { IconChevronLeft } from '@tabler/icons';
 import MinimalLoader from '../components/general/MinimalLoader';
-import UserList from '../components/users/UserList';
+import FriendList from '../components/users/FriendList';
 
 const UserFriends = () => {
     const { username } = useParams();
@@ -29,7 +29,7 @@ const UserFriends = () => {
                         </Anchor>
                     </Stack>
                 </Group>
-                <UserList users={userData.friends} />
+                <FriendList username={username} friends={userData.friends} />
             </Box>
         );
     }
