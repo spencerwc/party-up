@@ -1,12 +1,13 @@
-import { Box, Title, Group, Select, Checkbox, Text } from '@mantine/core';
+import { useState } from 'react';
 import { useFetch } from '../hooks/useFetch';
+import { Box, Title, Group, Select, Checkbox, Text } from '@mantine/core';
+import { IconCalendarOff } from '@tabler/icons';
 import MinimalLoader from '../components/general/MinimalLoader';
 import PartiesList from '../components/parties/PartiesList';
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { useState } from 'react';
 
 dayjs.extend(isToday);
 dayjs.extend(isBetween);
@@ -115,9 +116,12 @@ const Parties = () => {
                         <PartiesList parties={filtered} />
                     </Box>
                 ) : (
-                    <Text mx="md" color="dimmed">
-                        No parties found.
-                    </Text>
+                    <Group mx="md" spacing="xs" align="start" noWrap>
+                        <Text color="dimmed">
+                            <IconCalendarOff stroke={1.5} />
+                        </Text>
+                        <Text color="dimmed">No parties found.</Text>
+                    </Group>
                 )}
             </Box>
         );
