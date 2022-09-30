@@ -1,6 +1,8 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Navbar, Tooltip, createStyles } from '@mantine/core';
+import { Anchor, Navbar, Tooltip, createStyles } from '@mantine/core';
+import { Link } from 'react-router-dom';
 import {
+    IconConfetti,
     IconHome2,
     IconDeviceGamepad2,
     IconBell,
@@ -104,6 +106,23 @@ const useStyles = createStyles((theme) => ({
             }).color,
         },
     },
+
+    logo: {
+        display: 'none',
+
+        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            display: 'block',
+            marginBottom: theme.spacing.xs,
+
+            svg: {
+                transform: 'rotate(-45deg)',
+                color: theme.colors.teal[6],
+                fill: theme.colors.teal[6],
+                width: 40,
+                height: 40,
+            },
+        },
+    },
 }));
 
 function NavbarLink({ icon: Icon, label, destination }) {
@@ -123,11 +142,6 @@ function NavbarLink({ icon: Icon, label, destination }) {
     );
 }
 
-const links = [
-    { icon: IconHome2, label: 'Home', destination: '/dashboard' },
-    { icon: IconDeviceGamepad2, label: 'Parties', destination: '/parties' },
-];
-
 const NavbarMinimal = () => {
     const { classes } = useStyles();
     const { user } = useAuthContext();
@@ -143,9 +157,28 @@ const NavbarMinimal = () => {
     return (
         <Navbar className={classes.nav} width={{ base: 80 }} p="md">
             <Navbar.Section grow className={classes.links}>
-                {links.map((link) => (
-                    <NavbarLink {...link} key={link.label} />
-                ))}
+                <Anchor
+                    component={Link}
+                    to="/"
+                    mx="auto"
+                    className={classes.logo}
+                >
+                    <IconConfetti />
+                </Anchor>
+
+                {user && (
+                    <NavbarLink
+                        icon={IconHome2}
+                        label="Dashboard"
+                        destination="/dashboard"
+                    />
+                )}
+
+                <NavbarLink
+                    icon={IconDeviceGamepad2}
+                    label="Parties"
+                    destination="/parties"
+                />
 
                 {user && (
                     <NavbarLink

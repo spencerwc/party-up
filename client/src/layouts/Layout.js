@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { createStyles, Header } from '@mantine/core';
+import { createStyles, Header, Button, Anchor, Group } from '@mantine/core';
+import { IconConfetti } from '@tabler/icons';
 import NavbarMinimal from '../components/general/NavbarMinimal';
 import AsideMinimal from '../components/general/AsideMinimal';
 import Dashboard from '../pages/Dashboard';
@@ -30,18 +31,42 @@ const useStyles = createStyles((theme) => ({
             gap: theme.spacing.sm,
         },
     },
+
     content: {
         minWidth: 0,
         width: '100%',
     },
+
     header: {
         position: 'sticky',
         top: 0,
+        padding: `${theme.spacing.sm}px ${theme.spacing.md}px`,
+        borderBottom: `1px solid ${
+            theme.colorScheme === 'dark'
+                ? theme.colors.dark[5]
+                : theme.colors.gray[3]
+        }`,
+        backgroundColor:
+            theme.colorScheme === 'dark'
+                ? theme.colors.dark[8]
+                : theme.colors.gray[1],
         boxShadow:
             'rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px',
 
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             display: 'none',
+        },
+    },
+
+    logo: {
+        margin: '0 !important',
+
+        svg: {
+            transform: 'rotate(-45deg)',
+            color: theme.colors.teal[6],
+            fill: theme.colors.teal[6],
+            width: 36,
+            height: 36,
         },
     },
 }));
@@ -50,10 +75,33 @@ const Layout = () => {
     const { user } = useAuthContext();
     const { classes } = useStyles();
     const [isRegistering, setIsRegistering] = useState(false);
+    const navigate = useNavigate();
+
+    const handleStartParty = () => {
+        if (!user) {
+            setIsRegistering(true);
+        } else {
+            navigate('/parties/new');
+        }
+    };
 
     return (
         <>
-            <Header height={60} className={classes.header} />
+            <Header className={classes.header}>
+                <Group position="apart">
+                    <Anchor
+                        component={Link}
+                        to="/"
+                        mx="auto"
+                        className={classes.logo}
+                    >
+                        <IconConfetti />
+                    </Anchor>
+                    <Button size="xs" onClick={handleStartParty}>
+                        Start a Party
+                    </Button>
+                </Group>
+            </Header>
 
             {/* Displayed on action if user is not logged in or registered */}
             <RegisterModal
