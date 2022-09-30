@@ -14,7 +14,10 @@ import {
     Text,
     createStyles,
     Anchor,
+    TextInput,
+    ActionIcon,
 } from '@mantine/core';
+import { IconSearch, IconArrowRight } from '@tabler/icons';
 import ColorSchemeToggle from '../general/ColorSchemeToggle';
 import PartiesList from '../parties/PartiesList';
 import dayjs from 'dayjs';
@@ -45,6 +48,7 @@ const AsideMinimal = ({ setIsRegistering }) => {
     const { user } = useAuthContext();
     const { data: parties } = useFetch('/api/parties');
     const [upcomingParties, setUpcomingParties] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const PARTY_LIMIT = 3;
 
@@ -54,6 +58,11 @@ const AsideMinimal = ({ setIsRegistering }) => {
         } else {
             navigate('/parties/new');
         }
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        navigate(`/parties?q=${searchTerm}`);
     };
 
     useEffect(() => {
@@ -77,6 +86,22 @@ const AsideMinimal = ({ setIsRegistering }) => {
                     <Button onClick={handleStartPartyClick} radius="lg">
                         Start a Party
                     </Button>
+
+                    <form onSubmit={handleSearch}>
+                        <TextInput
+                            icon={<IconSearch size={18} stroke={1.5} />}
+                            radius="md"
+                            variant="filled"
+                            rightSection={
+                                <ActionIcon size={32} radius="md">
+                                    <IconArrowRight size={18} stroke={1.5} />
+                                </ActionIcon>
+                            }
+                            placeholder="Search parties"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </form>
 
                     {upcomingParties && upcomingParties.length > 0 && (
                         <Box>

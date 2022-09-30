@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { useFetch } from '../hooks/useFetch';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Box, Title, Group, Select, Checkbox, Text } from '@mantine/core';
 import { IconCalendarOff } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
+import { getErrorNotification } from '../utils/notifications';
 import MinimalLoader from '../components/general/MinimalLoader';
 import PartiesList from '../components/parties/PartiesList';
 import dayjs from 'dayjs';
@@ -14,7 +16,9 @@ dayjs.extend(isBetween);
 dayjs.extend(isSameOrAfter);
 
 const Parties = () => {
-    const { data: parties, error } = useFetch('/api/parties');
+    const [searchParams] = useSearchParams(); // Used if user searches parties
+    const [parties, setParties] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [range, setRange] = useState('Today');
     const [showFilled, setShowFilled] = useState(false);
     const [showCompleted, setShowCompleted] = useState(false);
@@ -59,6 +63,35 @@ const Parties = () => {
             (a, b) => new Date(a.date) - new Date(b.date)
         );
     };
+
+    useEffect(() => {
+        const getParties = async () => {
+            setIsLoading(true);
+
+            const query = searchParams.get('q');
+
+            const response = await fetch(
+                `/api/parties?q=${query ? query : ''}`
+            );
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                const notification = getErrorNotification(json.error);
+                showNotification(notification);
+            }
+            if (response.ok) {
+                setParties(json);
+            }
+            setIsLoading(false);
+        };
+
+        getParties();
+    }, [searchParams]);
+
+    if (isLoading) {
+        return <MinimalLoader />;
+    }
 
     if (parties) {
         const filtered = getFilteredParties();
@@ -125,10 +158,6 @@ const Parties = () => {
                 )}
             </Box>
         );
-    }
-
-    if (error) {
-        return <div>{error}</div>;
     }
 
     return <MinimalLoader />;
