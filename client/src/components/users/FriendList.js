@@ -7,8 +7,12 @@ import {
     Anchor,
     Text,
     Center,
+    Tooltip,
+    ActionIcon,
     createStyles,
+    Box,
 } from '@mantine/core';
+import { IconUserMinus } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
     wrapper: {
@@ -53,28 +57,52 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const FriendList = ({ username, friends }) => {
+const FriendList = ({
+    username,
+    friends,
+    setSelectedFriend,
+    setIsConfirmingRemove,
+}) => {
     const { classes } = useStyles();
     const { user } = useAuthContext();
+
+    const handleRemove = (username) => {
+        setSelectedFriend(username);
+        setIsConfirmingRemove(true);
+    };
 
     return (
         <Stack className={classes.wrapper} mt="lg" spacing={0}>
             {friends.length > 0 ? (
                 friends.map((user) => (
-                    <Anchor
-                        className={classes.user}
-                        key={user.username}
-                        component={Link}
-                        to={`/users/${user.username}`}
-                        underline={false}
-                        variant="text"
-                        p="sm"
-                    >
-                        <Group>
-                            <Avatar src={user.avatar} size={60} radius={120} />
-                            <Text weight={500}>{user.username}</Text>
-                        </Group>
-                    </Anchor>
+                    <Group key={user.username} position="apart">
+                        <Anchor
+                            className={classes.user}
+                            component={Link}
+                            to={`/users/${user.username}`}
+                            underline={false}
+                            variant="text"
+                            p="sm"
+                        >
+                            <Group>
+                                <Avatar
+                                    src={user.avatar}
+                                    size={60}
+                                    radius={120}
+                                />
+                                <Text weight={500}>{user.username}</Text>
+                            </Group>
+                        </Anchor>
+                        <Box mx="md">
+                            <Tooltip label="Remove friend">
+                                <ActionIcon
+                                    onClick={() => handleRemove(user.username)}
+                                >
+                                    <IconUserMinus size={18} stroke={1.5} />
+                                </ActionIcon>
+                            </Tooltip>
+                        </Box>
+                    </Group>
                 ))
             ) : (
                 <Center p="md">
