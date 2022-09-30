@@ -3,7 +3,7 @@ import { Avatar, Anchor, Group, Stack, Title, Text } from '@mantine/core';
 import { IconCalendar, IconUsers } from '@tabler/icons';
 import dayjs from 'dayjs';
 
-const UserDetails = ({ user }) => {
+const UserDetails = ({ user, friends }) => {
     return (
         <Stack spacing="xs" px="md" pt="md">
             <Avatar src={user.avatar} radius={120} size={90} />
@@ -26,8 +26,8 @@ const UserDetails = ({ user }) => {
                             size="sm"
                             color="dimmed"
                         >
-                            {user.friends.length} friend
-                            {user.friends.length !== 1 && 's'}
+                            {friends.length} friend
+                            {friends.length !== 1 && 's'}
                         </Anchor>
                     </Group>
 

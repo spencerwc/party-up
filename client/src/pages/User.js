@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useFetch } from '../hooks/useFetch';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Stack, Group, Text, Title } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
@@ -17,18 +17,19 @@ import ConfirmationModal from '../components/general/ConfirmationModal';
 const User = () => {
     const { username } = useParams();
     const { user } = useAuthContext();
-    const navigate = useNavigate();
     const {
         data: userData,
         isLoading,
         error,
     } = useFetch(`/api/users/${username}`);
+    const [friends, setFriends] = useState([]);
     const [friendRequests, setFriendRequests] = useState(null);
     const [isFriend, setIsFriend] = useState(false);
     const [hasRequestedFriend, setHasRequestedFriend] = useState(false);
     const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
     const [isConfirmingRemove, setIsConfirmingRemove] = useState(false);
     const [isPending, setIsPending] = useState(false);
+    const FRIEND_CARD_LIMIT = 10;
 
     const sendFriendRequest = async () => {
         setIsPending(true);
@@ -120,7 +121,6 @@ const User = () => {
             const notification = getErrorNotification(json.error);
 
             showNotification(notification);
-            setIsPending(false);
         }
 
         if (response.ok) {
@@ -128,10 +128,15 @@ const User = () => {
                 'Friend Removed',
                 `You removed ${username} from your friends.`
             );
-
             showNotification(notification);
-            navigate(0);
+
+            setFriends(
+                friends.filter((friend) => friend.username !== user.username)
+            );
         }
+
+        setIsPending(false);
+        setIsConfirmingRemove(false);
     };
 
     useEffect(() => {
@@ -158,8 +163,14 @@ const User = () => {
     }, [user]);
 
     useEffect(() => {
+        if (userData) {
+            setFriends(userData.friends);
+        }
+    }, [userData]);
+
+    useEffect(() => {
         const checkIfFriend = () => {
-            const index = userData.friends.findIndex(
+            const index = friends.findIndex(
                 (friend) => friend.username === user.username
             );
 
@@ -168,10 +179,10 @@ const User = () => {
             }
         };
 
-        if (user && userData) {
+        if (user && friends) {
             checkIfFriend();
         }
-    }, [userData, user, friendRequests]);
+    }, [user, friends, friendRequests]);
 
     // Check user friend requests for existing request
     useEffect(() => {
@@ -191,6 +202,13 @@ const User = () => {
             checkIfRequested();
         }
     }, [user, userData, friendRequests]);
+
+    useEffect(() => {
+        if (error) {
+            const notification = getErrorNotification(error);
+            showNotification(notification);
+        }
+    }, [error]);
 
     if (isLoading) {
         return <MinimalLoader />;
@@ -220,7 +238,7 @@ const User = () => {
                 />
 
                 <Group spacing="xs" noWrap position="apart" align="flex-start">
-                    <UserDetails user={userData} />
+                    <UserDetails user={userData} friends={friends} />
 
                     {user && user.username !== username && friendRequests && (
                         <UserActions
@@ -233,11 +251,11 @@ const User = () => {
                     )}
                 </Group>
 
-                {userData.friends.length > 0 ? (
+                {friends.length > 0 ? (
                     <UserCardList
                         title="Friends"
                         seeAllLink="friends"
-                        users={userData.friends}
+                        users={friends}
                     />
                 ) : (
                     <Stack px="md" spacing="xs">
@@ -250,14 +268,6 @@ const User = () => {
                     </Stack>
                 )}
             </Stack>
-        );
-    }
-
-    if (error) {
-        return (
-            <Text m="md" color="dimmed">
-                {error}
-            </Text>
         );
     }
 
