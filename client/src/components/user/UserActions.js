@@ -37,7 +37,7 @@ const UserActions = ({
 
     if (isFriend) {
         return (
-            <Group m="md" mt={20} spacing={6}>
+            <Group m="md" mt={20} spacing={6} noWrap>
                 <Tooltip label="Message">
                     <ActionIcon radius="md" variant="filled" color="">
                         <IconMessage size={20} stroke={1.5} />

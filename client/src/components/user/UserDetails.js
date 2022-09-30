@@ -16,7 +16,7 @@ const UserDetails = ({ user, friends }) => {
                 {user.bio && <Text size="sm">{user.bio}</Text>}
 
                 <Group spacing={8}>
-                    <Group spacing={5} align="flex-start">
+                    <Group spacing={5} align="flex-start" noWrap>
                         <Text color="dimmed">
                             <IconUsers size={15} />
                         </Text>
@@ -31,7 +31,7 @@ const UserDetails = ({ user, friends }) => {
                         </Anchor>
                     </Group>
 
-                    <Group spacing={5} align="flex-start">
+                    <Group spacing={5} align="flex-start" noWrap>
                         <Text color="dimmed">
                             <IconCalendar size={15} />
                         </Text>
