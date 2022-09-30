@@ -5,15 +5,20 @@ const Comment = require('../models/commentModel');
 
 const getParties = async (req, res) => {
     const query = req.query.q;
-
-    console.log(query);
+    let parties;
 
     try {
-        const parties = await Party.find({
-            name: { $regex: query, $options: 'i' },
-        }).sort({
-            date: 1,
-        });
+        if (query) {
+            parties = await Party.find({
+                name: { $regex: query, $options: 'i' },
+            }).sort({
+                date: 1,
+            });
+        } else {
+            parties = await Party.find().sort({
+                date: 1,
+            });
+        }
         res.status(200).json(parties);
     } catch (error) {
         res.status(400).json({ error: error.message });

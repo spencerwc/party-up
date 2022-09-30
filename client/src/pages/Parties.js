@@ -71,7 +71,7 @@ const Parties = () => {
             const query = searchParams.get('q');
 
             const response = await fetch(
-                `/api/parties?q=${query ? query : ''}`
+                `/api/parties${query ? `?q=${query}` : ''}`
             );
 
             const json = await response.json();

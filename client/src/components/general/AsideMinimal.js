@@ -63,6 +63,7 @@ const AsideMinimal = ({ setIsRegistering }) => {
     const handleSearch = (e) => {
         e.preventDefault();
         navigate(`/parties?q=${searchTerm}`);
+        setSearchTerm('');
     };
 
     useEffect(() => {
