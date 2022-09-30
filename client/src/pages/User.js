@@ -29,7 +29,6 @@ const User = () => {
     const [isConfirmingCancel, setIsConfirmingCancel] = useState(false);
     const [isConfirmingRemove, setIsConfirmingRemove] = useState(false);
     const [isPending, setIsPending] = useState(false);
-    const FRIEND_CARD_LIMIT = 10;
 
     const sendFriendRequest = async () => {
         setIsPending(true);

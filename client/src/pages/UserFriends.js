@@ -29,7 +29,12 @@ const UserFriends = () => {
                         </Anchor>
                     </Stack>
                 </Group>
-                <FriendList username={username} friends={userData.friends} />
+                <FriendList
+                    username={username}
+                    friends={userData.friends.sort((a, b) =>
+                        a.username.localeCompare(b.username)
+                    )}
+                />
             </Box>
         );
     }

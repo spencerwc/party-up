@@ -9,6 +9,7 @@ const FilterForm = ({ placeholder, filter }) => {
     return (
         <TextInput
             mt="md"
+            variant="filled"
             icon={<IconSearch size={18} stroke={1.5} />}
             radius="md"
             placeholder={placeholder}

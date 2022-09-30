@@ -14,7 +14,11 @@ const PartyMembers = () => {
 
     useEffect(() => {
         if (party) {
-            setFilteredMembers(party.members);
+            setFilteredMembers(
+                party.members.sort((a, b) =>
+                    a.username.localeCompare(b.username)
+                )
+            );
         }
     }, [party]);
 

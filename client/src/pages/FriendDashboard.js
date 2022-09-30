@@ -57,7 +57,11 @@ const FriendDashboard = () => {
 
     useEffect(() => {
         if (userData) {
-            setFriends(userData.friends);
+            setFriends(
+                userData.friends.sort((a, b) =>
+                    a.username.localeCompare(b.username)
+                )
+            );
         }
     }, [userData]);
 
