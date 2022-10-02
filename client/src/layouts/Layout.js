@@ -17,6 +17,7 @@ import User from '../pages/User';
 import UserFriends from '../pages/UserFriends';
 import Alerts from '../pages/Alerts';
 import FriendDashboard from '../pages/FriendDashboard';
+import NotFound from '../pages/NotFound';
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -187,6 +188,7 @@ const Layout = () => {
                                 )
                             }
                         />
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </main>
 
