@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { Box, Title, Anchor, Group, Stack, ActionIcon } from '@mantine/core';
 import { IconChevronLeft } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
+import { getErrorNotification } from '../utils/notifications';
 import MinimalLoader from '../components/general/MinimalLoader';
 import FriendList from '../components/users/FriendList';
 
@@ -9,9 +12,16 @@ const UserFriends = () => {
     const { username } = useParams();
     const { data: userData, error } = useFetch(`/api/users/${username}`);
 
+    useEffect(() => {
+        if (error) {
+            const notification = getErrorNotification(error);
+            showNotification(notification);
+        }
+    }, [error]);
+
     if (userData) {
         return (
-            <Box mt="md" mb={68}>
+            <Box mt="md">
                 <Group mx="md">
                     <ActionIcon component={Link} to={`/users/${username}`}>
                         <IconChevronLeft />
@@ -37,10 +47,6 @@ const UserFriends = () => {
                 />
             </Box>
         );
-    }
-
-    if (error) {
-        return <div>{error}</div>;
     }
 
     return <MinimalLoader />;

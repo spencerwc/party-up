@@ -186,15 +186,7 @@ const Party = ({ setIsRegistering }) => {
 
     if (party) {
         return (
-            <Box
-                sx={(theme) => ({
-                    paddingBottom: 68,
-
-                    [`@media (min-width: ${theme.breakpoints.md}px)`]: {
-                        paddingBottom: theme.spacing.md,
-                    },
-                })}
-            >
+            <Box>
                 {/* Confirm leaving the party */}
                 <ConfirmationModal
                     isConfirming={isConfirmingLeave}

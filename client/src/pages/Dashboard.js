@@ -3,8 +3,8 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import { useFetch } from '../hooks/useFetch';
 import { Link } from 'react-router-dom';
 import { Anchor, Box, Group, Stack, Title, Text } from '@mantine/core';
-import { showNotification } from '@mantine/notifications';
 import { IconCalendarOff } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
 import { getErrorNotification } from '../utils/notifications';
 import MinimalLoader from '../components/general/MinimalLoader';
 import PartiesList from '../components/parties/PartiesList';
@@ -34,7 +34,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (error) {
-            showNotification(getErrorNotification(error));
+            const notification = getErrorNotification(error);
+            showNotification(notification);
         }
     }, [error]);
 
@@ -47,7 +48,7 @@ const Dashboard = () => {
         );
 
         return (
-            <Stack pt="md" spacing="lg" pb={68}>
+            <Stack pt="md" spacing="lg">
                 <Title size={20} mx="md">
                     Hey {user.username}! 👋
                 </Title>

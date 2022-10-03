@@ -97,12 +97,7 @@ const Parties = () => {
         const filtered = getFilteredParties();
 
         return (
-            <Box
-                sx={(theme) => ({
-                    paddingTop: theme.spacing.md,
-                    paddingBottom: 68,
-                })}
-            >
+            <Box pt="md">
                 <Title order={1} size={20} mb="sm" mx="md">
                     Parties
                 </Title>

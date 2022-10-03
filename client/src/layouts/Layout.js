@@ -36,6 +36,7 @@ const useStyles = createStyles((theme) => ({
     content: {
         minWidth: 0,
         width: '100%',
+        paddingBottom: 80,
     },
 
     header: {

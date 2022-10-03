@@ -164,14 +164,13 @@ const Alerts = () => {
                     (request) => request.username !== targetRequest
                 ),
             });
-            // Notify of removal
         }
         setIsPending(false);
     };
 
     if (friendRequests) {
         return (
-            <Stack mt="md" pb={68} spacing={0}>
+            <Stack mt="md" spacing={0}>
                 <Title mx="md" order={1} size={20}>
                     Alerts
                 </Title>

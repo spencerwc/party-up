@@ -10,6 +10,8 @@ import {
     createStyles,
 } from '@mantine/core';
 import { IconChevronLeft } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
+import { getErrorNotification } from '../utils/notifications';
 import MinimalLoader from '../components/general/MinimalLoader';
 import GameTable from '../components/party/GameTable';
 
@@ -28,7 +30,6 @@ const GameSelect = ({ name, setGame, setSelectingGame, breadcrumb }) => {
     const { user } = useAuthContext();
     const { classes } = useStyles();
     const [games, setGames] = useState(null);
-    const [error, setError] = useState(null);
 
     const handleClose = () => {
         setSelectingGame(false);
@@ -53,11 +54,11 @@ const GameSelect = ({ name, setGame, setSelectingGame, breadcrumb }) => {
             const json = await response.json();
 
             if (!response.ok) {
-                setError(json.error);
+                const notification = getErrorNotification(json.error);
+                showNotification(notification);
             }
 
             if (response.ok) {
-                setError(null);
                 setGames(json);
             }
         };
@@ -69,7 +70,7 @@ const GameSelect = ({ name, setGame, setSelectingGame, breadcrumb }) => {
 
     if (games) {
         return (
-            <Box pt="md" pb={68}>
+            <Box pt="md">
                 <Group ml="md">
                     <ActionIcon
                         className={classes.backButton}
@@ -93,10 +94,6 @@ const GameSelect = ({ name, setGame, setSelectingGame, breadcrumb }) => {
                 <GameTable games={games} handleSelect={handleSelect} />
             </Box>
         );
-    }
-
-    if (error) {
-        return <div>{error}</div>;
     }
 
     return <MinimalLoader />;

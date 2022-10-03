@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import { Box, Title, Anchor, Group, Stack, ActionIcon } from '@mantine/core';
 import { IconChevronLeft } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
+import { getErrorNotification } from '../utils/notifications';
 import MinimalLoader from '../components/general/MinimalLoader';
 import UserList from '../components/users/UserList';
 import FilterForm from '../components/general/FilterForm';
@@ -22,6 +24,13 @@ const PartyMembers = () => {
         }
     }, [party]);
 
+    useEffect(() => {
+        if (error) {
+            const notification = getErrorNotification(error);
+            showNotification(notification);
+        }
+    }, [error]);
+
     const filterMembers = (term) => {
         setFilteredMembers(
             party.members.filter((member) => member.username.includes(term))
@@ -30,7 +39,7 @@ const PartyMembers = () => {
 
     if (party) {
         return (
-            <Box mt="md" mb={68}>
+            <Box mt="md">
                 <Group mx="md">
                     <ActionIcon component={Link} to={`/parties/${party._id}`}>
                         <IconChevronLeft />
@@ -63,10 +72,6 @@ const PartyMembers = () => {
                 />
             </Box>
         );
-    }
-
-    if (error) {
-        return <div>{error}</div>;
     }
 
     return <MinimalLoader />;

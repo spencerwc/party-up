@@ -12,6 +12,8 @@ import {
     createStyles,
 } from '@mantine/core';
 import { IconChevronLeft } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
+import { getErrorNotification } from '../utils/notifications';
 import MinimalLoader from '../components/general/MinimalLoader';
 import EditPartyForm from '../components/party/EditPartyForm';
 import GameSelect from './GameSelect';
@@ -35,7 +37,6 @@ const EditParty = () => {
     const [game, setGame] = useState(null);
     const [gameName, setGameName] = useState('');
     const [selectingGame, setSelectingGame] = useState(false);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const getParty = async () => {
@@ -43,7 +44,8 @@ const EditParty = () => {
             const json = await response.json();
 
             if (!response.ok) {
-                setError(json.error);
+                const notification = getErrorNotification(json.error);
+                showNotification(notification);
             }
 
             if (response.ok) {
@@ -106,10 +108,6 @@ const EditParty = () => {
                 />
             </Box>
         );
-    }
-
-    if (error) {
-        return <div>{error}</div>;
     }
 
     return <MinimalLoader />;
