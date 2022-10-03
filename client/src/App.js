@@ -4,6 +4,7 @@ import { useAuthContext } from './hooks/useAuthContext';
 import Layout from './layouts/Layout';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import Home from './pages/Home';
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -22,7 +23,7 @@ const App = () => {
         <>
             <ScrollToTop />
             <Routes>
-                <Route path="/" element={<h1>Home</h1>} />
+                <Route path="/" element={<Home />} />
                 <Route
                     path="/signup"
                     element={!user ? <Signup /> : <Navigate to="/dashboard" />}
