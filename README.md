@@ -16,12 +16,12 @@
 5. Copy the connection string and close.
 
 ## Set up IGDB API integration
-Follow the steps listed on the (IGDB API docs)[https://api-docs.igdb.com/#about].
+Follow the steps listed on the [IGDB API docs](https://api-docs.igdb.com/#about).
 
 1. Sign up / Log in to Twitch.
-2. Register a new application in the (Twitch Developer Console)[https://dev.twitch.tv/console/apps/create].
+2. Register a new application in the [Twitch Developer Console](https://dev.twitch.tv/console/apps/create).
 3. Click to manage the newly created application.
-4. Generate a Client Secret by pressing [New Secret]
+4. Generate a Client Secret by pressing New Secret.
 5. Take note of the Client ID and Client Secret.
 
 ## Set up and run the app
