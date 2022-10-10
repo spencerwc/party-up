@@ -10,15 +10,16 @@ import {
     Title,
     Text,
     Anchor,
+    Center,
 } from '@mantine/core';
+import { IconConfetti } from '@tabler/icons';
 import MinimalLoader from '../components/general/MinimalLoader';
 
 const useStyles = createStyles((theme) => ({
     wrapper: {
         height: '100vh',
         backgroundSize: 'cover',
-        backgroundImage:
-            'url(https://images.unsplash.com/photo-1484242857719-4b9144542727?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80)',
+        // backgroundImage: 'url()',
     },
 
     form: {
@@ -37,11 +38,15 @@ const useStyles = createStyles((theme) => ({
     },
 
     logo: {
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        width: 120,
-        display: 'block',
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        marginBottom: theme.spacing.xs,
+
+        svg: {
+            transform: 'rotate(-45deg)',
+            color: theme.colors.teal[6],
+            fill: theme.colors.teal[6],
+            width: 40,
+            height: 40,
+        },
     },
 }));
 
@@ -63,7 +68,13 @@ const Login = () => {
     return (
         <div className={classes.wrapper}>
             <Paper className={classes.form} px="lg" py="xl">
-                <Title order={1} align="center" m="md" size={20}>
+                <Center>
+                    <Anchor component={Link} to="/" className={classes.logo}>
+                        <IconConfetti />
+                    </Anchor>
+                </Center>
+
+                <Title order={1} align="center" m="md" size={20} weight={500}>
                     Log in to your account
                 </Title>
 
