@@ -1,7 +1,8 @@
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Link } from 'react-router-dom';
-import { Navbar, Anchor, createStyles, Center } from '@mantine/core';
+import { Box, Navbar, Anchor, createStyles, Center } from '@mantine/core';
 import { IconConfetti } from '@tabler/icons';
+import Hero from '../components/general/Hero';
 
 const useStyles = createStyles((theme) => ({
     nav: {
@@ -75,7 +76,7 @@ const Home = () => {
     const { user } = useAuthContext();
 
     return (
-        <>
+        <Box pb={100}>
             <Navbar className={classes.nav}>
                 <Navbar.Section className={classes.links} grow>
                     <Anchor component={Link} to="/" className={classes.logo}>
@@ -108,14 +109,20 @@ const Home = () => {
                     )}
                     {user && (
                         <Center>
-                            <Anchor component={Link} to="/dashboard">
+                            <Anchor
+                                component={Link}
+                                to="/dashboard"
+                                variant="text"
+                            >
                                 Dashboard
                             </Anchor>
                         </Center>
                     )}
                 </Navbar.Section>
             </Navbar>
-        </>
+
+            <Hero />
+        </Box>
     );
 };
 
