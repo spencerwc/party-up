@@ -1,11 +1,18 @@
 <p align="center">
-    <a href="#">
+    <a href="https://party-up-app.herokuapp.com/">
         <h1 align="center">Party Up</h1>
     </a>
 </p> 
 <p align="center">
   Start, organize and join groups to play your favorite games and make new connections along the way.
 </p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/84942739/195712153-48fca685-03b6-455a-8add-7452ab17da4b.png" />
+</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/84942739/195712229-74c3eab7-43de-469b-b930-4827fb3a6bcc.png" />
+</p>
+
 
 ## Set up MongoDB Atlas
 
