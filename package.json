@@ -8,7 +8,8 @@
     "server": "node server",
     "dev": "nodemon server",
     "client": "cd client && npm run start",
-    "postinstall": "cd client && npm install"
+    "postinstall": "cd client && npm install",
+    "build": "NODE_ENV=production cd client/ && npm install && npm run build"
   },
   "repository": {
     "type": "git",
