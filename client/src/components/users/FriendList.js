@@ -93,7 +93,7 @@ const FriendList = ({
                                 <Text weight={500}>{friend.username}</Text>
                             </Group>
                         </Anchor>
-                        {user.username === username && (
+                        {user && user.username === username && (
                             <Box mx="md">
                                 <Tooltip label="Remove friend">
                                     <ActionIcon

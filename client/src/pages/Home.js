@@ -49,7 +49,7 @@ const useStyles = createStyles((theme) => ({
         fontWeight: 500,
         fontSize: theme.fontSizes.sm,
 
-        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+        [`@media (min-width: 300px)`]: {
             fontSize: theme.fontSizes.md,
         },
     },
