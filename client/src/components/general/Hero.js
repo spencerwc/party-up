@@ -26,10 +26,20 @@ const useStyles = createStyles((theme) => ({
 
     content: {
         maxWidth: '100%',
-        marginRight: 0,
+        display: 'flex',
+        margin: '0 auto',
+        marginTop: theme.spacing.xl,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
 
         [theme.fn.largerThan('md')]: {
-            maxWidth: 480,
+            margin: 0,
+            marginRight: 50,
+            maxWidth: 500,
+            textAlign: 'left',
+            alignItems: 'start',
         },
     },
 
@@ -95,10 +105,10 @@ const Hero = () => {
     const navigate = useNavigate();
 
     return (
-        <div>
-            <Container p={0}>
-                <div className={classes.inner}>
-                    <div className={classes.content}>
+        <Container p={0} size="lg">
+            <div className={classes.inner}>
+                <div className={classes.content}>
+                    <>
                         <Title className={classes.title}>
                             A <span className={classes.highlight}>better</span>{' '}
                             way to game{' '}
@@ -128,13 +138,13 @@ const Hero = () => {
                                 View parties
                             </Button>
                         </Group>
-                    </div>
-                    <div className={classes.imageContainer}>
-                        <Image src={image} className={classes.image} />
-                    </div>
+                    </>
                 </div>
-            </Container>
-        </div>
+                <div className={classes.imageContainer}>
+                    <Image src={image} className={classes.image} />
+                </div>
+            </div>
+        </Container>
     );
 };
 
