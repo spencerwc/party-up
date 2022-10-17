@@ -18,8 +18,10 @@ import MinimalLoader from '../components/general/MinimalLoader';
 const useStyles = createStyles((theme) => ({
     wrapper: {
         height: '100vh',
-        backgroundSize: 'cover',
-        // backgroundImage: 'url()',
+
+        [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            paddingTop: theme.spacing.xl * 2,
+        },
     },
 
     form: {
@@ -29,10 +31,8 @@ const useStyles = createStyles((theme) => ({
         [`@media (min-width: ${theme.breakpoints.md}px)`]: {
             maxWidth: 500,
             height: 'auto',
-            position: 'relative',
-            left: 200,
-            top: 200,
             borderRadius: theme.radius.lg,
+            margin: '0 auto',
             boxShadow: 'rgba(0, 0, 0, 0.04) 0px 3px 5px',
         },
     },
@@ -110,7 +110,13 @@ const Signup = () => {
                         </Text>
                     )}
 
-                    <Button type="submit" fullWidth mt="xl" radius="md">
+                    <Button
+                        type="submit"
+                        fullWidth
+                        mt="xl"
+                        radius="md"
+                        disabled={isLoading}
+                    >
                         Sign up
                     </Button>
                 </form>
