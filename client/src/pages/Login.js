@@ -61,6 +61,10 @@ const Login = () => {
         await login(email, password);
     };
 
+    const handleDemoLogin = async () => {
+        await login('demo@email.com', 'partyupdemo');
+    };
+
     if (isLoading) {
         return <MinimalLoader />;
     }
@@ -106,6 +110,16 @@ const Login = () => {
                         Log in
                     </Button>
                 </form>
+
+                <Button
+                    fullWidth
+                    mt="xl"
+                    radius="md"
+                    variant="default"
+                    onClick={handleDemoLogin}
+                >
+                    Try Demo
+                </Button>
 
                 <Text align="center" mt="xl">
                     Don't have an account?{' '}
