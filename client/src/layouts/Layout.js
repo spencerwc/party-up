@@ -189,7 +189,7 @@ const Layout = () => {
                                 )
                             }
                         />
-                        <Route path="*" element={<NotFound />} />
+                        <Route path="*" element={<Navigate to="/login" />} />
                     </Routes>
                 </main>
 
