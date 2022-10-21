@@ -111,7 +111,7 @@ const FriendList = ({
             ) : (
                 <Center p="md">
                     <Text color="dimmed">
-                        {username === user.username
+                        {user && username === user.username
                             ? "You haven't added any friends yet."
                             : `${username} hasn't added any friends yet.`}
                     </Text>
