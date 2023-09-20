@@ -31,13 +31,15 @@ const Parties = () => {
                 return parties.filter((party) =>
                     dayjs(party.date).isBetween(
                         dayjs().day(0),
-                        dayjs().day(6),
+                        dayjs().day(7),
                         '[]'
                     )
                 );
             case 'This Month':
                 return parties.filter(
-                    (party) => dayjs(party.date).month() === dayjs().month()
+                    (party) =>
+                        dayjs(party.date).month() === dayjs().month() &&
+                        dayjs(party.date).year() === dayjs().year()
                 );
             default:
                 return parties;
